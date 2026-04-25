@@ -1,1295 +1,387 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Sam — Siti con Agente Vocale AI per Professionisti Locali</title>
-    <meta name="description" content="Siti professionali con assistente vocale AI per dentisti, avvocati e PMI locali. Il tuo sito risponde ai clienti H24, raccoglie contatti, prenota appuntamenti. Online in 7 giorni.">
-    <meta name="keywords" content="sito con agente vocale, sito AI dentista, sito avvocato AI, assistente vocale sito web, digital marketing PMI">
-    <meta property="og:title" content="Digital Sam — Siti con Agente Vocale AI">
-    <meta property="og:description" content="Il tuo sito risponde ai clienti, anche alle 3 di notte.">
-    <meta property="og:type" content="website">
-
-    <!-- Favicon SVG inline — nessun file esterno -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2307101E'/%3E%3Crect width='64' height='64' rx='12' fill='none' stroke='%234DD9F0' stroke-width='2' stroke-opacity='0.4'/%3E%3Ctext x='5' y='50' font-family='Arial Black,Impact,Arial,sans-serif' font-size='44' font-weight='900' fill='%234DD9F0'%3ED%3C/text%3E%3Ctext x='27' y='50' font-family='Arial Black,Impact,Arial,sans-serif' font-size='44' font-weight='900' fill='%23F5A623'%3ES%3C/text%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2307101E'/%3E%3Crect width='64' height='64' rx='12' fill='none' stroke='%234DD9F0' stroke-width='2' stroke-opacity='0.4'/%3E%3Ctext x='5' y='50' font-family='Arial Black,Impact,Arial,sans-serif' font-size='44' font-weight='900' fill='%234DD9F0'%3ED%3C/text%3E%3Ctext x='27' y='50' font-family='Arial Black,Impact,Arial,sans-serif' font-size='44' font-weight='900' fill='%23F5A623'%3ES%3C/text%3E%3C/svg%3E">
-
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cyan: '#4DD9F0',
-                        gold: '#F5A623',
-                        dark: '#07101E',
-                        dark2: '#0D1B2E',
-                        dark3: '#112235',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        :root {
-            --cyan: #4DD9F0;
-            --gold: #F5A623;
-            --dark: #07101E;
-            --dark2: #0D1B2E;
-            --dark3: #112235;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--dark);
-            color: #E8F4F8;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--dark); }
-        ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
-
-        /* ── Animations ── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(28px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseCyan {
-            0%   { box-shadow: 0 0 0 0   rgba(77,217,240,0.45); }
-            70%  { box-shadow: 0 0 0 16px rgba(77,217,240,0); }
-            100% { box-shadow: 0 0 0 0   rgba(77,217,240,0); }
-        }
-        @keyframes pulseGold {
-            0%   { box-shadow: 0 0 0 0   rgba(245,166,35,0.45); }
-            70%  { box-shadow: 0 0 0 16px rgba(245,166,35,0); }
-            100% { box-shadow: 0 0 0 0   rgba(245,166,35,0); }
-        }
-        @keyframes float {
-            0%,100% { transform: translateY(0); }
-            50%      { transform: translateY(-8px); }
-        }
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-
-        .fade-up { animation: fadeUp 0.7s ease both; }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.35s; }
-        .delay-4 { animation-delay: 0.5s; }
-
-        /* ── Navbar ── */
-        .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 200;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            background: rgba(7,16,30,0.88);
-            border-bottom: 1px solid rgba(77,217,240,0.1);
-            transition: border-color 0.3s;
-        }
-
-        /* ── Hero bg ── */
-        .hero-bg {
-            background:
-                radial-gradient(ellipse 90% 65% at 50% -5%, rgba(77,217,240,0.10) 0%, transparent 65%),
-                radial-gradient(ellipse 45% 45% at 85% 55%, rgba(245,166,35,0.05) 0%, transparent 55%),
-                var(--dark);
-        }
-        .grid-pattern {
-            background-image:
-                linear-gradient(rgba(77,217,240,0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(77,217,240,0.025) 1px, transparent 1px);
-            background-size: 44px 44px;
-        }
-
-        /* ── Headline gradient ── */
-        .headline-gradient {
-            background: linear-gradient(125deg, #ffffff 0%, var(--cyan) 55%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* ── Buttons ── */
-        .btn-primary {
-            background: var(--cyan);
-            color: var(--dark);
-            font-weight: 700;
-            border-radius: 12px;
-            padding: 15px 32px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            animation: pulseCyan 2.5s infinite;
-            white-space: nowrap;
-        }
-        .btn-primary:hover {
-            background: #6fe5f7;
-            transform: translateY(-2px);
-            box-shadow: 0 14px 32px rgba(77,217,240,0.3);
-        }
-
-        .btn-outline {
-            border: 1.5px solid rgba(77,217,240,0.35);
-            color: var(--cyan);
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 15px 32px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .btn-outline:hover {
-            border-color: var(--cyan);
-            background: rgba(77,217,240,0.07);
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: var(--dark);
-            font-weight: 800;
-            border-radius: 12px;
-            padding: 17px 38px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
-        }
-        .btn-gold:hover {
-            background: #f7bc3e;
-            transform: translateY(-3px);
-            box-shadow: 0 18px 42px rgba(245,166,35,0.38);
-        }
-
-        .btn-whatsapp {
-            background: #25D366;
-            color: #fff;
-            font-weight: 700;
-            border-radius: 12px;
-            padding: 14px 26px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-        .btn-whatsapp:hover {
-            background: #1fba59;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(37,211,102,0.3);
-        }
-
-        /* ── Section labels ── */
-        .section-label {
-            color: var(--cyan);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-        }
-
-        /* ── Demo cards ── */
-        .demo-card {
-            background: var(--dark2);
-            border: 1px solid rgba(77,217,240,0.10);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-        .demo-card:hover {
-            border-color: rgba(77,217,240,0.45);
-            transform: translateY(-7px);
-            box-shadow: 0 24px 64px rgba(77,217,240,0.10);
-        }
-
-        /* iframe preview: scale down desktop site to fit card */
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            height: 230px;
-            overflow: hidden;
-            border-bottom: 1px solid rgba(77,217,240,0.08);
-        }
-        .iframe-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 160%;
-            height: 160%;
-            border: none;
-            transform: scale(0.625);
-            transform-origin: top left;
-            pointer-events: none;
-        }
-
-        /* ── Step cards ── */
-        .step-card {
-            background: var(--dark2);
-            border: 1px solid rgba(77,217,240,0.09);
-            border-radius: 20px;
-            padding: 36px 28px;
-            transition: border-color 0.3s;
-        }
-        .step-card:hover { border-color: rgba(77,217,240,0.28); }
-
-        .step-number {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(77,217,240,0.08);
-            border: 1.5px solid rgba(77,217,240,0.28);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--cyan);
-            font-weight: 800;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        /* ── Price card ── */
-        .price-card {
-            background: var(--dark2);
-            border: 1px solid rgba(77,217,240,0.18);
-            border-radius: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-        .price-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--cyan), var(--gold));
-        }
-
-        .scarcity-badge {
-            background: linear-gradient(135deg, var(--gold), #f5b830);
-            color: var(--dark);
-            font-weight: 800;
-            font-size: 0.73rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            padding: 7px 16px;
-            border-radius: 100px;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .feature-check {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 9px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            font-size: 0.88rem;
-        }
-        .feature-check:last-child { border-bottom: none; }
-        .feature-check i { color: var(--cyan); flex-shrink: 0; margin-top: 2px; }
-
-        /* ── Samantha photo ── */
-        .samantha-photo-wrap {
-            position: relative;
-            width: 260px;
-            flex-shrink: 0;
-        }
-        .samantha-photo-wrap img {
-            width: 260px;
-            height: 320px;
-            object-fit: cover;
-            object-position: center top;
-            border-radius: 20px;
-            border: 1.5px solid rgba(77,217,240,0.22);
-            display: block;
-        }
-        /* brand-colored glaze overlay */
-        .samantha-photo-wrap::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            background: linear-gradient(
-                140deg,
-                rgba(77,217,240,0.08) 0%,
-                transparent 45%,
-                rgba(245,166,35,0.06) 100%
-            );
-            pointer-events: none;
-        }
-        /* bottom fade to section bg */
-        .samantha-photo-wrap::before {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 35%;
-            border-radius: 0 0 20px 20px;
-            background: linear-gradient(to bottom, transparent, rgba(7,16,30,0.55));
-            pointer-events: none;
-            z-index: 1;
-        }
-        /* glow ring */
-        .samantha-photo-glow {
-            position: absolute;
-            inset: -6px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(77,217,240,0.18), rgba(245,166,35,0.12));
-            z-index: -1;
-            filter: blur(12px);
-        }
-        @media (max-width: 768px) {
-            .samantha-photo-wrap { width: 200px; }
-            .samantha-photo-wrap img { width: 200px; height: 250px; }
-        }
-
-        /* ── Form ── */
-        .form-input {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(77,217,240,0.14);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: #E8F4F8;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.9rem;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: var(--cyan);
-            background: rgba(77,217,240,0.04);
-            box-shadow: 0 0 0 3px rgba(77,217,240,0.08);
-        }
-        .form-input::placeholder { color: rgba(232,244,248,0.28); }
-
-        /* ── Section divider ── */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(77,217,240,0.18), transparent);
-        }
-
-        /* ── Trust bar ── */
-        .trust-bar {
-            background: rgba(77,217,240,0.04);
-            border-top: 1px solid rgba(77,217,240,0.08);
-            border-bottom: 1px solid rgba(77,217,240,0.08);
-        }
-
-        /* ── Floating voice agent ── */
-        .voice-float {
-            position: fixed;
-            bottom: 26px;
-            right: 26px;
-            z-index: 1000;
-        }
-        .voice-btn {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: var(--cyan);
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            cursor: pointer;
-            animation: pulseCyan 2.5s infinite;
-            box-shadow: 0 4px 24px rgba(77,217,240,0.35);
-            transition: transform 0.2s ease;
-            border: none;
-        }
-        .voice-btn:hover { transform: scale(1.1); }
-
-        /* ── Scroll-reveal (JS) ── */
-        .reveal {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.65s ease, transform 0.65s ease;
-        }
-        .reveal.hidden-before-reveal {
-            opacity: 0;
-            transform: translateY(22px);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ── Mobile ── */
-        @media (max-width: 640px) {
-            .hero-ctas { flex-direction: column; }
-            .hero-ctas a { width: 100%; justify-content: center; }
-            .btn-gold { width: 100%; justify-content: center; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Da Zero a Vendere con Claude — Guida Pratica in 6 Moduli</title>
+  <meta name="description" content="Crea e vendi il tuo primo prodotto digitale con Claude — anche se non hai mai usato l'AI in vita tua. Guida pratica in 6 moduli a €29." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --cyan:#4DD9F0; --gold:#F5A623; --dark:#07101E; }
+    html { scroll-behavior:smooth; }
+    body { background-color:var(--dark); color:#e2e8f0; font-family:system-ui,-apple-system,sans-serif; }
+    .text-cyan  { color:var(--cyan); }
+    .text-gold  { color:var(--gold); }
+    .btn-cta {
+      display:inline-block; background:var(--gold); color:var(--dark);
+      font-weight:700; font-size:1.1rem; padding:1rem 2.5rem;
+      border-radius:9999px; text-decoration:none;
+      transition:transform .15s, box-shadow .15s;
+      animation: pulse-gold 2.8s ease-in-out infinite;
+    }
+    .btn-cta:hover { transform:translateY(-2px) scale(1.02); animation:none; box-shadow:0 0 44px rgba(245,166,35,.65); }
+    .card { background:rgba(255,255,255,.04); border:1px solid rgba(77,217,240,.15); border-radius:1rem; }
+    .section-divider { border:none; border-top:1px solid rgba(77,217,240,.12); margin:0; }
+    details summary { cursor:pointer; list-style:none; }
+    details summary::-webkit-details-marker { display:none; }
+    details[open] .faq-icon { transform:rotate(45deg); }
+    .faq-icon { transition:transform .2s; }
+    .headline-gradient {
+      background:linear-gradient(135deg,#fff 0%,var(--cyan) 60%,var(--gold) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .mod-badge {
+      width:2.5rem; height:2.5rem; background:var(--cyan); color:var(--dark);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:1rem; flex-shrink:0;
+    }
+    .check { color:var(--cyan); }
+    .cross { color:#f87171; }
+    .sticky-bar {
+      position:fixed; bottom:0; left:0; right:0;
+      background:rgba(7,16,30,.95); border-top:1px solid rgba(77,217,240,.2);
+      backdrop-filter:blur(8px); padding:.75rem 1rem;
+      display:flex; align-items:center; justify-content:space-between; z-index:50;
+    }
+    @media(min-width:768px){ .sticky-bar { display:none; } }
+    .fade-up { opacity:0; transform:translateY(28px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-up.visible { opacity:1; transform:translateY(0); }
+    @keyframes pulse-gold {
+      0%,100% { box-shadow:0 0 28px rgba(245,166,35,.45); }
+      50%      { box-shadow:0 0 56px rgba(245,166,35,.75); }
+    }
+    .grid-overlay {
+      position:absolute; inset:0;
+      background-image:linear-gradient(rgba(77,217,240,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(77,217,240,.04) 1px,transparent 1px);
+      background-size:48px 48px; pointer-events:none;
+    }
+    @keyframes scan {
+      0%   { transform:translateY(-100%); opacity:0; }
+      10%  { opacity:1; } 90%  { opacity:1; }
+      100% { transform:translateY(400%); opacity:0; }
+    }
+    .scan-line {
+      position:absolute; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,rgba(77,217,240,.35),transparent);
+      animation:scan 6s linear infinite; pointer-events:none;
+    }
+    @keyframes logo-glow {
+      0%,100% { filter:drop-shadow(0 0 6px rgba(77,217,240,.4)); }
+      50%      { filter:drop-shadow(0 0 14px rgba(77,217,240,.7)); }
+    }
+    .logo-svg { animation:logo-glow 3s ease-in-out infinite; }
+    .mod-card { transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .mod-card:hover { transform:translateY(-3px); border-color:rgba(77,217,240,.45)!important; box-shadow:0 8px 28px rgba(77,217,240,.12); }
+  </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     NAVBAR
-════════════════════════════════════════ -->
-<nav class="navbar px-4 py-3" id="navbar">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-
-        <!-- Logo SVG inline — nessun file esterno necessario -->
-        <a href="#" style="display:flex;align-items:center;text-decoration:none;">
-            <svg width="210" height="42" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-              <defs>
-                <!-- D: cyan metallic gradient -->
-                <linearGradient id="nLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%"   stop-color="#C8F8FF"/>
-                  <stop offset="30%"  stop-color="#4DD9F0"/>
-                  <stop offset="70%"  stop-color="#2BBCD6"/>
-                  <stop offset="100%" stop-color="#0F7A96"/>
-                </linearGradient>
-                <!-- S: gold metallic gradient -->
-                <linearGradient id="nLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%"   stop-color="#FFF0A0"/>
-                  <stop offset="30%"  stop-color="#F5A623"/>
-                  <stop offset="70%"  stop-color="#D48A10"/>
-                  <stop offset="100%" stop-color="#8A5500"/>
-                </linearGradient>
-                <!-- Digital text: cyan -->
-                <linearGradient id="nLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%"   stop-color="#A8F0FA"/>
-                  <stop offset="100%" stop-color="#4DD9F0"/>
-                </linearGradient>
-                <!-- Sam text: gold -->
-                <linearGradient id="nLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%"   stop-color="#FFE070"/>
-                  <stop offset="100%" stop-color="#F5A623"/>
-                </linearGradient>
-                <!-- Cyan outer glow filter -->
-                <filter id="nFD" x="-60%" y="-60%" width="220%" height="220%">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
-                  <feFlood flood-color="#4DD9F0" flood-opacity="0.55" result="color"/>
-                  <feComposite in="color" in2="blur" operator="in" result="glow"/>
-                  <feMerge>
-                    <feMergeNode in="glow"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-                <!-- Gold outer glow filter -->
-                <filter id="nFS" x="-60%" y="-60%" width="220%" height="220%">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
-                  <feFlood flood-color="#F5A623" flood-opacity="0.55" result="color"/>
-                  <feComposite in="color" in2="blur" operator="in" result="glow"/>
-                  <feMerge>
-                    <feMergeNode in="glow"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-
-              <!-- Badge bg behind DS -->
-              <rect x="0" y="1" width="55" height="40" rx="9"
-                    fill="rgba(7,16,30,0.6)"
-                    stroke="url(#nLD)" stroke-width="1" stroke-opacity="0.3"/>
-
-              <!-- D letter (cyan, front layer) -->
-              <text x="3" y="36"
-                    font-family="'Arial Black','Impact',Arial,sans-serif"
-                    font-size="36" font-weight="900" font-style="normal"
-                    fill="url(#nLD)"
-                    filter="url(#nFD)">D</text>
-
-              <!-- S letter (gold, behind D at top — use paint-order trick) -->
-              <text x="21" y="36"
-                    font-family="'Arial Black','Impact',Arial,sans-serif"
-                    font-size="36" font-weight="900"
-                    fill="url(#nLS)"
-                    filter="url(#nFS)">S</text>
-
-              <!-- Thin vertical divider -->
-              <line x1="63" y1="7" x2="63" y2="35"
-                    stroke="rgba(77,217,240,0.22)" stroke-width="1.5" stroke-linecap="round"/>
-
-              <!-- "Digital" — ciano -->
-              <text x="71" y="20"
-                    font-family="'Plus Jakarta Sans','Arial',sans-serif"
-                    font-size="12" font-weight="700" letter-spacing="1.8"
-                    fill="url(#nLDigital)"
-                    style="text-transform:uppercase;">DIGITAL</text>
-
-              <!-- "Sam" — oro, più grande e bold -->
-              <text x="71" y="36"
-                    font-family="'Plus Jakarta Sans','Arial',sans-serif"
-                    font-size="16" font-weight="800" letter-spacing="0.5"
-                    fill="url(#nLSam)">Sam</text>
-            </svg>
-        </a>
-
-        <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-7 text-sm" style="color:rgba(232,244,248,0.6);">
-            <a href="#demo"          class="hover:text-white transition-colors">Demo</a>
-            <a href="#come-funziona" class="hover:text-white transition-colors">Come funziona</a>
-            <a href="#prezzi"        class="hover:text-white transition-colors">Prezzi</a>
-            <a href="#chi-sono"      class="hover:text-white transition-colors">Chi sono</a>
-            <a href="https://links.digitalsam.it" target="_blank" class="hover:text-white transition-colors" style="color:#4DD9F0;">Risorse</a>
-        </div>
-
-        <!-- CTA -->
-        <a href="#contatti" class="btn-primary text-sm" style="padding:10px 20px;animation:none;">
-            Inizia ora <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
+<!-- NAVBAR -->
+<nav style="position:sticky;top:0;z-index:40;background:rgba(7,16,30,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(77,217,240,.1);">
+  <div style="max-width:64rem;margin:0 auto;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;">
+    <svg class="logo-svg" width="160" height="32" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+      <defs>
+        <linearGradient id="nLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#C8F8FF"/><stop offset="30%" stop-color="#4DD9F0"/>
+          <stop offset="70%" stop-color="#2BBCD6"/><stop offset="100%" stop-color="#0F7A96"/>
+        </linearGradient>
+        <linearGradient id="nLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFF0A0"/><stop offset="30%" stop-color="#F5A623"/>
+          <stop offset="70%" stop-color="#D48A10"/><stop offset="100%" stop-color="#8A5500"/>
+        </linearGradient>
+        <linearGradient id="nLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#A8F0FA"/><stop offset="100%" stop-color="#4DD9F0"/>
+        </linearGradient>
+        <linearGradient id="nLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFE070"/><stop offset="100%" stop-color="#F5A623"/>
+        </linearGradient>
+        <filter id="nFD" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#4DD9F0" flood-opacity=".55" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="nFS" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#F5A623" flood-opacity=".55" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect x="0" y="1" width="55" height="40" rx="9" fill="rgba(7,16,30,.6)" stroke="url(#nLD)" stroke-width="1" stroke-opacity=".3"/>
+      <text x="3" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#nLD)" filter="url(#nFD)">D</text>
+      <text x="21" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#nLS)" filter="url(#nFS)">S</text>
+      <line x1="63" y1="7" x2="63" y2="35" stroke="rgba(77,217,240,.22)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="71" y="20" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="12" font-weight="700" letter-spacing="1.8" fill="url(#nLDigital)">DIGITAL</text>
+      <text x="71" y="36" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="16" font-weight="800" letter-spacing=".5" fill="url(#nLSam)">Sam</text>
+    </svg>
+    <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener"
+       style="background:var(--gold);color:var(--dark);font-weight:700;font-size:.8rem;padding:.45rem 1.1rem;border-radius:9999px;text-decoration:none;white-space:nowrap;">
+      €29 — Acquista
+    </a>
+  </div>
 </nav>
 
-
-<!-- ══════════════════════════════════════
-     HERO
-════════════════════════════════════════ -->
-<section class="hero-bg grid-pattern min-h-screen flex items-center pt-20" id="hero">
-    <div class="max-w-5xl mx-auto px-4 py-24 text-center">
-
-        <!-- Eyebrow badge -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 fade-up"
-             style="background:rgba(77,217,240,0.07);border:1px solid rgba(77,217,240,0.2);font-size:0.78rem;color:var(--cyan);">
-            <span style="width:7px;height:7px;background:var(--cyan);border-radius:50%;animation:pulseCyan 2s infinite;display:inline-block;"></span>
-            Siti con Agente Vocale AI · Per PMI locali italiane
-        </div>
-
-        <!-- Headline -->
-        <h1 class="font-extrabold leading-tight mb-6 fade-up delay-1"
-            style="font-size:clamp(2.2rem,6vw,4rem);max-width:800px;margin:0 auto;">
-            Il tuo sito risponde ai clienti,<br>
-            <span class="headline-gradient">anche alle 3 di notte.</span>
-        </h1>
-
-        <!-- Sub -->
-        <p class="mb-10 fade-up delay-2"
-           style="color:rgba(232,244,248,0.6);max-width:560px;margin:0 auto 2.5rem;font-size:1.05rem;line-height:1.75;">
-            Siti professionali con assistente vocale AI per dentisti, avvocati e professionisti locali.
-            Zero attese. Zero clienti persi. <strong style="color:white;">Online in 7 giorni.</strong>
-        </p>
-
-        <!-- CTA row -->
-        <div class="flex flex-wrap items-center justify-center gap-4 mb-16 fade-up delay-3 hero-ctas">
-            <a href="#demo" class="btn-primary" style="font-size:1rem;padding:16px 36px;">
-                <i class="bi bi-play-circle-fill"></i> Prova la Demo
-            </a>
-            <a href="#prezzi" class="btn-outline" style="font-size:1rem;">
-                Vedi i prezzi <i class="bi bi-arrow-down"></i>
-            </a>
-        </div>
-
-        <!-- Trust pills -->
-        <div class="flex flex-wrap items-center justify-center gap-6 fade-up delay-4"
-             style="color:rgba(232,244,248,0.4);font-size:0.82rem;">
-            <span class="flex items-center gap-2">
-                <i class="bi bi-shield-check" style="color:var(--cyan);"></i> Sito live in 7 giorni
-            </span>
-            <span class="flex items-center gap-2">
-                <i class="bi bi-headset" style="color:var(--cyan);"></i> Agente vocale H24
-            </span>
-            <span class="flex items-center gap-2">
-                <i class="bi bi-phone" style="color:var(--cyan);"></i> Mobile-first
-            </span>
-            <span class="flex items-center gap-2">
-                <i class="bi bi-cloud-check" style="color:var(--cyan);"></i> Hosting incluso
-            </span>
-        </div>
-
-        <!-- Scroll bounce -->
-        <div class="mt-14" style="animation:float 3s ease-in-out infinite;">
-            <i class="bi bi-chevron-double-down" style="color:rgba(77,217,240,0.3);font-size:1.4rem;"></i>
-        </div>
+<!-- HERO -->
+<section style="background:radial-gradient(ellipse at 50% 0%,rgba(77,217,240,.12) 0%,transparent 70%);position:relative;overflow:hidden;padding:4rem 1rem 5rem;text-align:center;">
+  <div class="grid-overlay"></div>
+  <div class="scan-line"></div>
+  <div style="max-width:48rem;margin:0 auto;position:relative;">
+    <div class="flex justify-center mb-10 fade-up">
+      <img src="../cover.png" alt="Da Zero a Vendere con Claude — copertina"
+           style="width:14rem;border-radius:1rem;border:2px solid rgba(77,217,240,.3);box-shadow:0 0 32px rgba(77,217,240,.25);"
+           onerror="this.style.display='none'" />
     </div>
+    <p class="fade-up" style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;margin-bottom:1rem;color:var(--gold);">Guida pratica · 6 moduli · accesso immediato</p>
+    <h1 class="headline-gradient fade-up" style="font-size:clamp(1.75rem,5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:1.5rem;">
+      Crea e vendi il tuo primo prodotto&nbsp;digitale con Claude —
+      anche se non hai mai usato l'AI in vita&nbsp;tua
+    </h1>
+    <p class="fade-up" style="font-size:1.1rem;color:#cbd5e1;max-width:40rem;margin:0 auto 2.5rem;line-height:1.7;">
+      Un percorso operativo step&nbsp;by&nbsp;step: prompt pronti, zero teoria inutile, un prodotto online alla fine.
+    </p>
+    <div class="fade-up">
+      <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener" class="btn-cta">
+        <i class="bi bi-lightning-charge-fill" style="margin-right:.5rem;"></i>Scarica la guida — €29
+      </a>
+      <p style="margin-top:1rem;font-size:.875rem;color:#64748b;">Accesso immediato dopo il pagamento · Nessun abbonamento</p>
+    </div>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<!-- ══════════════════════════════════════
-     TRUST BAR
-════════════════════════════════════════ -->
-<div class="trust-bar py-4">
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="flex flex-wrap items-center justify-center gap-6 md:gap-12 text-sm"
-             style="color:rgba(232,244,248,0.45);">
-            <span class="flex items-center gap-2"><i class="bi bi-buildings" style="color:var(--gold);"></i> PMI Locali Italiane</span>
-            <span class="flex items-center gap-2"><i class="bi bi-mic"       style="color:var(--gold);"></i> ElevenLabs AI Voice</span>
-            <span class="flex items-center gap-2"><i class="bi bi-rocket"    style="color:var(--gold);"></i> Setup in 7 giorni</span>
-            <span class="flex items-center gap-2"><i class="bi bi-lock"      style="color:var(--gold);"></i> SSL + Hosting incluso</span>
-            <span class="flex items-center gap-2"><i class="bi bi-star-fill" style="color:var(--gold);"></i> Assistenza italiana</span>
-        </div>
-    </div>
-</div>
-
-
-<!-- ══════════════════════════════════════
-     DEMO PER NICCHIA
-════════════════════════════════════════ -->
-<section id="demo" class="py-24 px-4" style="background:var(--dark2);">
-    <div class="max-w-5xl mx-auto">
-
-        <!-- Header -->
-        <div class="text-center mb-16 reveal">
-            <div class="section-label mb-3">Demo Live</div>
-            <h2 class="font-extrabold mb-4" style="font-size:clamp(1.8rem,4.5vw,3rem);">
-                Guarda com'è, <span style="color:var(--cyan);">nel tuo settore</span>
-            </h2>
-            <p style="color:rgba(232,244,248,0.5);max-width:480px;margin:0 auto;line-height:1.75;font-size:0.95rem;">
-                Clicca sulla demo e prova l'agente vocale dal vivo.
-                Quello che vedi è esattamente ciò che riceve il tuo cliente.
-            </p>
-        </div>
-
-        <!-- Cards grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-4xl mx-auto">
-
-            <!-- ── Card: Studi Dentistici ── -->
-            <div class="demo-card reveal"
-                 onclick="window.open('https://demo-studi-dentistici-agente.netlify.app/','_blank')"
-                 role="button" tabindex="0"
-                 onkeypress="if(event.key==='Enter')window.open('https://demo-studi-dentistici-agente.netlify.app/','_blank')">
-                <div class="iframe-wrapper">
-                    <iframe src="https://demo-studi-dentistici-agente.netlify.app/"
-                            title="Demo Studio Dentistico"
-                            loading="lazy"
-                            sandbox="allow-same-origin allow-scripts">
-                    </iframe>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                                 style="background:rgba(77,217,240,0.1);">🦷</div>
-                            <div>
-                                <div class="font-bold">Studi Dentistici</div>
-                                <div style="color:rgba(232,244,248,0.4);font-size:0.78rem;">Prenotazioni H24</div>
-                            </div>
-                        </div>
-                        <span style="background:rgba(77,217,240,0.08);color:var(--cyan);border:1px solid rgba(77,217,240,0.2);font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:100px;">
-                            Live ✓
-                        </span>
-                    </div>
-                    <p style="color:rgba(232,244,248,0.5);font-size:0.84rem;line-height:1.65;margin-bottom:14px;">
-                        L'agente risponde ai pazienti, raccoglie disponibilità e fissa appuntamenti — senza segretaria, senza attese.
-                    </p>
-                    <div class="flex items-center gap-2 font-semibold" style="color:var(--cyan);font-size:0.84rem;">
-                        Apri demo completa <i class="bi bi-arrow-up-right"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── Card: Studi Legali ── -->
-            <div class="demo-card reveal"
-                 onclick="window.open('https://test-studio-legale.netlify.app/','_blank')"
-                 role="button" tabindex="0"
-                 onkeypress="if(event.key==='Enter')window.open('https://test-studio-legale.netlify.app/','_blank')">
-                <div class="iframe-wrapper">
-                    <iframe src="https://test-studio-legale.netlify.app/"
-                            title="Demo Studio Legale"
-                            loading="lazy"
-                            sandbox="allow-same-origin allow-scripts">
-                    </iframe>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                                 style="background:rgba(245,166,35,0.1);">⚖️</div>
-                            <div>
-                                <div class="font-bold">Studi Legali</div>
-                                <div style="color:rgba(232,244,248,0.4);font-size:0.78rem;">Prima consulenza automatica</div>
-                            </div>
-                        </div>
-                        <span style="background:rgba(245,166,35,0.08);color:var(--gold);border:1px solid rgba(245,166,35,0.2);font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:100px;">
-                            Live ✓
-                        </span>
-                    </div>
-                    <p style="color:rgba(232,244,248,0.5);font-size:0.84rem;line-height:1.65;margin-bottom:14px;">
-                        Qualifica i casi, risponde alle prime domande e prenota la consulenza. Il cliente si sente già seguito prima ancora di parlare.
-                    </p>
-                    <div class="flex items-center gap-2 font-semibold" style="color:var(--gold);font-size:0.84rem;">
-                        Apri demo completa <i class="bi bi-arrow-up-right"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── Card: Coming soon ── -->
-            <div class="demo-card md:col-span-2 reveal"
-                 style="cursor:default;opacity:0.65;pointer-events:none;">
-                <div class="p-8 text-center">
-                    <div class="flex justify-center gap-5 text-3xl mb-4">
-                        🍽️ 🏠 💆 🔧 🏋️
-                    </div>
-                    <div class="font-bold mb-2">Ristoranti · Agenzie Immobiliari · Centri Estetici · Artigiani · Palestre</div>
-                    <p style="color:rgba(232,244,248,0.4);font-size:0.84rem;">
-                        Altre demo in arrivo. Il tuo settore non è qui?
-                        <span style="color:var(--cyan);pointer-events:all;cursor:pointer;" onclick="window.location.href='#contatti';">Scrivimi</span>
-                        — costruiamo insieme la tua demo personalizzata.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- PROBLEMA -->
+<section class="fade-up" style="padding:4rem 1rem;max-width:40rem;margin:0 auto;text-align:center;">
+  <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;margin-bottom:1.5rem;color:var(--gold);">Il problema</p>
+  <p style="font-size:1.25rem;color:#e2e8f0;line-height:1.7;">
+    Vuoi guadagnare online. Hai sentito parlare di Claude.
+    Hai aperto la chat, hai scritto qualcosa, e poi…
+    <span style="color:var(--cyan);font-weight:600;">non sapevi cosa farci.</span>
+  </p>
+  <p style="margin-top:1.5rem;font-size:1.1rem;color:#94a3b8;line-height:1.7;">
+    Non perché sei lenta. Ma perché nessuno ti ha detto esattamente
+    <strong style="color:#e2e8f0;">cosa fare, in che ordine, con quali parole.</strong>
+  </p>
 </section>
 
+<hr class="section-divider" />
 
-<div class="divider"></div>
-
-
-<!-- ══════════════════════════════════════
-     COME FUNZIONA
-════════════════════════════════════════ -->
-<section id="come-funziona" class="py-24 px-4" style="background:var(--dark);">
-    <div class="max-w-5xl mx-auto">
-
-        <div class="text-center mb-16 reveal">
-            <div class="section-label mb-3">Il Processo</div>
-            <h2 class="font-extrabold mb-4" style="font-size:clamp(1.8rem,4.5vw,3rem);">
-                Da zero a <span style="color:var(--cyan);">sito live</span> in 3 passi
-            </h2>
-            <p style="color:rgba(232,244,248,0.5);max-width:440px;margin:0 auto;line-height:1.75;font-size:0.95rem;">
-                Niente burocrazia, niente mesi di attesa. Tre step chiari — poi sei online.
-            </p>
-        </div>
-
-        <!-- Steps -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-
-            <!-- connector lines (desktop only) -->
-            <div class="hidden md:flex absolute top-10 left-0 right-0 items-center justify-center px-32"
-                 style="pointer-events:none;z-index:0;">
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(77,217,240,0.2));"></div>
-                <div style="width:10px;"></div>
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(77,217,240,0.2),transparent);"></div>
-            </div>
-
-            <!-- Step 1 -->
-            <div class="step-card reveal" style="position:relative;z-index:1;">
-                <div class="step-number mb-5">1</div>
-                <div class="text-3xl mb-4">🎯</div>
-                <h3 class="text-lg font-bold mb-3">Prova la demo</h3>
-                <p style="color:rgba(232,244,248,0.5);font-size:0.88rem;line-height:1.7;">
-                    Scegli il tuo settore e parla con l'agente vocale. Vedi il sito in azione e immagina i tuoi clienti che lo usano — senza impegno.
-                </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="step-card reveal" style="position:relative;z-index:1;">
-                <div class="step-number mb-5">2</div>
-                <div class="text-3xl mb-4">📞</div>
-                <h3 class="text-lg font-bold mb-3">Chiamata di 15 min</h3>
-                <p style="color:rgba(232,244,248,0.5);font-size:0.88rem;line-height:1.7;">
-                    Mi racconti la tua attività, io ti mostro come sarà il tuo sito personalizzato. Nessun tecnico, nessun impegno. Solo una conversazione diretta.
-                </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="step-card reveal" style="position:relative;z-index:1;">
-                <div class="step-number mb-5">3</div>
-                <div class="text-3xl mb-4">🚀</div>
-                <h3 class="text-lg font-bold mb-3">Sito live in 7 giorni</h3>
-                <p style="color:rgba(232,244,248,0.5);font-size:0.88rem;line-height:1.7;">
-                    Dominio, hosting, agente vocale configurato per la tua attività. In una settimana i tuoi clienti trovano già un sito che risponde H24.
-                </p>
-            </div>
-        </div>
-
-        <!-- CTA sotto i step -->
-        <div class="text-center mt-12 reveal">
-            <a href="https://wa.me/+393793290934?text=Ciao%20Samantha!%20Ho%20visto%20la%20demo%20e%20vorrei%20saperne%20di%20più."
-               target="_blank" class="btn-whatsapp">
-                <i class="bi bi-whatsapp" style="font-size:1.2rem;"></i>
-                Prenota la chiamata di 15 min — gratis
-            </a>
-        </div>
-    </div>
+<!-- SOLUZIONE -->
+<section class="fade-up" style="padding:4rem 1rem;background:radial-gradient(ellipse at 50% 50%,rgba(77,217,240,.06) 0%,transparent 70%);">
+  <div style="max-width:40rem;margin:0 auto;text-align:center;">
+    <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;margin-bottom:1.5rem;color:var(--cyan);">La soluzione</p>
+    <h2 style="font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:1.5rem;">Questa guida è un percorso operativo — non un corso</h2>
+    <p style="font-size:1.1rem;color:#cbd5e1;line-height:1.7;margin-bottom:1rem;">
+      Ogni modulo ha <strong style="color:#fff;">spiegazioni brevi, step numerati e prompt pronti da copiare.</strong>
+      Non devi inventare nulla — devi solo seguire le istruzioni.
+    </p>
+    <p style="font-size:1.1rem;color:#cbd5e1;line-height:1.7;">
+      Alla fine hai un <span style="color:var(--cyan);font-weight:600;">prodotto digitale online</span>,
+      una <span style="color:var(--gold);font-weight:600;">pagina di vendita scritta</span> e un sistema per portare
+      traffico <span style="color:var(--gold);font-weight:600;">senza mostrare la faccia</span>.
+    </p>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<div class="divider"></div>
-
-
-<!-- ══════════════════════════════════════
-     PREZZI
-════════════════════════════════════════ -->
-<section id="prezzi" class="py-24 px-4" style="background:var(--dark2);">
-    <div class="max-w-5xl mx-auto">
-
-        <div class="text-center mb-16 reveal">
-            <div class="section-label mb-3">Investimento</div>
-            <h2 class="font-extrabold mb-4" style="font-size:clamp(1.8rem,4.5vw,3rem);">
-                Un prezzo chiaro.<br><span style="color:var(--gold);">Zero sorprese.</span>
-            </h2>
-            <p style="color:rgba(232,244,248,0.5);max-width:460px;margin:0 auto;line-height:1.75;font-size:0.95rem;">
-                Prezzo di lancio riservato ai primi 3 clienti. Poi sale.
-                Il canone mensile non cambia mai.
-            </p>
-        </div>
-
-        <!-- Price card -->
-        <div class="price-card max-w-2xl mx-auto p-8 md:p-10 reveal">
-
-            <!-- Scarcity -->
-            <div class="flex justify-center mb-8">
-                <div class="scarcity-badge">
-                    ⚡ Offerta lancio — rimasti 3 posti
-                </div>
-            </div>
-
-            <!-- Two price boxes -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-
-                <!-- Setup -->
-                <div class="text-center p-6 rounded-2xl"
-                     style="background:rgba(77,217,240,0.05);border:1px solid rgba(77,217,240,0.14);">
-                    <div class="text-xs font-bold mb-2 uppercase tracking-wider" style="color:var(--cyan);">
-                        Setup una tantum
-                    </div>
-                    <div class="font-extrabold mb-1" style="font-size:2.5rem;">€1.497</div>
-                    <div class="text-sm line-through mb-2" style="color:rgba(232,244,248,0.28);">Poi €1.997</div>
-                    <div class="text-xs" style="color:rgba(232,244,248,0.4);">Sito + agente vocale configurato</div>
-                </div>
-
-                <!-- Canone -->
-                <div class="text-center p-6 rounded-2xl"
-                     style="background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.14);">
-                    <div class="text-xs font-bold mb-2 uppercase tracking-wider" style="color:var(--gold);">
-                        Canone mensile
-                    </div>
-                    <div class="flex items-end justify-center gap-1 mb-1">
-                        <span class="font-extrabold" style="font-size:2.5rem;">€97</span>
-                        <span style="color:rgba(232,244,248,0.45);padding-bottom:6px;">/mese</span>
-                    </div>
-                    <div class="text-sm font-bold mb-2" style="color:var(--gold);">Prezzo fisso per sempre</div>
-                    <div class="text-xs" style="color:rgba(232,244,248,0.4);">Hosting + manutenzione + agente</div>
-                </div>
-            </div>
-
-            <!-- Feature list -->
-            <div class="mb-8">
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Sito professionale personalizzato per il tuo settore</span>
-                </div>
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Agente vocale AI configurato con le info della tua attività</span>
-                </div>
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Hosting su server italiano — veloce, sicuro, SSL incluso</span>
-                </div>
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Ottimizzato mobile — il 70% dei tuoi clienti arriva da lì</span>
-                </div>
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Manutenzione mensile — aggiornamenti, modifiche, backup</span>
-                </div>
-                <div class="feature-check">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <span>Consegna garantita in 7 giorni lavorativi</span>
-                </div>
-            </div>
-
-            <!-- CTA -->
-            <div class="text-center">
-                <a href="#contatti" class="btn-gold">
-                    Voglio il mio sito con agente vocale <i class="bi bi-arrow-right"></i>
-                </a>
-                <p class="mt-4 text-sm" style="color:rgba(232,244,248,0.35);">
-                    O scrivi direttamente su
-                    <a href="https://wa.me/+393793290934" target="_blank" style="color:var(--cyan);">WhatsApp</a>
-                    per qualsiasi domanda
-                </p>
-            </div>
-        </div>
+<!-- PER CHI È / NON È -->
+<section class="fade-up" style="padding:4rem 1rem;max-width:56rem;margin:0 auto;">
+  <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
+    <div class="card" style="padding:1.75rem;border-color:rgba(77,217,240,.25);">
+      <h3 style="font-weight:700;font-size:1.1rem;margin-bottom:1.25rem;color:var(--cyan);display:flex;align-items:center;gap:.5rem;">
+        <i class="bi bi-check-circle-fill"></i> Per chi è
+      </h3>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem;color:#cbd5e1;font-size:.95rem;">
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-check2 check" style="margin-top:.15rem;flex-shrink:0;"></i>Vuoi creare qualcosa da vendere online ma non sai da dove iniziare</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-check2 check" style="margin-top:.15rem;flex-shrink:0;"></i>Hai sentito parlare di Claude ma non lo usi in modo produttivo</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-check2 check" style="margin-top:.15rem;flex-shrink:0;"></i>Non vuoi apparire sui social</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-check2 check" style="margin-top:.15rem;flex-shrink:0;"></i>Non hai budget per ads</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-check2 check" style="margin-top:.15rem;flex-shrink:0;"></i>Hai bisogno di istruzioni precise, non di ispirazione</li>
+      </ul>
     </div>
+    <div class="card" style="padding:1.75rem;border-color:rgba(248,113,113,.2);">
+      <h3 style="font-weight:700;font-size:1.1rem;margin-bottom:1.25rem;color:#f87171;display:flex;align-items:center;gap:.5rem;">
+        <i class="bi bi-x-circle-fill"></i> Per chi <em>non</em> è
+      </h3>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem;color:#cbd5e1;font-size:.95rem;">
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-x cross" style="margin-top:.15rem;flex-shrink:0;font-size:1.2rem;line-height:1;"></i>Chi cerca un corso completo su tutto quello che può fare Claude</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-x cross" style="margin-top:.15rem;flex-shrink:0;font-size:1.2rem;line-height:1;"></i>Chi vuole teoria — qui c'è solo pratica</li>
+        <li style="display:flex;align-items:flex-start;gap:.75rem;"><i class="bi bi-x cross" style="margin-top:.15rem;flex-shrink:0;font-size:1.2rem;line-height:1;"></i>Chi non è disposto a seguire un processo passo dopo passo</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<div class="divider"></div>
-
-
-<!-- ══════════════════════════════════════
-     RISORSE DIGITALI
-════════════════════════════════════════ -->
-<section id="risorse" class="py-24 px-4" style="background:var(--dark2);">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-14 reveal">
-            <span style="font-size:11px;letter-spacing:2px;color:rgba(77,217,240,0.6);text-transform:uppercase;">Guide pratiche</span>
-            <h2 class="text-3xl font-bold mt-3 mb-4">Vuoi usare l'AI da subito?<br>Senza aspettare niente.</h2>
-            <p style="color:rgba(232,244,248,0.55);font-size:15px;max-width:520px;margin:0 auto;line-height:1.7;">
-                Ho raccolto i prompt che uso davvero ogni giorno — quelli che fanno risparmiare tempo, non quelli da tutorial YouTube. Copi, personalizzi con i tuoi dati, incolli in ChatGPT. Fatto.
-            </p>
-        </div>
-        <div class="grid md:grid-cols-2 gap-6 reveal">
-
-            <!-- Card PMI -->
-            <div style="background:rgba(77,217,240,0.04);border:1px solid rgba(77,217,240,0.18);border-radius:14px;padding:28px 24px;">
-                <div style="font-size:11px;letter-spacing:1.5px;color:rgba(77,217,240,0.6);text-transform:uppercase;margin-bottom:10px;">Attività locale</div>
-                <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">21 Prompt AI per la tua attività</h3>
-                <p style="font-size:13px;color:rgba(232,244,248,0.5);line-height:1.6;margin-bottom:20px;">
-                    Hai un'attività e non hai tempo da perdere. Questi 21 prompt ti danno risposte pronte per i clienti, post social e gestione quotidiana — senza sapere nulla di AI. Apri ChatGPT, copia, incolla. Risparmia ore ogni settimana.
-                </p>
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <span style="font-size:22px;font-weight:700;color:#4DD9F0;">€9</span>
-                    <a href="https://buy.stripe.com/8x25kC8l1gso4gZ7vGgYU03" target="_blank" style="background:#4DD9F0;color:#07101E;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none;">
-                        Scarica il PDF →
-                    </a>
-                </div>
-            </div>
-
-            <!-- Card Creator -->
-            <div style="background:rgba(245,166,35,0.04);border:1px solid rgba(245,166,35,0.18);border-radius:14px;padding:28px 24px;">
-                <div style="font-size:11px;letter-spacing:1.5px;color:rgba(245,166,35,0.6);text-transform:uppercase;margin-bottom:10px;">Prodotti digitali</div>
-                <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">21 Prompt AI per Creator Digitali</h3>
-                <p style="font-size:13px;color:rgba(232,244,248,0.5);line-height:1.6;margin-bottom:20px;">
-                    Vuoi creare e vendere qualcosa online ma non sai da dove iniziare? Dalla validazione dell'idea al primo incasso — 21 prompt per ogni fase. Zero corsi da 2.000€, zero teoria inutile. Solo quello che serve per partire e vendere davvero.
-                </p>
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <span style="font-size:22px;font-weight:700;color:#F5A623;">€11</span>
-                    <a href="https://buy.stripe.com/6oUdR89p5a408xf2bmgYU02" target="_blank" style="background:#F5A623;color:#07101E;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none;">
-                        Scarica il PDF →
-                    </a>
-                </div>
-            </div>
-
-        </div>
-        <p class="text-center mt-8 reveal" style="font-size:12px;color:rgba(232,244,248,0.25);">
-            Consegna immediata dopo il pagamento · PDF scaricabile subito
-        </p>
+<!-- MODULI -->
+<section class="fade-up" style="padding:4rem 1rem;max-width:48rem;margin:0 auto;">
+  <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;text-align:center;margin-bottom:.75rem;color:var(--cyan);">Cosa contiene</p>
+  <h2 style="font-size:1.75rem;font-weight:700;text-align:center;color:#fff;margin-bottom:2.5rem;">I 6 moduli della guida</h2>
+  <div style="display:flex;flex-direction:column;gap:1rem;">
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge">1</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Orientarsi negli strumenti</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Chat Claude, Cowork, Progetti: cosa sono, quando usi cosa, come configurarli una volta sola.</p></div>
     </div>
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge">2</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Definire il tuo prodotto</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Prompt per trovare l'idea giusta partendo da quello che già sai fare, e verificare che qualcuno voglia comprarlo. <em style="color:#64748b;">(Se hai già un'idea, salta al Modulo 3)</em></p></div>
+    </div>
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge">3</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Creare il contenuto</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Come usare Claude per scrivere il tuo prodotto senza bloccarti davanti alla pagina bianca.</p></div>
+    </div>
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge">4</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Confezionare e pubblicare</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Dal testo al file professionale, fino alla pubblicazione su Gumroad. Step by step.</p></div>
+    </div>
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge">5</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Scrivere la pagina di vendita</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Headline, descrizione, obiezioni: i prompt per scrivere una pagina che converte.</p></div>
+    </div>
+    <div class="card mod-card" style="padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;">
+      <div class="mod-badge" style="background:var(--gold);">6</div>
+      <div><h3 style="font-weight:700;color:#fff;margin-bottom:.25rem;">Portare traffico senza faccia</h3>
+      <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;">Come creare video TikTok con AI — senza mostrare chi sei — per portare persone al tuo prodotto ogni giorno.</p></div>
+    </div>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<div class="divider"></div>
-
-
-<!-- ══════════════════════════════════════
-     CHI SONO
-════════════════════════════════════════ -->
-<section id="chi-sono" class="py-24 px-4" style="background:var(--dark);">
-    <div class="max-w-4xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center gap-12 reveal">
-
-            <!-- Foto Samantha -->
-            <!-- Salva la tua foto come: assets/images/samantha.png -->
-            <div class="samantha-photo-wrap">
-                <div class="samantha-photo-glow"></div>
-                <img src="/samantha.png" alt="Samantha — Fondatrice Digital Sam" style="width:260px;height:320px;object-fit:cover;object-position:top center;border-radius:20px;display:block;">
-            </div>
-
-            <!-- Text -->
-            <div>
-                <div class="section-label mb-3">Chi sono</div>
-                <h2 class="font-extrabold mb-5" style="font-size:clamp(1.7rem,4vw,2.6rem);">
-                    Ciao, sono <span style="color:var(--cyan);">Samantha</span>
-                </h2>
-                <p style="color:rgba(232,244,248,0.65);line-height:1.8;font-size:0.93rem;margin-bottom:1rem;">
-                    Sono la fondatrice di <strong style="color:white;">Digital Sam</strong>, agenzia di marketing digitale
-                    per PMI locali italiane. Ho visto troppi professionisti bravi perdere clienti per un sito vecchio,
-                    lento o che non risponde mai.
-                </p>
-                <p style="color:rgba(232,244,248,0.65);line-height:1.8;font-size:0.93rem;margin-bottom:1rem;">
-                    Così ho costruito qualcosa di diverso: siti che <em>lavorano</em> per te — con un agente vocale AI
-                    che risponde H24, raccoglie contatti e accompagna i tuoi clienti fino alla prenotazione.
-                </p>
-                <p style="color:rgba(232,244,248,0.65);line-height:1.8;font-size:0.93rem;">
-                    Lavoro con dentisti, avvocati, artigiani e imprenditori locali a Trieste e in tutta Italia.
-                    Ogni sito è costruito su misura — qui non si usano template generici.
-                </p>
-
-                <!-- Numbers -->
-                <div class="flex flex-wrap gap-8 mt-8 pt-8"
-                     style="border-top:1px solid rgba(77,217,240,0.1);">
-                    <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--cyan);">7gg</div>
-                        <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Consegna garantita</div>
-                    </div>
-                    <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--cyan);">H24</div>
-                        <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Agente vocale attivo</div>
-                    </div>
-                    <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--gold);">100%</div>
-                        <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Su misura</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- RISULTATO -->
+<section class="fade-up" style="padding:4rem 1rem;background:radial-gradient(ellipse at 50% 50%,rgba(245,166,35,.07) 0%,transparent 70%);">
+  <div style="max-width:40rem;margin:0 auto;text-align:center;">
+    <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;margin-bottom:1rem;color:var(--gold);">Cosa hai alla fine</p>
+    <h2 style="font-size:1.75rem;font-weight:700;color:#fff;margin-bottom:2rem;">Il risultato concreto dei 6 moduli</h2>
+    <div class="card" style="padding:2rem;border-color:rgba(245,166,35,.3);box-shadow:0 0 32px rgba(245,166,35,.15);text-align:left;display:flex;flex-direction:column;gap:1rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <i class="bi bi-box-seam-fill" style="font-size:1.5rem;color:var(--gold);flex-shrink:0;"></i>
+        <p style="color:#e2e8f0;margin:0;">Un <strong style="color:#fff;">prodotto digitale online</strong>, acquistabile</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <i class="bi bi-file-earmark-text-fill" style="font-size:1.5rem;color:var(--gold);flex-shrink:0;"></i>
+        <p style="color:#e2e8f0;margin:0;">Una <strong style="color:#fff;">pagina di vendita scritta</strong> che spiega il prodotto e gestisce le obiezioni</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <i class="bi bi-play-btn-fill" style="font-size:1.5rem;color:var(--gold);flex-shrink:0;"></i>
+        <p style="color:#e2e8f0;margin:0;">Almeno <strong style="color:#fff;">3 video pronti</strong> per portare traffico ogni giorno</p>
+      </div>
+      <div style="border-top:1px solid rgba(245,166,35,.2);padding-top:1rem;text-align:center;">
+        <p style="color:#64748b;font-size:.875rem;margin:0;">Zero ads · Zero faccia · Zero tecnicismi</p>
+      </div>
     </div>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<div class="divider"></div>
-
-
-<!-- ══════════════════════════════════════
-     CONTATTI
-════════════════════════════════════════ -->
-<section id="contatti" class="py-24 px-4" style="background:var(--dark2);">
-    <div class="max-w-4xl mx-auto">
-
-        <div class="text-center mb-16 reveal">
-            <div class="section-label mb-3">Contatti</div>
-            <h2 class="font-extrabold mb-4" style="font-size:clamp(1.8rem,4.5vw,3rem);">
-                Parliamone.<br><span style="color:var(--cyan);">Senza impegno.</span>
-            </h2>
-            <p style="color:rgba(232,244,248,0.5);max-width:440px;margin:0 auto;line-height:1.75;font-size:0.95rem;">
-                Hai visto le demo e ti sembra la direzione giusta?
-                Scrivimi — rispondo di persona entro poche ore.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-
-            <!-- ── Form ── -->
-            <div class="reveal">
-                <form action="https://formsubmit.co/digitalsam.info@gmail.com"
-                      method="POST"
-                      class="space-y-4">
-
-                    <!-- FormSubmit config -->
-                    <input type="hidden" name="_subject"  value="Nuovo contatto da digitalsam.it">
-                    <input type="hidden" name="_captcha"  value="false">
-                    <input type="hidden" name="_next"     value="https://digitalsam.it/grazie.html">
-                    <input type="hidden" name="_template" value="table">
-
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Nome e cognome *</label>
-                        <input type="text" name="nome" required placeholder="Mario Rossi" class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">La tua attività *</label>
-                        <input type="text" name="attivita" required placeholder="es. Studio Dentistico, Avvocato, Ristorante..." class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Email *</label>
-                        <input type="email" name="email" required placeholder="mario@esempio.it" class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Telefono <span style="color:rgba(232,244,248,0.3);">(opzionale)</span></label>
-                        <input type="tel" name="telefono" placeholder="+39 333 000 0000" class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Messaggio</label>
-                        <textarea name="messaggio" rows="3"
-                                  placeholder="Raccontami brevemente la tua attività..."
-                                  class="form-input" style="resize:vertical;"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-gold" style="width:100%;justify-content:center;">
-                        Invia richiesta <i class="bi bi-send-fill"></i>
-                    </button>
-                    <p class="text-xs text-center" style="color:rgba(232,244,248,0.28);">
-                        Nessuno spam. Rispondo di persona entro 24 ore.
-                    </p>
-                </form>
-            </div>
-
-            <!-- ── Contact info ── -->
-            <div class="space-y-6 reveal">
-
-                <!-- WhatsApp box -->
-                <div class="p-6 rounded-2xl"
-                     style="background:rgba(37,211,102,0.05);border:1px solid rgba(37,211,102,0.14);">
-                    <div class="text-xs font-semibold mb-2" style="color:rgba(232,244,248,0.4);">Preferisci WhatsApp?</div>
-                    <p style="color:rgba(232,244,248,0.6);font-size:0.86rem;line-height:1.65;margin-bottom:14px;">
-                        Scrivi direttamente — rispondo più in fretta. Di solito entro poche ore, anche la sera.
-                    </p>
-                    <a href="https://wa.me/+393793290934?text=Ciao%20Samantha!%20Ho%20visto%20il%20tuo%20sito%20e%20vorrei%20saperne%20di%20più%20sui%20siti%20con%20agente%20vocale."
-                       target="_blank" class="btn-whatsapp">
-                        <i class="bi bi-whatsapp" style="font-size:1.2rem;"></i> Scrivimi su WhatsApp
-                    </a>
-                </div>
-
-                <!-- Contact details -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                             style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-envelope" style="color:var(--cyan);"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Email</div>
-                            <a href="mailto:info@digitalsam.it" class="text-sm font-semibold hover:underline" style="color:var(--cyan);">
-                                info@digitalsam.it
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                             style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-telephone" style="color:var(--cyan);"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Telefono</div>
-                            <a href="tel:+393793290934" class="text-sm font-semibold hover:text-cyan transition-colors">
-                                +39 379 3290934
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                             style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-globe" style="color:var(--cyan);"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Sito</div>
-                            <span class="text-sm font-semibold">digitalsam.it</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- FAQ -->
+<section class="fade-up" style="padding:4rem 1rem;max-width:40rem;margin:0 auto;">
+  <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;text-align:center;margin-bottom:.75rem;color:var(--cyan);">Domande frequenti</p>
+  <h2 style="font-size:1.75rem;font-weight:700;text-align:center;color:#fff;margin-bottom:2.5rem;">FAQ</h2>
+  <div style="display:flex;flex-direction:column;gap:.75rem;">
+    <details class="card" style="overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:1.25rem;font-weight:600;color:#e2e8f0;">
+        <span>Non so niente di AI — riesco comunque a usarla?</span>
+        <i class="bi bi-plus-lg faq-icon" style="flex-shrink:0;color:var(--cyan);font-size:1.1rem;"></i>
+      </summary>
+      <div style="padding:1rem 1.25rem 1.25rem;color:#94a3b8;font-size:.9rem;line-height:1.7;border-top:1px solid rgba(77,217,240,.12);">
+        Sì. I prompt sono già scritti. Tu li copi, li compili con i tuoi dati, li incolli in Claude. Non serve sapere nulla di AI.
+      </div>
+    </details>
+    <details class="card" style="overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:1.25rem;font-weight:600;color:#e2e8f0;">
+        <span>Claude è gratuito?</span>
+        <i class="bi bi-plus-lg faq-icon" style="flex-shrink:0;color:var(--cyan);font-size:1.1rem;"></i>
+      </summary>
+      <div style="padding:1rem 1.25rem 1.25rem;color:#94a3b8;font-size:.9rem;line-height:1.7;border-top:1px solid rgba(77,217,240,.12);">
+        La versione base è gratuita. Per lavorare seriamente conviene il piano da €18/mese — ma puoi iniziare gratis e decidere dopo.
+      </div>
+    </details>
+    <details class="card" style="overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:1.25rem;font-weight:600;color:#e2e8f0;">
+        <span>In quanto tempo posso avere il prodotto online?</span>
+        <i class="bi bi-plus-lg faq-icon" style="flex-shrink:0;color:var(--cyan);font-size:1.1rem;"></i>
+      </summary>
+      <div style="padding:1rem 1.25rem 1.25rem;color:#94a3b8;font-size:.9rem;line-height:1.7;border-top:1px solid rgba(77,217,240,.12);">
+        Con 2 ore al giorno, in una settimana hai tutto pronto. Se ci dedichi un weekend intero, puoi farcela in 2 giorni.
+      </div>
+    </details>
+    <details class="card" style="overflow:hidden;">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:1.25rem;font-weight:600;color:#e2e8f0;">
+        <span>E se non funziona?</span>
+        <i class="bi bi-plus-lg faq-icon" style="flex-shrink:0;color:var(--cyan);font-size:1.1rem;"></i>
+      </summary>
+      <div style="padding:1rem 1.25rem 1.25rem;color:#94a3b8;font-size:.9rem;line-height:1.7;border-top:1px solid rgba(77,217,240,.12);">
+        Questa guida non ti promette vendite — ti dà il metodo per creare e pubblicare. Le vendite dipendono dal tuo prodotto e da quanto traffico porti. Se segui i 6 moduli, hai fatto tutto quello che era in tuo potere.
+      </div>
+    </details>
+  </div>
 </section>
 
+<hr class="section-divider" />
 
-<!-- ══════════════════════════════════════
-     FOOTER
-════════════════════════════════════════ -->
-<footer class="py-10 px-4" style="background:var(--dark);border-top:1px solid rgba(77,217,240,0.07);">
-    <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- CTA FINALE -->
+<section class="fade-up" style="padding:5rem 1rem;text-align:center;background:radial-gradient(ellipse at 50% 100%,rgba(77,217,240,.10) 0%,transparent 65%);">
+  <div style="max-width:36rem;margin:0 auto;">
+    <p style="text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;margin-bottom:1rem;color:var(--gold);">Inizia oggi</p>
+    <h2 style="font-size:clamp(1.5rem,4vw,2.25rem);font-weight:800;color:#fff;margin-bottom:1rem;line-height:1.3;">
+      Scarica la guida.<br/>Inizia dal Modulo&nbsp;1.<br/>Segui gli step.<br/>
+      <span style="color:var(--cyan);">Pubblica.</span>
+    </h2>
+    <p style="color:#94a3b8;margin-bottom:2.5rem;font-size:1.1rem;">Accesso immediato dopo il pagamento.</p>
+    <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener" class="btn-cta" style="font-size:1.25rem;padding:1.25rem 2.5rem;">
+      <i class="bi bi-lightning-charge-fill" style="margin-right:.5rem;"></i>€29 — Scarica ora
+    </a>
+    <p style="margin-top:1.25rem;font-size:.875rem;color:#475569;">Nessun abbonamento · Nessuna sorpresa</p>
+  </div>
+</section>
 
-            <!-- Logo + tagline -->
-            <div class="text-center md:text-left">
-                <div class="flex items-center justify-center md:justify-start mb-1.5">
-                  <svg width="145" height="30" viewBox="0 0 145 30" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-                    <defs>
-                      <linearGradient id="fLD" x1="1" y1="0" x2="20" y2="30" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#C8F8FF"/><stop offset="40%" stop-color="#4DD9F0"/><stop offset="100%" stop-color="#0F7A96"/>
-                      </linearGradient>
-                      <linearGradient id="fLS" x1="12" y1="0" x2="32" y2="30" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#FFF0A0"/><stop offset="40%" stop-color="#F5A623"/><stop offset="100%" stop-color="#8A5500"/>
-                      </linearGradient>
-                      <linearGradient id="fLDig" x1="44" y1="0" x2="90" y2="0" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#A8F0FA"/><stop offset="100%" stop-color="#4DD9F0"/>
-                      </linearGradient>
-                      <linearGradient id="fLSm" x1="44" y1="0" x2="82" y2="0" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#FFE070"/><stop offset="100%" stop-color="#F5A623"/>
-                      </linearGradient>
-                      <filter id="fFD2"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="b"/><feFlood flood-color="#4DD9F0" flood-opacity="0.5" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                      <filter id="fFS2"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="b"/><feFlood flood-color="#F5A623" flood-opacity="0.5" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                    </defs>
-                    <rect x="0" y="0" width="38" height="29" rx="6" fill="rgba(7,16,30,0.5)" stroke="rgba(77,217,240,0.25)" stroke-width="1"/>
-                    <text x="2" y="25" font-family="'Arial Black',Impact,Arial,sans-serif" font-size="25" font-weight="900" fill="url(#fLD)" filter="url(#fFD2)">D</text>
-                    <text x="14" y="25" font-family="'Arial Black',Impact,Arial,sans-serif" font-size="25" font-weight="900" fill="url(#fLS)" filter="url(#fFS2)">S</text>
-                    <line x1="44" y1="4" x2="44" y2="25" stroke="rgba(77,217,240,0.2)" stroke-width="1"/>
-                    <text x="50" y="14" font-family="'Plus Jakarta Sans',Arial,sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.5" fill="url(#fLDig)">DIGITAL</text>
-                    <text x="50" y="26" font-family="'Plus Jakarta Sans',Arial,sans-serif" font-size="11" font-weight="800" letter-spacing="0.3" fill="url(#fLSm)">Sam</text>
-                  </svg>
-                </div>
-                <div class="text-xs" style="color:rgba(232,244,248,0.25);">
-                    Siti con agente vocale AI per PMI locali italiane
-                </div>
-            </div>
-
-            <!-- Nav links -->
-            <div class="flex flex-wrap justify-center gap-5 text-sm" style="color:rgba(232,244,248,0.4);">
-                <a href="#demo"          class="hover:text-white transition-colors">Demo</a>
-                <a href="#come-funziona" class="hover:text-white transition-colors">Come funziona</a>
-                <a href="#prezzi"        class="hover:text-white transition-colors">Prezzi</a>
-                <a href="#chi-sono"      class="hover:text-white transition-colors">Chi sono</a>
-                <a href="#contatti"      class="hover:text-white transition-colors">Contatti</a>
-                <a href="https://links.digitalsam.it" target="_blank" class="hover:text-white transition-colors" style="color:#4DD9F0;">Risorse</a>
-            </div>
-
-            <!-- Copyright -->
-            <div class="text-xs" style="color:rgba(232,244,248,0.2);">
-                © 2026 Digital Sam
-            </div>
-        </div>
-    </div>
+<!-- FOOTER -->
+<footer style="padding:2rem 1rem;text-align:center;border-top:1px solid rgba(77,217,240,.1);">
+  <p style="color:#334155;font-size:.875rem;">© 2026 Digital Sam · Samantha Del Vecchio</p>
 </footer>
-<!-- ══════════════════════════════════════
-     FLOATING VOICE AGENT — ElevenLabs
-════════════════════════════════════════ -->
-<style>
-    #elevenlabs-wrapper {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        z-index: 1000;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        animation: pulseCyan 2.5s infinite;
-        pointer-events: none;
-    }
-    elevenlabs-convai {
-        --elevenlabs-convai-button-color: #4DD9F0;
-        pointer-events: none;
-    }
-</style>
 
-<div id="elevenlabs-wrapper">
-    <elevenlabs-convai agent-id="agent_0701kmawynn1f74t3td68byb8qye"></elevenlabs-convai>
+<!-- STICKY BAR mobile -->
+<div class="sticky-bar">
+  <div>
+    <p style="font-weight:700;color:#fff;font-size:.875rem;margin:0;">Da Zero a Vendere con Claude</p>
+    <p style="font-size:.75rem;color:#94a3b8;margin:0;">Guida pratica · 6 moduli</p>
+  </div>
+  <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener"
+     style="background:var(--gold);color:var(--dark);font-weight:700;padding:.6rem 1.4rem;border-radius:9999px;font-size:.9rem;text-decoration:none;white-space:nowrap;">
+    €29 — Acquista
+  </a>
 </div>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<div style="height:5rem;display:block;" class="md:hidden"></div>
 
-
-<!-- ══════════════════════════════════════
-     SCROLL REVEAL + NAVBAR SCROLL EFFECT
-════════════════════════════════════════ -->
 <script>
-    /* Intersection Observer — reveal on scroll */
-    // Prima nasconde via JS — senza JS i contenuti restano visibili
-    document.querySelectorAll('.reveal').forEach(el => el.classList.add('hidden-before-reveal'));
-
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.remove('hidden-before-reveal');
-                entry.target.classList.add('visible');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    /* Navbar scroll effect */
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-        navbar.style.borderBottomColor = window.scrollY > 60
-            ? 'rgba(77,217,240,0.22)'
-            : 'rgba(77,217,240,0.10)';
-    }, { passive: true });
-
-    /* Smooth active nav link highlight */
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
-    const linkObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                navLinks.forEach(l => l.style.color = '');
-                const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
-                if (active) active.style.color = 'var(--cyan)';
-            }
-        });
-    }, { threshold: 0.3 });
-    sections.forEach(s => linkObserver.observe(s));
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = (i % 4) * 80 + 'ms';
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+  document.querySelectorAll('.mod-card').forEach((el, i) => { el.style.transitionDelay = i * 60 + 'ms'; });
+  document.querySelectorAll('details').forEach(detail => {
+    detail.addEventListener('toggle', () => {
+      if (detail.open) document.querySelectorAll('details').forEach(o => { if (o !== detail) o.removeAttribute('open'); });
+    });
+  });
 </script>
 
 </body>
