@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaggio inviato — Digital Sam</title>
+    <meta name="robots" content="noindex">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --cyan: #4DD9F0; --gold: #F5A623; --dark: #07101E; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark); color: #E8F4F8; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+        .fade-up { animation: fadeUp 0.7s ease both; }
+        @keyframes pulseCyan {
+            0%   { box-shadow: 0 0 0 0 rgba(77,217,240,0.45); }
+            70%  { box-shadow: 0 0 0 16px rgba(77,217,240,0); }
+            100% { box-shadow: 0 0 0 0 rgba(77,217,240,0); }
+        }
+        .btn-back {
+            background: var(--cyan); color: var(--dark); font-weight: 700;
+            border-radius: 12px; padding: 14px 32px;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none;
+            animation: pulseCyan 2.5s infinite;
+        }
+        .btn-back:hover { background: #6fe5f7; transform: translateY(-2px); }
+        .check-circle {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(77,217,240,0.1);
+            border: 2px solid rgba(77,217,240,0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center px-6 fade-up" style="max-width:480px;">
+
+        <div class="check-circle">✅</div>
+
+        <h1 class="font-extrabold mb-4" style="font-size:clamp(1.8rem,5vw,2.8rem);">
+            Messaggio <span style="color:var(--cyan);">ricevuto!</span>
+        </h1>
+
+        <p style="color:rgba(232,244,248,0.6);line-height:1.8;margin-bottom:2rem;font-size:1rem;">
+            Grazie per avermi scritto.<br>
+            Ti rispondo di persona entro <strong style="color:white;">24 ore</strong> —
+            di solito molto prima.
+        </p>
+
+        <a href="https://digitalsam.it" class="btn-back">
+            ← Torna al sito
+        </a>
+
+        <p style="margin-top:1.5rem;font-size:0.82rem;color:rgba(232,244,248,0.3);">
+            Nel frattempo puoi scrivermi anche su
+            <a href="https://wa.me/+393793290934" style="color:var(--cyan);">WhatsApp</a>
+        </p>
+    </div>
+</body>
+</html>
