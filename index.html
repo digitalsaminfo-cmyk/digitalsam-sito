@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Da Zero a Vendere con Claude — Guida Pratica in 6 Moduli</title>
+  <meta name="description" content="Crea e vendi il tuo primo prodotto digitale con Claude — anche se non hai mai usato l'AI in vita tua. Guida pratica in 6 moduli a €29." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyan: { ds: '#4DD9F0' },
+            gold: { ds: '#F5A623' },
+            dark: { ds: '#07101E' },
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --cyan: #4DD9F0;
+      --gold: #F5A623;
+      --dark: #07101E;
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--dark); color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+
+    /* Glow effects */
+    .glow-cyan { box-shadow: 0 0 32px rgba(77,217,240,0.25); }
+    .glow-gold  { box-shadow: 0 0 32px rgba(245,166,35,0.25); }
+    .text-cyan  { color: var(--cyan); }
+    .text-gold  { color: var(--gold); }
+    .bg-cyan    { background-color: var(--cyan); }
+    .bg-gold    { background-color: var(--gold); }
+    .border-cyan { border-color: var(--cyan); }
+    .border-gold { border-color: var(--gold); }
+
+    /* CTA button */
+    .btn-cta {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 28px rgba(245,166,35,0.45);
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 44px rgba(245,166,35,0.65);
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(77,217,240,0.15);
+      border-radius: 1rem;
+    }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid rgba(77,217,240,0.12);
+      margin: 0;
+    }
+
+    /* Accordion */
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.2s; }
+
+    /* Gradient headline */
+    .headline-gradient {
+      background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 60%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Module number badge */
+    .mod-badge {
+      width: 2.5rem; height: 2.5rem;
+      background: var(--cyan);
+      color: var(--dark);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Check / X icons */
+    .check { color: var(--cyan); }
+    .cross { color: #f87171; }
+
+    /* Sticky CTA bar (mobile) */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(7,16,30,0.95);
+      border-top: 1px solid rgba(77,217,240,0.2);
+      backdrop-filter: blur(8px);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+    @media(min-width:768px){ .sticky-bar { display: none; } }
+
+    /* ── Animations ── */
+
+    /* Fade-up on scroll */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .stagger > * { transition-delay: calc(var(--i, 0) * 80ms); }
+
+    /* Pulsing glow on CTA */
+    @keyframes pulse-gold {
+      0%, 100% { box-shadow: 0 0 28px rgba(245,166,35,0.45); }
+      50%       { box-shadow: 0 0 56px rgba(245,166,35,0.75); }
+    }
+    .btn-cta { animation: pulse-gold 2.8s ease-in-out infinite; }
+    .btn-cta:hover { animation: none; }
+
+    /* Floating grid overlay (hero) */
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(77,217,240,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77,217,240,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    /* Scan line animation */
+    @keyframes scan {
+      0%   { transform: translateY(-100%); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(400%); opacity: 0; }
+    }
+    .scan-line {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(77,217,240,0.35), transparent);
+      animation: scan 6s linear infinite;
+      pointer-events: none;
+    }
+
+    /* Typing cursor blink */
+    @keyframes blink { 50% { opacity: 0; } }
+    .cursor { animation: blink 1s step-end infinite; color: var(--cyan); }
+
+    /* Logo glow pulse */
+    @keyframes logo-glow {
+      0%, 100% { filter: drop-shadow(0 0 6px rgba(77,217,240,0.4)); }
+      50%       { filter: drop-shadow(0 0 14px rgba(77,217,240,0.7)); }
+    }
+    .logo-svg { animation: logo-glow 3s ease-in-out infinite; }
+
+    /* Module card hover lift */
+    .mod-card {
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mod-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(77,217,240,0.45) !important;
+      box-shadow: 0 8px 28px rgba(77,217,240,0.12);
+    }
+
+    /* Counter number animation */
+    @keyframes count-in {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .mod-badge { animation: count-in 0.4s ease backwards; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════════ -->
+<nav style="position:sticky;top:0;z-index:40;background:rgba(7,16,30,0.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(77,217,240,0.1);">
+  <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Logo Digital Sam -->
+    <svg class="logo-svg" width="160" height="32" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+      <defs>
+        <linearGradient id="nLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#C8F8FF"/>
+          <stop offset="30%"  stop-color="#4DD9F0"/>
+          <stop offset="70%"  stop-color="#2BBCD6"/>
+          <stop offset="100%" stop-color="#0F7A96"/>
+        </linearGradient>
+        <linearGradient id="nLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#FFF0A0"/>
+          <stop offset="30%"  stop-color="#F5A623"/>
+          <stop offset="70%"  stop-color="#D48A10"/>
+          <stop offset="100%" stop-color="#8A5500"/>
+        </linearGradient>
+        <linearGradient id="nLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#A8F0FA"/>
+          <stop offset="100%" stop-color="#4DD9F0"/>
+        </linearGradient>
+        <linearGradient id="nLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#FFE070"/>
+          <stop offset="100%" stop-color="#F5A623"/>
+        </linearGradient>
+        <filter id="nFD" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#4DD9F0" flood-opacity="0.55" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="nFS" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#F5A623" flood-opacity="0.55" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect x="0" y="1" width="55" height="40" rx="9" fill="rgba(7,16,30,0.6)" stroke="url(#nLD)" stroke-width="1" stroke-opacity="0.3"/>
+      <text x="3" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#nLD)" filter="url(#nFD)">D</text>
+      <text x="21" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#nLS)" filter="url(#nFS)">S</text>
+      <line x1="63" y1="7" x2="63" y2="35" stroke="rgba(77,217,240,0.22)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="71" y="20" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="12" font-weight="700" letter-spacing="1.8" fill="url(#nLDigital)" style="text-transform:uppercase;">DIGITAL</text>
+      <text x="71" y="36" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="16" font-weight="800" letter-spacing="0.5" fill="url(#nLSam)">Sam</text>
+    </svg>
+
+    <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener"
+       style="background:var(--gold);color:var(--dark);font-weight:700;font-size:0.8rem;padding:0.45rem 1.1rem;border-radius:9999px;text-decoration:none;white-space:nowrap;">
+      €29 — Acquista
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════════ -->
+<section style="background: radial-gradient(ellipse at 50% 0%, rgba(77,217,240,0.12) 0%, transparent 70%); position:relative; overflow:hidden;" class="px-4 pt-16 pb-20 text-center">
+  <div class="grid-overlay"></div>
+  <div class="scan-line"></div>
+  <div class="max-w-3xl mx-auto" style="position:relative;">
+
+    <!-- Product image -->
+    <div class="flex justify-center mb-10 fade-up">
+      <img
+        src="../cover.png"
+        alt="Da Zero a Vendere con Claude — copertina"
+        class="w-56 sm:w-72 rounded-2xl glow-cyan"
+        style="border: 2px solid rgba(77,217,240,0.3);"
+        onerror="this.style.display='none'"
+      />
+    </div>
+
+    <p class="uppercase tracking-widest text-xs mb-4 fade-up" style="color:var(--gold);">Guida pratica · 6 moduli · accesso immediato</p>
+
+    <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight mb-6 headline-gradient fade-up">
+      Crea e vendi il tuo primo prodotto&nbsp;digitale con Claude —
+      anche se non hai mai usato l'AI in vita&nbsp;tua
+    </h1>
+
+    <p class="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed fade-up">
+      Un percorso operativo step&nbsp;by&nbsp;step: prompt pronti, zero teoria inutile,
+      un prodotto online alla fine.
+    </p>
+
+    <div class="fade-up">
+      <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener" class="btn-cta">
+        <i class="bi bi-lightning-charge-fill mr-2"></i>Scarica la guida — €29
+      </a>
+      <p class="mt-4 text-sm text-slate-500">Accesso immediato dopo il pagamento · Nessun abbonamento</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     PROBLEMA
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 max-w-2xl mx-auto text-center fade-up">
+  <p class="text-xs uppercase tracking-widest mb-6" style="color:var(--gold);">Il problema</p>
+  <p class="text-xl sm:text-2xl text-slate-200 leading-relaxed">
+    Vuoi guadagnare online. Hai sentito parlare di Claude.
+    Hai aperto la chat, hai scritto qualcosa, e poi…
+    <span class="text-cyan font-semibold">non sapevi cosa farci.</span>
+  </p>
+  <p class="mt-6 text-lg text-slate-400 leading-relaxed">
+    Non perché sei lenta. Ma perché nessuno ti ha detto esattamente
+    <strong class="text-slate-200">cosa fare, in che ordine, con quali parole.</strong>
+  </p>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     SOLUZIONE
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 fade-up" style="background: radial-gradient(ellipse at 50% 50%, rgba(77,217,240,0.06) 0%, transparent 70%);">
+  <div class="max-w-2xl mx-auto text-center">
+    <p class="text-xs uppercase tracking-widest mb-6" style="color:var(--cyan);">La soluzione</p>
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-white">
+      Questa guida è un percorso operativo — non un corso
+    </h2>
+    <p class="text-lg text-slate-300 leading-relaxed mb-4">
+      Ogni modulo ha <strong class="text-white">spiegazioni brevi, step numerati e prompt pronti da copiare.</strong>
+      Non devi inventare nulla — devi solo seguire le istruzioni.
+    </p>
+    <p class="text-lg text-slate-300 leading-relaxed">
+      Alla fine hai un <span class="text-cyan font-semibold">prodotto digitale online</span>,
+      una <span class="text-gold font-semibold">pagina di vendita scritta</span> e un sistema per portare
+      traffico <span class="text-gold font-semibold">senza mostrare la faccia</span>.
+    </p>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     PER CHI È / PER CHI NON È
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 max-w-4xl mx-auto fade-up">
+  <div class="grid sm:grid-cols-2 gap-6">
+
+    <!-- Per chi è -->
+    <div class="card p-7" style="border-color:rgba(77,217,240,0.25);">
+      <h3 class="font-bold text-lg mb-5 text-cyan flex items-center gap-2">
+        <i class="bi bi-check-circle-fill"></i> Per chi è
+      </h3>
+      <ul class="space-y-3 text-slate-300 text-[0.95rem]">
+        <li class="flex items-start gap-3"><i class="bi bi-check2 check mt-0.5 flex-shrink-0"></i>Vuoi creare qualcosa da vendere online ma non sai da dove iniziare</li>
+        <li class="flex items-start gap-3"><i class="bi bi-check2 check mt-0.5 flex-shrink-0"></i>Hai sentito parlare di Claude ma non lo usi in modo produttivo</li>
+        <li class="flex items-start gap-3"><i class="bi bi-check2 check mt-0.5 flex-shrink-0"></i>Non vuoi apparire sui social</li>
+        <li class="flex items-start gap-3"><i class="bi bi-check2 check mt-0.5 flex-shrink-0"></i>Non hai budget per ads</li>
+        <li class="flex items-start gap-3"><i class="bi bi-check2 check mt-0.5 flex-shrink-0"></i>Hai bisogno di istruzioni precise, non di ispirazione</li>
+      </ul>
+    </div>
+
+    <!-- Per chi NON è -->
+    <div class="card p-7" style="border-color:rgba(248,113,113,0.2);">
+      <h3 class="font-bold text-lg mb-5 text-red-400 flex items-center gap-2">
+        <i class="bi bi-x-circle-fill"></i> Per chi <em>non</em> è
+      </h3>
+      <ul class="space-y-3 text-slate-300 text-[0.95rem]">
+        <li class="flex items-start gap-3"><i class="bi bi-x cross mt-0.5 flex-shrink-0 text-xl leading-none"></i>Chi cerca un corso completo su tutto quello che può fare Claude</li>
+        <li class="flex items-start gap-3"><i class="bi bi-x cross mt-0.5 flex-shrink-0 text-xl leading-none"></i>Chi vuole teoria — qui c'è solo pratica</li>
+        <li class="flex items-start gap-3"><i class="bi bi-x cross mt-0.5 flex-shrink-0 text-xl leading-none"></i>Chi non è disposto a seguire un processo passo dopo passo</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     MODULI
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 max-w-3xl mx-auto fade-up">
+  <p class="text-xs uppercase tracking-widest text-center mb-3" style="color:var(--cyan);">Cosa contiene</p>
+  <h2 class="text-2xl sm:text-3xl font-bold text-center text-white mb-10">I 6 moduli della guida</h2>
+
+  <div class="space-y-4">
+
+    <!-- Modulo 1 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge">1</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Orientarsi negli strumenti</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Chat Claude, Cowork, Progetti: cosa sono, quando usi cosa, come configurarli una volta sola.</p>
+      </div>
+    </div>
+
+    <!-- Modulo 2 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge">2</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Definire il tuo prodotto</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Prompt per trovare l'idea giusta partendo da quello che già sai fare, e verificare che qualcuno voglia comprarlo. <em class="text-slate-500">(Se hai già un'idea, salta direttamente al Modulo&nbsp;3)</em></p>
+      </div>
+    </div>
+
+    <!-- Modulo 3 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge">3</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Creare il contenuto</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Come usare Claude per scrivere il tuo prodotto senza bloccarti davanti alla pagina bianca.</p>
+      </div>
+    </div>
+
+    <!-- Modulo 4 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge">4</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Confezionare e pubblicare</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Dal testo al file professionale, fino alla pubblicazione su Gumroad. Step by step.</p>
+      </div>
+    </div>
+
+    <!-- Modulo 5 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge">5</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Scrivere la pagina di vendita</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Headline, descrizione, obiezioni: i prompt per scrivere una pagina che converte.</p>
+      </div>
+    </div>
+
+    <!-- Modulo 6 -->
+    <div class="card mod-card p-5 flex gap-4 items-start">
+      <div class="mod-badge" style="background:var(--gold);">6</div>
+      <div>
+        <h3 class="font-bold text-white text-[1.05rem] mb-1">Portare traffico senza faccia</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Come creare video TikTok con AI — senza mostrare chi sei — per portare persone al tuo prodotto ogni giorno.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     RISULTATO
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 fade-up" style="background: radial-gradient(ellipse at 50% 50%, rgba(245,166,35,0.07) 0%, transparent 70%);">
+  <div class="max-w-2xl mx-auto text-center">
+    <p class="text-xs uppercase tracking-widest mb-4" style="color:var(--gold);">Cosa hai alla fine</p>
+    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">Il risultato concreto dei 6 moduli</h2>
+
+    <div class="card p-8 glow-gold text-left space-y-4" style="border-color:rgba(245,166,35,0.3);">
+      <div class="flex items-center gap-3">
+        <i class="bi bi-box-seam-fill text-2xl" style="color:var(--gold);"></i>
+        <p class="text-slate-200">Un <strong class="text-white">prodotto digitale online</strong>, acquistabile</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="bi bi-file-earmark-text-fill text-2xl" style="color:var(--gold);"></i>
+        <p class="text-slate-200">Una <strong class="text-white">pagina di vendita scritta</strong> che spiega il prodotto e gestisce le obiezioni</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="bi bi-play-btn-fill text-2xl" style="color:var(--gold);"></i>
+        <p class="text-slate-200">Almeno <strong class="text-white">3 video pronti</strong> per portare traffico ogni giorno</p>
+      </div>
+      <div class="border-t pt-4" style="border-color:rgba(245,166,35,0.2);">
+        <p class="text-slate-400 text-sm text-center">Zero ads · Zero faccia · Zero tecnicismi</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-16 max-w-2xl mx-auto fade-up">
+  <p class="text-xs uppercase tracking-widest text-center mb-3" style="color:var(--cyan);">Domande frequenti</p>
+  <h2 class="text-2xl sm:text-3xl font-bold text-center text-white mb-10">FAQ</h2>
+
+  <div class="space-y-3">
+
+    <details class="card overflow-hidden">
+      <summary class="flex items-center justify-between gap-3 p-5 font-semibold text-slate-200 hover:text-white transition-colors">
+        <span>Non so niente di AI — riesco comunque a usarla?</span>
+        <i class="bi bi-plus-lg faq-icon flex-shrink-0 text-cyan text-lg"></i>
+      </summary>
+      <div class="px-5 pb-5 text-slate-400 leading-relaxed text-sm border-t" style="border-color:rgba(77,217,240,0.12);">
+        <div class="pt-4">Sì. I prompt sono già scritti. Tu li copi, li compili con i tuoi dati, li incolli in Claude. Non serve sapere nulla di AI.</div>
+      </div>
+    </details>
+
+    <details class="card overflow-hidden">
+      <summary class="flex items-center justify-between gap-3 p-5 font-semibold text-slate-200 hover:text-white transition-colors">
+        <span>Claude è gratuito?</span>
+        <i class="bi bi-plus-lg faq-icon flex-shrink-0 text-cyan text-lg"></i>
+      </summary>
+      <div class="px-5 pb-5 text-slate-400 leading-relaxed text-sm border-t" style="border-color:rgba(77,217,240,0.12);">
+        <div class="pt-4">La versione base è gratuita. Per lavorare seriamente conviene il piano da €18/mese — ma puoi iniziare gratis e decidere dopo.</div>
+      </div>
+    </details>
+
+    <details class="card overflow-hidden">
+      <summary class="flex items-center justify-between gap-3 p-5 font-semibold text-slate-200 hover:text-white transition-colors">
+        <span>In quanto tempo posso avere il prodotto online?</span>
+        <i class="bi bi-plus-lg faq-icon flex-shrink-0 text-cyan text-lg"></i>
+      </summary>
+      <div class="px-5 pb-5 text-slate-400 leading-relaxed text-sm border-t" style="border-color:rgba(77,217,240,0.12);">
+        <div class="pt-4">Con 2 ore al giorno, in una settimana hai tutto pronto. Se ci dedichi un weekend intero, puoi farcela in 2 giorni.</div>
+      </div>
+    </details>
+
+    <details class="card overflow-hidden">
+      <summary class="flex items-center justify-between gap-3 p-5 font-semibold text-slate-200 hover:text-white transition-colors">
+        <span>E se non funziona?</span>
+        <i class="bi bi-plus-lg faq-icon flex-shrink-0 text-cyan text-lg"></i>
+      </summary>
+      <div class="px-5 pb-5 text-slate-400 leading-relaxed text-sm border-t" style="border-color:rgba(77,217,240,0.12);">
+        <div class="pt-4">Questa guida non ti promette vendite — ti dà il metodo per creare e pubblicare. Le vendite dipendono dal tuo prodotto e da quanto traffico porti. Se segui i 6 moduli, hai fatto tutto quello che era in tuo potere.</div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════════════
+     CTA FINALE
+══════════════════════════════════════════════════════════ -->
+<section class="px-4 py-20 text-center fade-up" style="background: radial-gradient(ellipse at 50% 100%, rgba(77,217,240,0.10) 0%, transparent 65%);">
+  <div class="max-w-xl mx-auto">
+    <p class="text-xs uppercase tracking-widest mb-4" style="color:var(--gold);">Inizia oggi</p>
+    <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">
+      Scarica la guida.<br/>
+      Inizia dal Modulo&nbsp;1.<br/>
+      Segui gli step.<br/>
+      <span class="text-cyan">Pubblica.</span>
+    </h2>
+    <p class="text-slate-400 mb-10 text-lg">Accesso immediato dopo il pagamento.</p>
+
+    <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener" class="btn-cta text-xl px-10 py-5">
+      <i class="bi bi-lightning-charge-fill mr-2"></i>€29 — Scarica ora
+    </a>
+
+    <p class="mt-5 text-sm text-slate-500">Nessun abbonamento · Nessuna sorpresa</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════ -->
+<footer class="px-4 py-8 text-center border-t" style="border-color:rgba(77,217,240,0.1);">
+  <p class="text-slate-600 text-sm">© 2026 Digital Sam · Samantha Del Vecchio</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     STICKY CTA (mobile only)
+══════════════════════════════════════════════════════════ -->
+<div class="sticky-bar">
+  <div>
+    <p class="font-bold text-white text-sm">Da Zero a Vendere con Claude</p>
+    <p class="text-xs text-slate-400">Guida pratica · 6 moduli</p>
+  </div>
+  <a href="https://buy.stripe.com/bJe5kC1WDdgc8xf5nygYU04" target="_blank" rel="noopener"
+     style="background:var(--gold);color:var(--dark);font-weight:700;padding:0.6rem 1.4rem;border-radius:9999px;font-size:0.9rem;text-decoration:none;white-space:nowrap;">
+    €29 — Acquista
+  </a>
+</div>
+
+<!-- Padding bottom for sticky bar on mobile -->
+<div class="h-20 md:hidden"></div>
+
+<script>
+  // Fade-up on scroll via IntersectionObserver
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = (i % 4) * 80 + 'ms';
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // Stagger mod-cards individually
+  document.querySelectorAll('.mod-card').forEach((el, i) => {
+    el.style.transitionDelay = i * 60 + 'ms';
+  });
+
+  // FAQ accordion — close others when one opens
+  document.querySelectorAll('details').forEach(detail => {
+    detail.addEventListener('toggle', () => {
+      if (detail.open) {
+        document.querySelectorAll('details').forEach(other => {
+          if (other !== detail) other.removeAttribute('open');
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
