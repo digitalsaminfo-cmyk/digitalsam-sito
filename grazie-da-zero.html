@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grazie per l'acquisto — Da Zero a Vendere con Claude | Digital Sam</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #07101E;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card { max-width: 480px; width: 100%; text-align: center; }
+  .check {
+    width: 72px; height: 72px;
+    background: rgba(77,217,240,0.10);
+    border: 1.5px solid rgba(77,217,240,0.35);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 32px;
+    color: #4DD9F0;
+  }
+  .brand {
+    font-size: 11px; letter-spacing: 2px;
+    color: rgba(77,217,240,0.5);
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  h1 { font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+  h1 span { color: #4DD9F0; }
+  .sub { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 32px; }
+  .steps {
+    background: rgba(77,217,240,0.05);
+    border: 1px solid rgba(77,217,240,0.15);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+  .steps-title { font-size: 11px; letter-spacing: 1.5px; color: rgba(77,217,240,0.6); text-transform: uppercase; margin-bottom: 16px; text-align: center; }
+  .step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num {
+    width: 24px; height: 24px; background: #4DD9F0; color: #07101E;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  }
+  .btn-primary {
+    display: block; background: #F5A623; color: #07101E;
+    font-weight: 700; font-size: 16px; padding: 18px 32px;
+    border-radius: 10px; text-decoration: none; margin-bottom: 12px;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .note { font-size: 12px; color: rgba(255,255,255,0.28); margin-bottom: 40px; line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid rgba(77,217,240,0.1); margin-bottom: 32px; }
+  .upsell-label { font-size: 11px; letter-spacing: 1.5px; color: rgba(245,166,35,0.6); text-transform: uppercase; margin-bottom: 12px; }
+  .upsell-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .upsell-desc { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 20px; line-height: 1.5; }
+  .btn-upsell {
+    display: block;
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.35);
+    color: #F5A623; font-weight: 600; font-size: 14px;
+    padding: 14px 24px; border-radius: 8px; text-decoration: none; transition: background 0.2s;
+  }
+  .btn-upsell:hover { background: rgba(245,166,35,0.15); }
+  .footer { margin-top: 40px; font-size: 11px; color: rgba(77,217,240,0.25); }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Logo -->
+  <div style="display:flex;justify-content:center;margin-bottom:28px;">
+    <a href="https://digitalsam.it" style="text-decoration:none;">
+      <svg width="160" height="32" viewBox="0 0 210 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+        <defs>
+          <linearGradient id="gLD" x1="2" y1="0" x2="28" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C8F8FF"/><stop offset="30%" stop-color="#4DD9F0"/><stop offset="70%" stop-color="#2BBCD6"/><stop offset="100%" stop-color="#0F7A96"/></linearGradient>
+          <linearGradient id="gLS" x1="18" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFF0A0"/><stop offset="30%" stop-color="#F5A623"/><stop offset="70%" stop-color="#D48A10"/><stop offset="100%" stop-color="#8A5500"/></linearGradient>
+          <linearGradient id="gLDigital" x1="66" y1="0" x2="130" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A8F0FA"/><stop offset="100%" stop-color="#4DD9F0"/></linearGradient>
+          <linearGradient id="gLSam" x1="66" y1="0" x2="115" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFE070"/><stop offset="100%" stop-color="#F5A623"/></linearGradient>
+          <filter id="gFD" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#4DD9F0" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="gFS" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/><feFlood flood-color="#F5A623" flood-opacity="0.55" result="color"/><feComposite in="color" in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="0" y="1" width="55" height="40" rx="9" fill="rgba(7,16,30,0.6)" stroke="url(#gLD)" stroke-width="1" stroke-opacity="0.3"/>
+        <text x="3" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#gLD)" filter="url(#gFD)">D</text>
+        <text x="21" y="36" font-family="'Arial Black','Impact',Arial,sans-serif" font-size="36" font-weight="900" fill="url(#gLS)" filter="url(#gFS)">S</text>
+        <line x1="63" y1="7" x2="63" y2="35" stroke="rgba(77,217,240,0.22)" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="71" y="20" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="12" font-weight="700" letter-spacing="1.8" fill="url(#gLDigital)">DIGITAL</text>
+        <text x="71" y="36" font-family="'Plus Jakarta Sans','Arial',sans-serif" font-size="16" font-weight="800" letter-spacing="0.5" fill="url(#gLSam)">Sam</text>
+      </svg>
+    </a>
+  </div>
+
+  <div class="check">✓</div>
+  <p class="brand">Da Zero a Vendere con Claude</p>
+  <h1>Pagamento completato.<br><span>Sei dentro.</span></h1>
+  <p class="sub">Accedi subito al corso — tutto è già pronto. Inizia dal Modulo 1 e non saltare nulla.</p>
+
+  <a class="btn-primary" href="https://digitalsam.it/da-zero-a-vendere/corso" target="_blank">
+    → Accedi al corso adesso
+  </a>
+  <p class="note">Salva questo link nei preferiti — ti serve ogni volta che riapri il corso.</p>
+
+  <!-- Steps -->
+  <div class="steps">
+    <p class="steps-title">Come iniziare</p>
+    <div class="step"><div class="step-num">1</div><span>Clicca il bottone qui sopra — accedi subito al corso</span></div>
+    <div class="step"><div class="step-num">2</div><span>Inizia dal <strong style="color:#fff;">Modulo 1</strong> — non saltare, ci vuole 10 minuti</span></div>
+    <div class="step"><div class="step-num">3</div><span>Segui gli step nell'ordine — ogni modulo prepara il successivo</span></div>
+    <div class="step"><div class="step-num">4</div><span>Hai domande? Scrivi a <strong style="color:#fff;">info@digitalsam.it</strong></span></div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="upsell-label">Vuoi andare ancora più veloce?</p>
+  <p class="upsell-title">Sito web + Agente Vocale AI</p>
+  <p class="upsell-desc">Un sito professionale che risponde ai tuoi clienti H24 — anche alle 3 di notte. Prenota una chiamata gratuita per vedere la demo.</p>
+  <a class="btn-upsell" href="https://digitalsam.it" target="_blank">
+    Scopri come funziona → digitalsam.it
+  </a>
+
+  <p class="footer">digitalsam.it · @digitalsam_it</p>
+</div>
+</body>
+</html>

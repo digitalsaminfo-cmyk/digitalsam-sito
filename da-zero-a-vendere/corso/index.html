@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Da Zero a Vendere con Claude — Digital Sam</title>
+<style>
+  :root {
+    --bg: #07101E;
+    --bg2: #0d1a2e;
+    --bg3: #112038;
+    --cyan: #4DD9F0;
+    --gold: #F5A623;
+    --text: #e8edf4;
+    --text-muted: #8a9ab5;
+    --sidebar-w: 260px;
+    --header-h: 60px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--bg);
+    border-bottom: 1px solid #1e3050;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+    gap: 12px;
+  }
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--gold); }
+  .header-subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    display: none;
+  }
+  @media(min-width:600px){ .header-subtitle { display:block; } }
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 4px 8px;
+  }
+  @media(max-width:768px){ .hamburger { display:block; } }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    margin-top: var(--header-h);
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* SIDEBAR */
+  aside {
+    width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid #1e3050;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 20px 0;
+    transition: transform 0.3s;
+    z-index: 90;
+  }
+  aside.closed {
+    transform: translateX(calc(-1 * var(--sidebar-w)));
+  }
+  .sidebar-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    padding: 0 20px 12px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    text-decoration: none;
+  }
+  .nav-item:hover {
+    background: var(--bg3);
+    color: var(--text);
+    border-left-color: #2a4060;
+  }
+  .nav-item.active {
+    background: rgba(77,217,240,0.08);
+    color: var(--cyan);
+    border-left-color: var(--cyan);
+  }
+  .nav-emoji { font-size: 16px; flex-shrink: 0; }
+  .nav-label { line-height: 1.3; }
+  .nav-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 1px;
+  }
+  .nav-progress {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--cyan);
+    flex-shrink: 0;
+  }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 80;
+  }
+  @media(max-width:768px){
+    aside { transform: translateX(calc(-1 * var(--sidebar-w))); }
+    aside.open { transform: translateX(0); }
+    .sidebar-overlay.visible { display:block; }
+  }
+
+  /* MAIN */
+  main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 40px 24px 80px;
+    max-width: 820px;
+  }
+  @media(max-width:768px){
+    main { margin-left: 0; padding: 24px 16px 80px; }
+  }
+
+  /* MODULE SECTION */
+  .module { display: none; }
+  .module.active { display: block; }
+
+  /* TYPOGRAPHY */
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #fff;
+    line-height: 1.2;
+  }
+  h1 .mod-num {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--cyan);
+    margin: 32px 0 12px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gold);
+    margin: 22px 0 8px;
+  }
+  p { margin-bottom: 14px; }
+  strong { color: #fff; }
+  ul, ol { margin: 0 0 14px 20px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid #1e3050; margin: 28px 0; }
+  .divider { border: none; border-top: 1px solid #1e3050; margin: 28px 0; }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid var(--cyan);
+    background: rgba(77,217,240,0.06);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 18px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* PATHS */
+  .paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 18px 0;
+  }
+  @media(max-width:520px){ .paths { grid-template-columns: 1fr; } }
+  .path-a {
+    background: rgba(77,217,240,0.08);
+    border: 1px solid rgba(77,217,240,0.25);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .path-b {
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .path-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .path-a .path-label { color: var(--cyan); }
+  .path-b .path-label { color: var(--gold); }
+  .path-a p, .path-b p { margin-bottom: 0; font-size: 13.5px; }
+
+  /* CODE / PROMPT */
+  .prompt-block {
+    position: relative;
+    background: #0f1e33;
+    border: 1px solid #1e3050;
+    border-radius: 10px;
+    margin: 12px 0 20px;
+    overflow: hidden;
+  }
+  .prompt-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 14px 0;
+  }
+  .prompt-block pre {
+    padding: 10px 14px 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+    color: #c8daf0;
+    margin: 0;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #1e3050;
+    border: 1px solid #2a4060;
+    color: var(--text-muted);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: system-ui, sans-serif;
+  }
+  .copy-btn:hover { background: #2a4060; color: var(--text); }
+  .copy-btn.copied {
+    background: rgba(34,197,94,0.15);
+    border-color: rgba(34,197,94,0.4);
+    color: #22c55e;
+  }
+
+  /* PROMPT SECTION */
+  .prompt-section {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+  }
+  .prompt-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .prompt-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  /* CHECKLIST */
+  .checklist-section {
+    background: var(--bg2);
+    border: 1px solid #1e3050;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-top: 36px;
+  }
+  .checklist-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1e3050;
+    cursor: pointer;
+    user-select: none;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #2a4060;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .check-item.done .check-box {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: #07101E;
+  }
+  .check-text {
+    font-size: 14px;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .check-item.done .check-text {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+  .checklist-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: #1e3050;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--cyan);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  /* MODULE NAV BUTTONS */
+  .module-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 36px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s;
+    font-family: system-ui;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: #07101E;
+  }
+  .btn-primary:hover { background: #3bc8df; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid #2a4060;
+  }
+  .btn-secondary:hover { color: var(--text); border-color: #4a6080; }
+
+  /* MODULE HEADER */
+  .module-header {
+    padding-bottom: 24px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #1e3050;
+  }
+  .module-emoji {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  /* TOOLS TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--cyan);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #1e3050;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-cyan { background: rgba(77,217,240,0.15); color: var(--cyan); }
+  .badge-gold { background: rgba(245,166,35,0.15); color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid #1e3050;
+    margin-top: 60px;
+  }
+  footer a { color: var(--cyan); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: #2a4060; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Digital<span>Sam</span></div>
+  <span class="header-subtitle">Da Zero a Vendere con Claude</span>
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+</header>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="sidebar-title">Moduli del corso</div>
+
+    <a class="nav-item active" onclick="showModule(1)" href="#" id="nav-1">
+      <span class="nav-emoji">🗺️</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 1</span>
+        Orientarsi negli strumenti
+      </span>
+      <span class="nav-progress" id="prog-1"></span>
+    </a>
+    <a class="nav-item" onclick="showModule(2)" href="#" id="nav-2">
+      <span class="nav-emoji">🎯</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 2</span>
+        Prodotto e cliente
+      </span>
+      <span class="nav-progress" id="prog-2"></span>
+    </a>
+    <a class="nav-item" onclick="showModule(3)" href="#" id="nav-3">
+      <span class="nav-emoji">✍️</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 3</span>
+        Creare il contenuto
+      </span>
+      <span class="nav-progress" id="prog-3"></span>
+    </a>
+    <a class="nav-item" onclick="showModule(4)" href="#" id="nav-4">
+      <span class="nav-emoji">📦</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 4</span>
+        Confezionare e pubblicare
+      </span>
+      <span class="nav-progress" id="prog-4"></span>
+    </a>
+    <a class="nav-item" onclick="showModule(5)" href="#" id="nav-5">
+      <span class="nav-emoji">💬</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 5</span>
+        Pagina di vendita
+      </span>
+      <span class="nav-progress" id="prog-5"></span>
+    </a>
+    <a class="nav-item" onclick="showModule(6)" href="#" id="nav-6">
+      <span class="nav-emoji">📱</span>
+      <span class="nav-label">
+        <span class="nav-num">Modulo 6</span>
+        Portare traffico
+      </span>
+      <span class="nav-progress" id="prog-6"></span>
+    </a>
+  </aside>
+
+  <main>
+
+    <!-- ==================== MODULO 1 ==================== -->
+    <div class="module active" id="module-1">
+      <div class="module-header">
+        <span class="module-emoji">🗺️</span>
+        <h1><span class="mod-num">Modulo 1</span>Orientarsi negli strumenti: cosa usi e quando</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>Claude non è un unico strumento — è un ecosistema. Se parti senza sapere come è fatto, rischi di usarlo male e convincerti che "non funziona". In questo modulo ti do una mappa chiara: cosa esiste, a cosa serve ogni pezzo, e come configurarlo una volta sola in modo che lavori per te ogni sessione. Dieci minuti di setup ora ti risparmiano ore di confusione dopo.</p>
+
+      <hr class="divider">
+
+      <h2>I tre strumenti — cosa sono e quando li usi</h2>
+      <table>
+        <tr>
+          <th>Strumento</th>
+          <th>Quando lo usi</th>
+        </tr>
+        <tr>
+          <td><strong>Claude Chat</strong><br><small style="color:var(--text-muted)">claude.ai</small></td>
+          <td>Brainstorming, validare idee, ricerche di mercato, struttura del prodotto. Tutto quello che è <em>"pensare e decidere"</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Claude Cowork</strong><br><small style="color:var(--text-muted)">App desktop</small></td>
+          <td>Creare documenti Word, PDF, Excel, presentazioni, lavorare su file. Tutto quello che è <em>"creare e consegnare"</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Claude Code</strong><br><small style="color:var(--text-muted)">Per sviluppatori</small></td>
+          <td><span style="color:var(--text-muted)">Non ti serve. Ignoralo completamente.</span></td>
+        </tr>
+      </table>
+
+      <div class="callout">
+        <p>La regola è semplice: <strong>Chat per pensare, Cowork per fare.</strong></p>
+      </div>
+
+      <h2>I Progetti: il vero punto di svolta</h2>
+      <p>Dentro Claude esiste una funzione che la maggior parte delle persone non usa mai: i <strong>Progetti</strong>.</p>
+      <p>Un Progetto è uno spazio dedicato al tuo prodotto digitale. Contiene le istruzioni su chi sei e cosa stai costruendo, la memoria delle conversazioni precedenti, e la cartella di lavoro. Ogni volta che lo apri — sia in Chat che in Cowork — Claude ricorda tutto.</p>
+
+      <div class="paths">
+        <div class="path-a">
+          <div class="path-label">Senza Progetto</div>
+          <p>Ogni chat riparte da zero. Claude non sa chi sei, cosa stai costruendo, a chi lo vendi.</p>
+        </div>
+        <div class="path-b">
+          <div class="path-label">Con Progetto</div>
+          <p>Apri Claude, entri nel tuo progetto, scrivi il prompt. Claude sa già tutto.</p>
+        </div>
+      </div>
+
+      <p>Per questo prodotto ti serve un solo Progetto. Lo crei una volta e ci lavori dentro dall'inizio alla fine.</p>
+
+      <hr class="divider">
+
+      <h2>Il flusso di lavoro reale</h2>
+
+      <h3>FASE 1 — Brainstorming in Chat Claude</h3>
+      <ol>
+        <li>Vai su <a href="https://claude.ai" target="_blank">claude.ai</a> → nella barra sinistra clicca <strong>Projects</strong> → <strong>New Project</strong></li>
+        <li>Dai un nome al progetto: es. <em>"Il mio prodotto digitale"</em></li>
+        <li>Clicca su <strong>Istruzioni</strong> nel pannello destro e compila il template qui sotto</li>
+        <li>Inizia a chattare: usa questa fase per capire cosa vendere, a chi, come posizionarlo</li>
+      </ol>
+
+      <h3>FASE 2 — Esecuzione in Cowork</h3>
+      <ol>
+        <li>Apri l'app <strong>Claude</strong> desktop (scaricala da <a href="https://claude.ai/download" target="_blank">claude.ai/download</a> se non l'hai ancora)</li>
+        <li>Nella barra sinistra vai su <strong>Projects</strong> → crea un nuovo progetto Cowork</li>
+        <li>Nel pannello destro trova <strong>Contesto → Progetti da Chat</strong> → aggiungi il progetto Chat</li>
+        <li>Cowork ora ha tutto: istruzioni, memoria, storia delle conversazioni precedenti</li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Prima di continuare — scegli il tuo punto di partenza</h2>
+
+      <div class="paths">
+        <div class="path-a">
+          <div class="path-label">Percorso A</div>
+          <p>Parti da zero e non sai ancora cosa vendere? Configura con la <strong>Versione A</strong> → vai al <strong>Modulo 2</strong> completo.</p>
+        </div>
+        <div class="path-b">
+          <div class="path-label">Percorso B</div>
+          <p>Hai il prodotto e sai già a chi venderlo? Configura con la <strong>Versione B</strong> → salta direttamente al <strong>Modulo 3</strong>.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p><strong>Hai il prodotto ma non sai ancora a chi venderlo?</strong> Configura con la Versione A → vai al Modulo 2 e fai solo il Prompt 2 e il Prompt 3 (salta il Prompt 1).</p>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Le istruzioni del progetto — scegli la tua versione</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">VERSIONE A — Parto da zero</div>
+        <div class="prompt-hint">Incolla questo testo nel campo "Istruzioni" del tuo Progetto Claude</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Sto usando Claude per creare un prodotto digitale da vendere online,
+ma non so ancora quale.
+
+Il mio obiettivo: trovare un'idea concreta,
+crearla e metterla in vendita il prima possibile.
+
+Di me: [descrivi in 2 righe chi sei e cosa sai fare]
+Budget di tempo: [es. 2 ore al giorno / i weekend]
+
+Come voglio che mi parli: in modo diretto,
+dammi sempre un'azione concreta, una cosa alla volta.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">VERSIONE B — Ho già un'idea</div>
+        <div class="prompt-hint">Incolla questo testo nel campo "Istruzioni" del tuo Progetto Claude</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Sto usando Claude per creare un prodotto digitale da vendere online.
+
+Il mio prodotto si chiama: [nome]
+È una: [guida / template / ebook]
+Lo vendo a: [descrivi il tuo cliente ideale in 2 righe]
+Il prezzo è: [€ XX]
+Lo vendo su: Gumroad
+
+Come voglio che mi parli: in modo diretto,
+dammi sempre un'azione concreta, una cosa alla volta.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per iniziare ogni sessione senza perdere il filo</div>
+        <div class="prompt-hint">Usalo ogni volta che riapri il progetto, al posto di rispiegare dove sei arrivata:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Riprendiamo il lavoro sul mio prodotto digitale.
+Oggi voglio lavorare su [scrivi cosa vuoi fare].
+Dimmi il primo step concreto.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2 — Per non bloccarti davanti a una scelta</div>
+        <div class="prompt-hint">Usalo ogni volta che hai due opzioni e non sai quale scegliere:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Devo scegliere tra [opzione A] e [opzione B].
+Dammi una risposta secca: quale scelgo e perché in 2 righe.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per verificare che il progetto sia configurato bene</div>
+        <div class="prompt-hint">Usalo subito dopo aver scritto le istruzioni, per testare che Claude abbia capito:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Dimmi in 3 righe cosa stai costruendo con me,
+per chi è e qual è l'obiettivo finale.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 1</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod1-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Progetto creato in Claude Chat</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod1-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Istruzioni del progetto scritte e salvate (Versione A o B)</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod1-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Claude Cowork installato e collegato al progetto Chat</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod1-4')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Testato il Prompt 3 — Claude ha capito cosa stai costruendo</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-1">0/4</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-1" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-primary" onclick="showModule(2)">Modulo 2 →</button>
+      </div>
+    </div>
+
+    <!-- ==================== MODULO 2 ==================== -->
+    <div class="module" id="module-2">
+      <div class="module-header">
+        <span class="module-emoji">🎯</span>
+        <h1><span class="mod-num">Modulo 2</span>Definire il tuo prodotto e il tuo cliente</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>La trappola più comune di chi vuole creare un prodotto digitale è questa: si passano settimane a costruire qualcosa che nessuno vuole comprare. Non perché l'idea fosse stupida, ma perché non è mai stata validata. In questo modulo usi Claude per trovare un'idea (o affinare quella che hai), capire a chi venderla, e verificare che qualcuno sia disposto a pagarla — prima di scrivere una sola parola di contenuto.</p>
+
+      <hr class="divider">
+
+      <h2>Scegli il tuo percorso</h2>
+
+      <div class="paths">
+        <div class="path-a">
+          <div class="path-label">Percorso A — Parto da zero</div>
+          <p>Non so cosa vendere.<br>Fai i prompt nell'ordine: <strong>1 → 2A → 3</strong></p>
+        </div>
+        <div class="path-b">
+          <div class="path-label">Percorso B — Ho già il prodotto</div>
+          <p>Non so a chi venderlo.<br>Salta il Prompt 1. Fai: <strong>2B → 3</strong></p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Step operativi</h2>
+
+      <h3>Percorso A</h3>
+      <ol>
+        <li>Apri il tuo Progetto in Chat Claude</li>
+        <li>Usa il <strong>Prompt 1</strong> per fare brainstorming sulle tue competenze</li>
+        <li>Usa il <strong>Prompt 2A</strong> per scegliere l'idea migliore e definire il cliente ideale</li>
+        <li>Usa il <strong>Prompt 3</strong> per validare che ci sia mercato</li>
+        <li>Aggiorna le istruzioni del progetto con la Versione B e vai al Modulo 3</li>
+      </ol>
+
+      <h3>Percorso B</h3>
+      <ol>
+        <li>Apri il tuo Progetto in Chat Claude</li>
+        <li>Usa il <strong>Prompt 2B</strong> per definire il cliente del prodotto che hai già</li>
+        <li>Usa il <strong>Prompt 3</strong> per validare che ci sia mercato</li>
+        <li>Aggiorna le istruzioni del progetto con la Versione B e vai al Modulo 3</li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per trovare l'idea giusta partendo da te</div>
+        <div class="prompt-hint">Solo Percorso A — non filtrare nulla, scrivi tutto quello che ti viene in mente:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Voglio creare un prodotto digitale da vendere a 29€.
+
+Di me:
+- So fare: [elenca tutto — lavori, hobby, esperienze, competenze]
+- Ho risolto questo problema nella mia vita: [descrivi]
+- Le persone mi chiedono spesso aiuto con: [descrivi]
+
+Dammi 5 idee di prodotto concrete basate su quello che ti ho scritto.
+Per ognuna dimmi: cosa vendo, a chi, e perché qualcuno lo compra.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2A — Per scegliere l'idea e definire il cliente</div>
+        <div class="prompt-hint">Solo Percorso A — usalo dopo il Prompt 1, scegli l'idea che ti convince di più:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Di queste idee mi convince di più: [copia l'idea scelta dal Prompt 1].
+
+Aiutami a definire:
+1. Chi è esattamente il mio cliente ideale (età, situazione, problema specifico)
+2. Cosa ottiene dopo aver usato il mio prodotto
+3. Perché lo compra a 29€ e non cerca gratis su Google</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2B — Per definire il cliente del prodotto che hai già</div>
+        <div class="prompt-hint">Solo Percorso B — usalo se hai già il prodotto ma non sai ancora a chi venderlo:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Ho già un prodotto digitale che si chiama: [nome]
+Descrizione: [cosa fa in 2 righe]
+Prezzo: €[XX]
+
+Aiutami a definire:
+1. Chi è esattamente il mio cliente ideale (età, situazione, problema specifico)
+2. Quale problema risolve concretamente il mio prodotto per questo cliente
+3. Perché lo compra a €[XX] e non cerca la soluzione gratis su Google</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per validare che ci sia mercato</div>
+        <div class="prompt-hint">Tutti i percorsi — usalo dopo aver definito prodotto e cliente:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Il mio prodotto è: [descrizione]
+Il mio cliente ideale è: [descrizione]
+
+Dimmi:
+1. Questo problema esiste davvero o me lo sto inventando?
+2. Dove si trovano online queste persone?
+3. Cosa cercano su Google quando hanno questo problema?
+4. Esiste già qualcosa di simile? Se sì, come mi differenzio?</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 2</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod2-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Un'idea di prodotto chiara in una frase</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod2-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Un cliente ideale definito</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod2-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">La conferma che il problema esiste</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod2-4')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Le istruzioni del progetto aggiornate con la Versione B</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-2">0/4</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-2" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-secondary" onclick="showModule(1)">← Modulo 1</button>
+        <button class="btn btn-primary" onclick="showModule(3)">Modulo 3 →</button>
+      </div>
+    </div>
+
+    <!-- ==================== MODULO 3 ==================== -->
+    <div class="module" id="module-3">
+      <div class="module-header">
+        <span class="module-emoji">✍️</span>
+        <h1><span class="mod-num">Modulo 3</span>Creare il contenuto</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>Hai un'idea, hai un cliente, hai un progetto configurato. Adesso viene la parte che blocca tutti: scrivere. La pagina bianca, il "non so da dove iniziare", il "non sono abbastanza esperta". Claude risolve tutto questo — ma solo se gli dai le istruzioni giuste. In questo modulo impari a usarlo come co-autore: tu porti le idee e le esperienze, lui porta la struttura e le parole.</p>
+
+      <hr class="divider">
+
+      <h2>Step operativi</h2>
+      <ol>
+        <li>Apri il tuo Progetto in <strong>Cowork</strong> (con il contesto Chat già collegato)</li>
+        <li>Usa il <strong>Prompt 1</strong> per generare la struttura completa del tuo prodotto</li>
+        <li>Approva la struttura o modificala finché non ti convince</li>
+        <li>Usa il <strong>Prompt 2</strong> per scrivere ogni sezione una alla volta</li>
+        <li>Usa il <strong>Prompt 3</strong> per rifinire il tono e renderlo tuo</li>
+        <li>Quando il contenuto è completo vai al Modulo 4</li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per generare la struttura del prodotto</div>
+        <div class="prompt-hint">Usalo per prima cosa — ottieni uno scheletro completo prima di scrivere una parola:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Devo creare [tipo di prodotto: guida / ebook / template].
+Si chiama: [nome]
+È per: [cliente ideale]
+Risolve questo problema: [descrivi]
+
+Crea la struttura completa con:
+- Titolo di ogni sezione
+- Una riga che spiega cosa contiene
+- Ordine logico dall'inizio alla fine
+
+Non scrivere ancora il contenuto — voglio prima approvare la struttura.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2 — Per scrivere ogni sezione</div>
+        <div class="prompt-hint">Usalo una sezione alla volta, dopo aver approvato la struttura:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Scrivi la sezione: [titolo della sezione]
+
+Il tono deve essere: diretto, concreto, zero gergo tecnico.
+Il lettore è: [descrivi il tuo cliente in 1 riga]
+Lunghezza: [es. 200-300 parole / una pagina]
+
+Inizia subito con il contenuto, senza introduzioni.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per rendere il testo più tuo</div>
+        <div class="prompt-hint">Usalo su qualsiasi testo che suona troppo "da AI":</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Riscrivi questo testo mantenendo il significato ma rendendolo
+più umano e diretto. Elimina frasi generiche, aggiungi concretezza.
+Tono: come se lo spiegassi a un amico.
+
+[incolla il testo da riscrivere]</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 3</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod3-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Struttura approvata</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod3-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Tutto il contenuto scritto e revisionato</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod3-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Un file con il testo completo salvato in Cowork</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-3">0/3</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-3" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-secondary" onclick="showModule(2)">← Modulo 2</button>
+        <button class="btn btn-primary" onclick="showModule(4)">Modulo 4 →</button>
+      </div>
+    </div>
+
+    <!-- ==================== MODULO 4 ==================== -->
+    <div class="module" id="module-4">
+      <div class="module-header">
+        <span class="module-emoji">📦</span>
+        <h1><span class="mod-num">Modulo 4</span>Confezionare e pubblicare</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>Il contenuto è scritto. Adesso devi trasformarlo in un file che sembri un prodotto vero — non un documento Word aperto in fretta. E poi metterlo su Gumroad in modo che qualcuno possa comprarlo. Questo modulo ti porta dalla bozza alla vendita in meno di due ore.</p>
+
+      <hr class="divider">
+
+      <h2>Step operativi</h2>
+      <ol>
+        <li>Apri il tuo Progetto in <strong>Cowork</strong></li>
+        <li>Usa il <strong>Prompt 1</strong> per creare il file finale formattato (PDF o Word)</li>
+        <li>Scarica il file e controllalo — deve sembrare un prodotto professionale</li>
+        <li>Crea un account su <a href="https://gumroad.com" target="_blank">gumroad.com</a> se non ce l'hai</li>
+        <li>Clicca <strong>New Product</strong> → scegli <strong>Digital product</strong></li>
+        <li>Carica il file, imposta il prezzo, aggiungi copertina e descrizione</li>
+        <li>Pubblica</li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per creare il file finale in Cowork</div>
+        <div class="prompt-hint">Usalo in Cowork — non in Chat. Cowork ha accesso ai tuoi file e può creare il documento:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Prendi il contenuto del mio prodotto e crea un documento Word professionale.
+
+Formattazione:
+- Titolo principale in grande
+- Titoli di sezione chiari e ben spaziati
+- Testo leggibile, corpo 12, interlinea 1.5
+- Ogni sezione con i prompt in un riquadro evidenziato
+- Prima pagina: titolo + sottotitolo + "di [tuo nome]"
+
+Il file si chiama: [nome-prodotto].docx</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2 — Per convertire in PDF</div>
+        <div class="prompt-hint">Usalo subito dopo aver creato il Word, sempre in Cowork:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Converti il file [nome-prodotto].docx in PDF
+e salvalo con lo stesso nome.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per creare la copertina</div>
+        <div class="prompt-hint">Usalo per generare un'immagine da usare su Gumroad e sui social:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Crea una copertina per il mio prodotto digitale.
+
+Titolo: [nome prodotto]
+Sottotitolo: [una riga che spiega cosa fa]
+Stile: minimal, professionale, sfondo scuro
+Colori: [i tuoi colori brand oppure: blu scuro e bianco]
+Formato: 1600x900px (orizzontale per Gumroad)</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Setup Gumroad — le impostazioni che contano</h2>
+      <table>
+        <tr><th>Campo</th><th>Cosa impostare</th></tr>
+        <tr>
+          <td><strong>Prezzo</strong></td>
+          <td>Prezzo fisso + attiva <em>"Let customers pay more"</em> — qualcuno lo farà</td>
+        </tr>
+        <tr>
+          <td><strong>File</strong></td>
+          <td>Carica il PDF come file principale</td>
+        </tr>
+        <tr>
+          <td><strong>Copertina</strong></td>
+          <td>Usa l'immagine creata con il Prompt 3</td>
+        </tr>
+        <tr>
+          <td><strong>URL prodotto</strong></td>
+          <td>Sceglilo tu — es. <code style="color:var(--cyan)">gumroad.com/l/da-zero-a-vendere</code></td>
+        </tr>
+        <tr>
+          <td><strong>Descrizione</strong></td>
+          <td>La scrivi nel Modulo 5</td>
+        </tr>
+      </table>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 4</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod4-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">File PDF del prodotto pronto e controllato</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod4-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Copertina creata</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod4-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Account Gumroad creato</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod4-4')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Prodotto caricato su Gumroad (anche in bozza va bene)</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-4">0/4</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-4" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-secondary" onclick="showModule(3)">← Modulo 3</button>
+        <button class="btn btn-primary" onclick="showModule(5)">Modulo 5 →</button>
+      </div>
+    </div>
+
+    <!-- ==================== MODULO 5 ==================== -->
+    <div class="module" id="module-5">
+      <div class="module-header">
+        <span class="module-emoji">💬</span>
+        <h1><span class="mod-num">Modulo 5</span>Scrivere la pagina di vendita</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>La pagina di vendita è l'unica cosa che converte un visitatore in un cliente. Non il prodotto, non la copertina — le parole sulla pagina. La maggior parte delle persone scrive una descrizione del tipo "questa è una guida su X" e si chiede perché nessuno compra. In questo modulo scrivi una pagina che vende — con headline, problema, soluzione, per chi è, cosa contiene e risposta alle obiezioni.</p>
+
+      <hr class="divider">
+
+      <h2>Step operativi</h2>
+      <ol>
+        <li>Apri il tuo Progetto in <strong>Chat Claude</strong></li>
+        <li>Usa il <strong>Prompt 1</strong> per scrivere la headline</li>
+        <li>Usa il <strong>Prompt 2</strong> per scrivere il corpo della pagina completo</li>
+        <li>Usa il <strong>Prompt 3</strong> per gestire le obiezioni più comuni</li>
+        <li>Copia il testo nella descrizione del tuo prodotto su Gumroad</li>
+        <li>Controlla tutto su mobile — la maggior parte degli acquisti avviene da telefono</li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per scrivere la headline</div>
+        <div class="prompt-hint">La headline è la prima cosa che leggono. Deve fermarli in 3 secondi:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Scrivi 5 headline per la pagina di vendita del mio prodotto.
+
+Il prodotto è: [descrizione]
+Il cliente ideale è: [descrizione]
+Il problema che risolve: [descrivi]
+Il risultato che ottiene: [descrivi]
+
+Le headline devono essere dirette, concrete, zero promesse esagerate.
+Niente punti esclamativi, niente "rivoluzionario" o "incredibile".</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2 — Per scrivere il corpo della pagina</div>
+        <div class="prompt-hint">Usalo dopo aver scelto la headline — genera la pagina completa:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Scrivi la pagina di vendita completa per Gumroad.
+
+Prodotto: [nome]
+Headline scelta: [quella che hai scelto dal Prompt 1]
+Cliente ideale: [descrizione]
+Problema: [descrivi]
+Soluzione: [descrivi]
+Cosa contiene: [lista dei moduli/sezioni]
+Prezzo: €29
+
+Struttura della pagina:
+1. Headline
+2. Problema (2-3 righe — fai sentire il cliente capito)
+3. Soluzione (cosa fa il prodotto)
+4. Per chi è (e per chi NON è)
+5. Cosa contiene (lista chiara)
+6. Cosa ottieni dopo (il risultato concreto)
+7. CTA finale
+
+Tono: diretto, umano, zero aria fritta.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per gestire le obiezioni</div>
+        <div class="prompt-hint">Aggiungilo in fondo alla pagina — risponde ai dubbi prima che li abbiano:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Il mio cliente ideale è [descrizione].
+Il mio prodotto costa €29.
+
+Quali sono le 3 obiezioni più probabili prima dell'acquisto?
+Per ognuna scrivi una risposta breve e onesta — max 2 righe.
+Niente promesse esagerate, solo la verità.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 5</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod5-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Headline scelta</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod5-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Pagina di vendita scritta e caricata su Gumroad</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod5-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Obiezioni gestite</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod5-4')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Prodotto pubblicato e acquistabile</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-5">0/4</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-5" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-secondary" onclick="showModule(4)">← Modulo 4</button>
+        <button class="btn btn-primary" onclick="showModule(6)">Modulo 6 →</button>
+      </div>
+    </div>
+
+    <!-- ==================== MODULO 6 ==================== -->
+    <div class="module" id="module-6">
+      <div class="module-header">
+        <span class="module-emoji">📱</span>
+        <h1><span class="mod-num">Modulo 6</span>Portare traffico senza faccia</h1>
+      </div>
+
+      <h2>Perché questo modulo esiste</h2>
+      <p>Il prodotto è online. Adesso serve qualcuno che lo veda. Il problema: non vuoi apparire sui social, non hai budget per ads, non sai da dove iniziare. La soluzione è <strong>TikTok faceless</strong> — video senza mostrare la faccia, con testo e voce generata dall'AI, che spiegano qualcosa di utile e rimandano al tuo prodotto. Funziona perché TikTok spinge i contenuti educativi anche a zero follower.</p>
+
+      <hr class="divider">
+
+      <h2>Step operativi</h2>
+      <ol>
+        <li>Apri il tuo Progetto in <strong>Chat Claude</strong></li>
+        <li>Usa il <strong>Prompt 1</strong> per generare 7 idee di video basate sul tuo prodotto</li>
+        <li>Scegli un'idea e usa il <strong>Prompt 2</strong> per scrivere lo script completo</li>
+        <li>Registra il video: schermo del computer + voce AI (o tua) + testo in sovrimpressione</li>
+        <li>Carica su TikTok con l'hashtag giusto e il link in bio a Gumroad</li>
+        <li>Ripeti — <strong>un video al giorno per i primi 30 giorni</strong></li>
+      </ol>
+
+      <hr class="divider">
+
+      <h2>Strumenti consigliati per fare i video</h2>
+
+      <table>
+        <tr><th>Tool</th><th>A cosa serve</th><th>Costo</th></tr>
+        <tr>
+          <td><strong>CapCut</strong></td>
+          <td>Montaggio, testo animato, voce AI integrata</td>
+          <td><span class="badge badge-cyan">Gratuito</span></td>
+        </tr>
+        <tr>
+          <td><strong>ElevenLabs</strong></td>
+          <td>Voce clonata o voce AI realistica</td>
+          <td><span class="badge badge-gold">Freemium</span></td>
+        </tr>
+        <tr>
+          <td><strong>HeyGen</strong></td>
+          <td>Avatar iperrealistico che parla al posto tuo — impara con Gabriele nella community <a href="https://www.skool.com/esserci/about?ref=6930f1b733d34348a422fe588749d8dc" target="_blank">Esserci</a></td>
+          <td><span class="badge badge-gold">A pagamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Schermo</strong></td>
+          <td>Registra quello che fai su Claude — è il contenuto più efficace</td>
+          <td><span class="badge badge-cyan">Gratuito</span></td>
+        </tr>
+      </table>
+
+      <div class="callout">
+        <p>Vuoi usare una voce AI realistica? <a href="https://try.elevenlabs.io/digitalsam" target="_blank">Prova ElevenLabs gratis →</a></p>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Prompt pronti</h2>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 1 — Per trovare le idee dei video</div>
+        <div class="prompt-hint">Usalo per generare una settimana di contenuti in 2 minuti:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Il mio prodotto è: [nome e descrizione breve]
+Il mio cliente ideale è: [descrizione]
+
+Dammi 7 idee di video TikTok faceless sul tema [argomento del tuo prodotto].
+Ogni idea deve:
+- Avere un hook che ferma lo scroll nei primi 3 secondi
+- Insegnare qualcosa di utile e concreto
+- Portare naturalmente a parlare del mio prodotto senza sembrare una pubblicità
+- Durare max 60 secondi
+
+Formato: [numero] Hook: … | Contenuto: … | CTA finale: …</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 2 — Per scrivere lo script completo</div>
+        <div class="prompt-hint">Usalo dopo aver scelto l'idea — ottieni uno script pronto da leggere o girare:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Scrivi lo script completo per questo video TikTok:
+Idea: [copia l'idea scelta]
+
+Struttura:
+- Hook (primi 3 secondi): frase che ferma lo scroll
+- Corpo (45 secondi): il contenuto utile, step by step
+- CTA finale (5 secondi): rimanda al link in bio
+
+Tono: parlato, veloce, diretto. Come se lo spiegassi a un amico.
+Niente introduzioni, vai subito al punto.
+Scrivi anche le didascalie da mettere in sovrimpressione.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <div class="prompt-title">Prompt 3 — Per scrivere la caption TikTok</div>
+        <div class="prompt-hint">Usalo per ottimizzare il testo del post e gli hashtag:</div>
+        <div class="prompt-block">
+          <div class="prompt-label">Prompt</div>
+          <pre>Scrivi la caption per questo video TikTok.
+
+Argomento del video: [descrivi in 1 riga]
+Prodotto che promuovo: [nome]
+
+La caption deve:
+- Iniziare con una domanda o affermazione forte
+- Essere max 3 righe
+- Finire con "Link in bio"
+
+Aggiungi 5 hashtag pertinenti — mix tra grandi e di nicchia.</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copia</button>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">✓ Checklist Modulo 6</div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod6-1')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Almeno 3 script scritti e pronti</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod6-2')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Primo video girato e caricato su TikTok</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod6-3')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Link Gumroad nel profilo TikTok</span>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'mod6-4')">
+          <div class="check-box">✓</div>
+          <span class="check-text">Piano: un video al giorno per 30 giorni</span>
+        </div>
+        <div class="checklist-progress">
+          <span id="prog-text-6">0/4</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill-6" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:28px; border-color: var(--gold); background: rgba(245,166,35,0.06);">
+        <p>🎉 <strong>Hai finito il corso.</strong> Hai il prodotto, la pagina di vendita e il piano contenuti. Adesso esegui: un video al giorno, tutti i giorni. La prima vendita arriva lì.</p>
+      </div>
+
+      <div class="module-nav">
+        <button class="btn btn-secondary" onclick="showModule(5)">← Modulo 5</button>
+      </div>
+    </div>
+
+    <footer>
+      Corso creato da <a href="https://digitalsam.it" target="_blank">Digital Sam</a> · Samantha Del Vecchio
+    </footer>
+  </main>
+</div>
+
+<script>
+  // ---- State ----
+  const checks = JSON.parse(sessionStorage.getItem('checks') || '{}');
+  let currentModule = 1;
+
+  // ---- Init checklist state from session ----
+  function initChecks() {
+    Object.keys(checks).forEach(id => {
+      if (checks[id]) {
+        const el = document.querySelector(`[onclick*="${id}"]`);
+        if (el) el.classList.add('done');
+      }
+    });
+    for (let i = 1; i <= 6; i++) updateProgress(i);
+  }
+
+  // ---- Module navigation ----
+  function showModule(n, push) {
+    // hide all
+    document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(m => m.classList.remove('active'));
+    // show target
+    const mod = document.getElementById('module-' + n);
+    const nav = document.getElementById('nav-' + n);
+    if (mod) mod.classList.add('active');
+    if (nav) nav.classList.add('active');
+    currentModule = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeSidebar();
+    return false;
+  }
+
+  // ---- Copy prompt ----
+  function copyPrompt(btn) {
+    const pre = btn.closest('.prompt-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+      btn.textContent = '✓ Copiato';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copia';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // ---- Checklist ----
+  function toggleCheck(el, id) {
+    el.classList.toggle('done');
+    checks[id] = el.classList.contains('done');
+    sessionStorage.setItem('checks', JSON.stringify(checks));
+    // find module number from id
+    const modNum = parseInt(id.replace('mod', '').split('-')[0]);
+    updateProgress(modNum);
+  }
+
+  function updateProgress(modNum) {
+    const items = document.querySelectorAll(`#module-${modNum} .check-item`);
+    if (!items.length) return;
+    const done = document.querySelectorAll(`#module-${modNum} .check-item.done`).length;
+    const total = items.length;
+    const pct = Math.round(done / total * 100);
+    const fill = document.getElementById('prog-fill-' + modNum);
+    const text = document.getElementById('prog-text-' + modNum);
+    if (fill) fill.style.width = pct + '%';
+    if (text) text.textContent = done + '/' + total;
+    // sidebar badge
+    const prog = document.getElementById('prog-' + modNum);
+    if (prog) {
+      prog.textContent = done === total ? '✓' : (done > 0 ? done + '/' + total : '');
+    }
+  }
+
+  // ---- Sidebar mobile ----
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('visible');
+  }
+
+  // ---- Run ----
+  initChecks();
+</script>
+
+</body>
+</html>
