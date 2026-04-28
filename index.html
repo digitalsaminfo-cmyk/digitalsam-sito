@@ -549,7 +549,17 @@
             <a href="#come-funziona" class="hover:text-white transition-colors">Come funziona</a>
             <a href="#prezzi"        class="hover:text-white transition-colors">Prezzi</a>
             <a href="#chi-sono"      class="hover:text-white transition-colors">Chi sono</a>
-            <a href="https://links.digitalsam.it" target="_blank" class="hover:text-white transition-colors" style="color:#4DD9F0;">Risorse</a>
+            <div class="risorse-dropdown" style="position:relative;">
+                <button class="risorse-btn" style="background:none;border:none;cursor:pointer;color:#4DD9F0;font-size:inherit;font-family:inherit;display:flex;align-items:center;gap:4px;padding:0;">Risorse <span style="font-size:10px;">▾</span></button>
+                <div class="risorse-menu" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#0d1b2e;border:1px solid rgba(77,217,240,0.18);border-radius:12px;padding:8px;min-width:220px;z-index:300;">
+                    <a href="https://links.digitalsam.it" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;color:rgba(232,244,248,0.7);font-size:13px;transition:background 0.15s;" onmouseover="this.style.background='rgba(77,217,240,0.08)'" onmouseout="this.style.background='transparent'">
+                        🧰 <span>AI Toolbox</span>
+                    </a>
+                    <a href="https://digitalsam.it/da-zero-a-vendere/" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;color:rgba(232,244,248,0.7);font-size:13px;transition:background 0.15s;" onmouseover="this.style.background='rgba(77,217,240,0.08)'" onmouseout="this.style.background='transparent'">
+                        📘 <span>Da Zero a Vendere con Claude</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- CTA -->
@@ -941,7 +951,7 @@
                 Ho raccolto i prompt che uso davvero ogni giorno — quelli che fanno risparmiare tempo, non quelli da tutorial YouTube. Copi, personalizzi con i tuoi dati, incolli in ChatGPT. Fatto.
             </p>
         </div>
-        <div class="grid md:grid-cols-2 gap-6 reveal">
+        <div class="grid md:grid-cols-3 gap-6 reveal">
 
             <!-- Card PMI -->
             <div style="background:rgba(77,217,240,0.04);border:1px solid rgba(77,217,240,0.18);border-radius:14px;padding:28px 24px;">
@@ -954,6 +964,22 @@
                     <span style="font-size:22px;font-weight:700;color:#4DD9F0;">€9</span>
                     <a href="https://buy.stripe.com/8x25kC8l1gso4gZ7vGgYU03" target="_blank" style="background:#4DD9F0;color:#07101E;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none;">
                         Scarica il PDF →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card Corso -->
+            <div style="background:rgba(77,217,240,0.04);border:1px solid rgba(77,217,240,0.25);border-radius:14px;padding:28px 24px;position:relative;overflow:hidden;">
+                <div style="position:absolute;top:10px;right:-20px;background:#4DD9F0;color:#07101E;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 26px;transform:rotate(35deg);">NUOVO</div>
+                <div style="font-size:11px;letter-spacing:1.5px;color:rgba(77,217,240,0.6);text-transform:uppercase;margin-bottom:10px;">Mini-corso</div>
+                <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">Da Zero a Vendere con Claude</h3>
+                <p style="font-size:13px;color:rgba(232,244,248,0.5);line-height:1.6;margin-bottom:20px;">
+                    6 moduli pratici per creare il tuo primo prodotto digitale con Claude e metterlo in vendita. Dall'idea alla pagina di vendita — prompt pronti, zero teoria inutile.
+                </p>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:13px;color:rgba(77,217,240,0.6);">Scopri →</span>
+                    <a href="https://digitalsam.it/da-zero-a-vendere/" target="_blank" style="background:#4DD9F0;color:#07101E;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none;">
+                        Vai al corso →
                     </a>
                 </div>
             </div>
@@ -1268,6 +1294,15 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* Risorse dropdown */
+    const risorseBtn = document.querySelector('.risorse-btn');
+    const risorseMenu = document.querySelector('.risorse-menu');
+    risorseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        risorseMenu.style.display = risorseMenu.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => { risorseMenu.style.display = 'none'; });
 
     /* Navbar scroll effect */
     const navbar = document.getElementById('navbar');
