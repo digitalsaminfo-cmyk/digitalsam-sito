@@ -445,6 +445,75 @@
             .hero-ctas a { width: 100%; justify-content: center; }
             .btn-gold { width: 100%; justify-content: center; }
         }
+
+        /* ── Particles canvas ── */
+        #particles-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .hero-bg { position: relative; overflow: hidden; }
+        .hero-bg > div { position: relative; z-index: 1; }
+
+        /* ── Typewriter cursor ── */
+        .tw-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 0.85em;
+            background: var(--cyan);
+            margin-left: 4px;
+            vertical-align: middle;
+            border-radius: 2px;
+            animation: blinkCursor 1s step-end infinite;
+        }
+        @keyframes blinkCursor {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0; }
+        }
+
+        /* ── Enhanced price card glow ── */
+        .price-card {
+            animation: priceGlow 4s ease-in-out infinite;
+        }
+        @keyframes priceGlow {
+            0%,100% { box-shadow: 0 0 0px rgba(77,217,240,0); }
+            50%      { box-shadow: 0 0 50px rgba(77,217,240,0.10), 0 0 90px rgba(245,166,35,0.05); }
+        }
+
+        /* ── Shimmer on cards hover ── */
+        .demo-card::after, .step-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(77,217,240,0.04), transparent);
+            transition: left 0.55s ease;
+            pointer-events: none;
+        }
+        .demo-card { position: relative; overflow: hidden; }
+        .step-card { position: relative; overflow: hidden; }
+        .demo-card:hover::after, .step-card:hover::after { left: 140%; }
+
+        /* ── Form mini ── */
+        .form-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 28px 0;
+            color: rgba(232,244,248,0.2);
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .form-divider::before, .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(77,217,240,0.1);
+        }
     </style>
 </head>
 <body>
@@ -549,6 +618,7 @@
             <a href="#come-funziona" class="hover:text-white transition-colors">Come funziona</a>
             <a href="#prezzi"        class="hover:text-white transition-colors">Prezzi</a>
             <a href="#chi-sono"      class="hover:text-white transition-colors">Chi sono</a>
+            <a href="/automazioni.html" class="hover:text-white transition-colors" style="color:var(--gold);">Automazioni</a>
             <div class="risorse-dropdown" style="position:relative;">
                 <button class="risorse-btn" style="background:none;border:none;cursor:pointer;color:#4DD9F0;font-size:inherit;font-family:inherit;display:flex;align-items:center;gap:4px;padding:0;">Risorse <span style="font-size:10px;">▾</span></button>
                 <div class="risorse-menu" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#0d1b2e;border:1px solid rgba(77,217,240,0.18);border-radius:12px;padding:8px;min-width:220px;z-index:300;">
@@ -574,6 +644,7 @@
      HERO
 ════════════════════════════════════════ -->
 <section class="hero-bg grid-pattern min-h-screen flex items-center pt-20" id="hero">
+    <canvas id="particles-canvas"></canvas>
     <div class="max-w-5xl mx-auto px-4 py-24 text-center">
 
         <!-- Eyebrow badge -->
@@ -587,7 +658,7 @@
         <h1 class="font-extrabold leading-tight mb-6 fade-up delay-1"
             style="font-size:clamp(2.2rem,6vw,4rem);max-width:800px;margin:0 auto;">
             Il tuo sito risponde ai clienti,<br>
-            <span class="headline-gradient">anche alle 3 di notte.</span>
+            <span class="headline-gradient" id="typewriter-text"></span><span class="tw-cursor" id="tw-cursor"></span>
         </h1>
 
         <!-- Sub -->
@@ -1048,15 +1119,15 @@
                 <div class="flex flex-wrap gap-8 mt-8 pt-8"
                      style="border-top:1px solid rgba(77,217,240,0.1);">
                     <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--cyan);">7gg</div>
+                        <div class="font-extrabold text-2xl stat-counter" style="color:var(--cyan);" data-counter="7" data-suffix="gg">0gg</div>
                         <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Consegna garantita</div>
                     </div>
                     <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--cyan);">H24</div>
+                        <div class="font-extrabold text-2xl stat-counter" style="color:var(--cyan);" data-counter="24" data-prefix="H">H0</div>
                         <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Agente vocale attivo</div>
                     </div>
                     <div>
-                        <div class="font-extrabold text-2xl" style="color:var(--gold);">100%</div>
+                        <div class="font-extrabold text-2xl stat-counter" style="color:var(--gold);" data-counter="100" data-suffix="%">0%</div>
                         <div class="text-xs mt-1" style="color:rgba(232,244,248,0.4);">Su misura</div>
                     </div>
                 </div>
@@ -1088,72 +1159,35 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
-            <!-- ── Form ── -->
+            <!-- ── WhatsApp — CTA principale ── -->
             <div class="reveal">
-                <form action="https://formsubmit.co/digitalsam.info@gmail.com"
-                      method="POST"
-                      class="space-y-4">
-
-                    <!-- FormSubmit config -->
-                    <input type="hidden" name="_subject"  value="Nuovo contatto da digitalsam.it">
-                    <input type="hidden" name="_captcha"  value="false">
-                    <input type="hidden" name="_next"     value="https://digitalsam.it/grazie.html">
-                    <input type="hidden" name="_template" value="table">
-
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Nome e cognome *</label>
-                        <input type="text" name="nome" required placeholder="Mario Rossi" class="form-input">
+                <div class="p-8 rounded-2xl mb-8"
+                     style="background:rgba(37,211,102,0.06);border:1px solid rgba(37,211,102,0.18);">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+                             style="background:rgba(37,211,102,0.15);">
+                            <i class="bi bi-whatsapp" style="color:#25D366;font-size:1.4rem;"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-base">Scrivi su WhatsApp</div>
+                            <div class="text-xs" style="color:rgba(232,244,248,0.4);">Rispondo entro poche ore, anche la sera</div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">La tua attività *</label>
-                        <input type="text" name="attivita" required placeholder="es. Studio Dentistico, Avvocato, Ristorante..." class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Email *</label>
-                        <input type="email" name="email" required placeholder="mario@esempio.it" class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Telefono <span style="color:rgba(232,244,248,0.3);">(opzionale)</span></label>
-                        <input type="tel" name="telefono" placeholder="+39 333 000 0000" class="form-input">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2" style="color:rgba(232,244,248,0.65);">Messaggio</label>
-                        <textarea name="messaggio" rows="3"
-                                  placeholder="Raccontami brevemente la tua attività..."
-                                  class="form-input" style="resize:vertical;"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-gold" style="width:100%;justify-content:center;">
-                        Invia richiesta <i class="bi bi-send-fill"></i>
-                    </button>
-                    <p class="text-xs text-center" style="color:rgba(232,244,248,0.28);">
-                        Nessuno spam. Rispondo di persona entro 24 ore.
-                    </p>
-                </form>
-            </div>
-
-            <!-- ── Contact info ── -->
-            <div class="space-y-6 reveal">
-
-                <!-- WhatsApp box -->
-                <div class="p-6 rounded-2xl"
-                     style="background:rgba(37,211,102,0.05);border:1px solid rgba(37,211,102,0.14);">
-                    <div class="text-xs font-semibold mb-2" style="color:rgba(232,244,248,0.4);">Preferisci WhatsApp?</div>
-                    <p style="color:rgba(232,244,248,0.6);font-size:0.86rem;line-height:1.65;margin-bottom:14px;">
-                        Scrivi direttamente — rispondo più in fretta. Di solito entro poche ore, anche la sera.
+                    <p style="color:rgba(232,244,248,0.6);font-size:0.88rem;line-height:1.7;margin-bottom:20px;">
+                        È il modo più rapido. Raccontami la tua attività in due righe e ti rispondo di persona — senza chatbot, senza form, senza aspettare giorni.
                     </p>
                     <a href="https://wa.me/+393793290934?text=Ciao%20Samantha!%20Ho%20visto%20il%20tuo%20sito%20e%20vorrei%20saperne%20di%20più%20sui%20siti%20con%20agente%20vocale."
-                       target="_blank" class="btn-whatsapp">
+                       target="_blank" class="btn-whatsapp" style="font-size:1rem;padding:16px 28px;">
                         <i class="bi bi-whatsapp" style="font-size:1.2rem;"></i> Scrivimi su WhatsApp
                     </a>
                 </div>
 
                 <!-- Contact details -->
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                              style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-envelope" style="color:var(--cyan);"></i>
+                            <i class="bi bi-envelope" style="color:var(--cyan);font-size:0.85rem;"></i>
                         </div>
                         <div>
                             <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Email</div>
@@ -1163,27 +1197,67 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                              style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-telephone" style="color:var(--cyan);"></i>
+                            <i class="bi bi-telephone" style="color:var(--cyan);font-size:0.85rem;"></i>
                         </div>
                         <div>
                             <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Telefono</div>
-                            <a href="tel:+393793290934" class="text-sm font-semibold hover:text-cyan transition-colors">
-                                +39 379 3290934
+                            <a href="tel:+393793290934" class="text-sm font-semibold" style="color:rgba(232,244,248,0.8);">
+                                +39 379 329 0934
                             </a>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                             style="background:rgba(77,217,240,0.08);">
-                            <i class="bi bi-globe" style="color:var(--cyan);"></i>
+                </div>
+            </div>
+
+            <!-- ── Mini Form (secondario) ── -->
+            <div class="reveal">
+                <div class="p-7 rounded-2xl" style="background:var(--dark3);border:1px solid rgba(77,217,240,0.10);">
+                    <div class="text-sm font-semibold mb-1" style="color:rgba(232,244,248,0.5);">Preferisci la mail?</div>
+                    <div class="font-bold text-base mb-5">Lasciami un messaggio</div>
+
+                    <form id="contact-form"
+                          action="https://api.web3forms.com/submit"
+                          method="POST"
+                          class="space-y-4">
+
+                        <!-- Web3Forms key — sostituisci con la tua chiave da web3forms.com -->
+                        <input type="hidden" name="access_key" value="INSERISCI_QUI_LA_TUA_API_KEY">
+                        <input type="hidden" name="subject"    value="Nuovo contatto da digitalsam.it">
+                        <input type="hidden" name="from_name"  value="Digital Sam Sito">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
+
+                        <div>
+                            <label class="block text-xs font-semibold mb-1.5" style="color:rgba(232,244,248,0.55);">Nome *</label>
+                            <input type="text" name="nome" required placeholder="Mario Rossi" class="form-input">
                         </div>
                         <div>
-                            <div class="text-xs mb-0.5" style="color:rgba(232,244,248,0.35);">Sito</div>
-                            <span class="text-sm font-semibold">digitalsam.it</span>
+                            <label class="block text-xs font-semibold mb-1.5" style="color:rgba(232,244,248,0.55);">Email *</label>
+                            <input type="email" name="email" required placeholder="mario@esempio.it" class="form-input">
                         </div>
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1.5" style="color:rgba(232,244,248,0.55);">Messaggio *</label>
+                            <textarea name="messaggio" rows="3" required
+                                      placeholder="Raccontami la tua attività in due righe..."
+                                      class="form-input" style="resize:vertical;"></textarea>
+                        </div>
+
+                        <!-- Success / error messages -->
+                        <div id="form-success" style="display:none;color:#4ade80;font-size:0.85rem;text-align:center;padding:10px;background:rgba(74,222,128,0.07);border-radius:8px;">
+                            ✓ Messaggio inviato! Ti rispondo presto.
+                        </div>
+                        <div id="form-error" style="display:none;color:#f87171;font-size:0.85rem;text-align:center;padding:10px;background:rgba(248,113,113,0.07);border-radius:8px;">
+                            Ops, qualcosa è andato storto. Riprova o scrivimi su WhatsApp.
+                        </div>
+
+                        <button type="submit" id="form-btn" class="btn-gold" style="width:100%;justify-content:center;font-size:0.9rem;padding:13px 20px;">
+                            Invia messaggio <i class="bi bi-send-fill"></i>
+                        </button>
+                        <p class="text-xs text-center" style="color:rgba(232,244,248,0.22);">
+                            Nessuno spam. Rispondo di persona.
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
@@ -1325,6 +1399,175 @@
         });
     }, { threshold: 0.3 });
     sections.forEach(s => linkObserver.observe(s));
+
+    /* ══════════════════════════════════════
+       TYPEWRITER — hero headline
+    ══════════════════════════════════════ */
+    (function() {
+        const el     = document.getElementById('typewriter-text');
+        const cursor = document.getElementById('tw-cursor');
+        if (!el) return;
+
+        const phrases = [
+            'anche alle 3 di notte.',
+            'senza segretaria.',
+            'H24, ogni giorno.',
+            'mentre sei al lavoro.',
+        ];
+        let pi = 0, ci = 0, deleting = false;
+
+        function tick() {
+            const phrase = phrases[pi];
+            if (!deleting) {
+                el.textContent = phrase.slice(0, ++ci);
+                if (ci === phrase.length) {
+                    deleting = true;
+                    setTimeout(tick, 2200);
+                    return;
+                }
+                setTimeout(tick, 68);
+            } else {
+                el.textContent = phrase.slice(0, --ci);
+                if (ci === 0) {
+                    deleting = false;
+                    pi = (pi + 1) % phrases.length;
+                    setTimeout(tick, 380);
+                    return;
+                }
+                setTimeout(tick, 38);
+            }
+        }
+        setTimeout(tick, 900);
+    })();
+
+    /* ══════════════════════════════════════
+       COUNTER ANIMATION — stats section
+    ══════════════════════════════════════ */
+    (function() {
+        const counters = document.querySelectorAll('.stat-counter');
+        if (!counters.length) return;
+
+        const counterObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                counterObs.unobserve(entry.target);
+                const el      = entry.target;
+                const target  = parseInt(el.dataset.counter, 10);
+                const prefix  = el.dataset.prefix  || '';
+                const suffix  = el.dataset.suffix  || '';
+                const duration = 900;
+                const steps    = 40;
+                const interval = duration / steps;
+                let current = 0;
+                const step = Math.ceil(target / steps);
+                const timer = setInterval(() => {
+                    current = Math.min(current + step, target);
+                    el.textContent = prefix + current + suffix;
+                    if (current >= target) clearInterval(timer);
+                }, interval);
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(c => counterObs.observe(c));
+    })();
+
+    /* ══════════════════════════════════════
+       PARTICLES — hero background
+    ══════════════════════════════════════ */
+    (function() {
+        const canvas = document.getElementById('particles-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        let W, H, particles = [];
+
+        function resize() {
+            W = canvas.width  = canvas.offsetWidth;
+            H = canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
+
+        const N = 55;
+        const COLORS = ['rgba(77,217,240,', 'rgba(245,166,35,'];
+
+        function rand(a, b) { return a + Math.random() * (b - a); }
+
+        function createParticle() {
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            return {
+                x: rand(0, W), y: rand(0, H),
+                r: rand(0.6, 2.2),
+                vx: rand(-0.18, 0.18),
+                vy: rand(-0.22, -0.06),
+                alpha: rand(0.08, 0.35),
+                color
+            };
+        }
+
+        for (let i = 0; i < N; i++) particles.push(createParticle());
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color + p.alpha + ')';
+                ctx.fill();
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.y < -4 || p.x < -4 || p.x > W + 4) {
+                    Object.assign(p, createParticle());
+                    p.y = H + 4;
+                }
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+
+    /* ══════════════════════════════════════
+       WEB3FORMS — async submit handler
+    ══════════════════════════════════════ */
+    (function() {
+        const form    = document.getElementById('contact-form');
+        const btn     = document.getElementById('form-btn');
+        const success = document.getElementById('form-success');
+        const error   = document.getElementById('form-error');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Invio in corso…';
+            success.style.display = 'none';
+            error.style.display   = 'none';
+
+            try {
+                const data = new FormData(form);
+                const res  = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: data
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    success.style.display = 'block';
+                    form.reset();
+                } else {
+                    throw new Error(json.message);
+                }
+            } catch (err) {
+                error.style.display = 'block';
+                console.error('Form error:', err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Invia messaggio <i class="bi bi-send-fill"></i>';
+            }
+        });
+    })();
 </script>
 
 </body>
