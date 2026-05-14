@@ -323,6 +323,22 @@
             position: relative;
             overflow: hidden;
         }
+        .bundle-prices {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 580px) {
+            .bundle-prices { grid-template-columns: 1fr 1fr; }
+        }
+        .bundle-price-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        @media (min-width: 580px) {
+            .bundle-price-num { font-size: 2.2rem; }
+        }
         .bundle-box::before {
             content: '';
             position: absolute;
@@ -649,19 +665,19 @@
             </div>
 
             <!-- Prezzi bundle -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <div class="text-center p-4 md:p-6 rounded-2xl"
+            <div class="bundle-prices">
+                <div class="text-center p-5 rounded-2xl"
                      style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);">
-                    <div class="text-xs font-bold mb-2 uppercase tracking-wider" style="color:var(--gold);letter-spacing:0.04em;">Setup una tantum</div>
-                    <div class="font-extrabold mb-1" style="font-size:clamp(1.3rem,5vw,2.4rem);">€2.000</div>
+                    <div class="text-xs font-bold mb-2 uppercase" style="color:var(--gold);letter-spacing:0.08em;">Setup una tantum</div>
+                    <div class="bundle-price-num mb-1">€2.000</div>
                     <div class="text-xs line-through mb-1" style="color:rgba(232,244,248,0.3);">€2.500 separati</div>
                     <div class="text-xs font-bold" style="color:var(--gold);">Risparmi €500</div>
                 </div>
-                <div class="text-center p-4 md:p-6 rounded-2xl"
+                <div class="text-center p-5 rounded-2xl"
                      style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);">
-                    <div class="text-xs font-bold mb-2 uppercase tracking-wider" style="color:var(--gold);letter-spacing:0.04em;">Canone mensile</div>
+                    <div class="text-xs font-bold mb-2 uppercase" style="color:var(--gold);letter-spacing:0.08em;">Canone mensile</div>
                     <div class="flex items-end justify-center gap-1 mb-1">
-                        <span class="font-extrabold" style="font-size:clamp(1.3rem,5vw,2.4rem);">€197</span>
+                        <span class="bundle-price-num">€197</span>
                         <span style="color:rgba(232,244,248,0.4);padding-bottom:5px;font-size:0.8rem;">/mese</span>
                     </div>
                     <div class="text-xs font-bold" style="color:var(--gold);">Prezzo fisso per sempre</div>
