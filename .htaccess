@@ -1,0 +1,23 @@
+# ── URL puliti: /pagina invece di /pagina.html ──────────────────
+Options -MultiViews
+RewriteEngine On
+
+# Redirect www → non-www
+RewriteCond %{HTTP_HOST} ^www\.digitalsam\.it [NC]
+RewriteRule ^ https://digitalsam.it%{REQUEST_URI} [R=301,L]
+
+# Forza HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Rimuovi .html dall'URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Redirect esplicito: /automazioni → /automazioni.html (per sicurezza)
+RewriteRule ^automazioni$ /automazioni.html [R=301,L]
+
+# Pagina 404 personalizzata (opzionale)
+# ErrorDocument 404 /404.html
