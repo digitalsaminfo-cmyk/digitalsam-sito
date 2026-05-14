@@ -17,7 +17,7 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.digitalsam.it
+          server: 46.17.175.243
           username: u690917924
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
