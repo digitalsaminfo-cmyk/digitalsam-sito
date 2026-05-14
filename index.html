@@ -632,10 +632,36 @@
             </div>
         </div>
 
-        <!-- CTA -->
-        <a href="#contatti" class="btn-primary text-sm" style="padding:10px 20px;animation:none;">
-            Inizia ora <i class="bi bi-arrow-right"></i>
-        </a>
+        <!-- CTA + hamburger -->
+        <div class="flex items-center gap-3">
+            <a href="#contatti" class="hidden md:inline-flex btn-primary text-sm" style="padding:10px 20px;animation:none;">
+                Inizia ora <i class="bi bi-arrow-right"></i>
+            </a>
+            <button id="hamburger" class="md:hidden flex items-center justify-center w-10 h-10 rounded-xl transition-colors"
+                    style="background:rgba(77,217,240,0.07);border:1px solid rgba(77,217,240,0.18);color:var(--cyan);"
+                    aria-label="Menu">
+                <i class="bi bi-list" style="font-size:1.5rem;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile menu dropdown -->
+    <div id="mobile-menu" style="display:none;background:rgba(7,16,30,0.98);border-top:1px solid rgba(77,217,240,0.12);"
+         class="md:hidden px-4 pb-5 pt-3">
+        <div class="flex flex-col gap-1 text-sm font-medium">
+            <a href="#demo"          onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:rgba(232,244,248,0.7);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">Demo</a>
+            <a href="#come-funziona" onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:rgba(232,244,248,0.7);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">Come funziona</a>
+            <a href="#prezzi"        onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:rgba(232,244,248,0.7);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">Prezzi</a>
+            <a href="#chi-sono"      onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:rgba(232,244,248,0.7);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">Chi sono</a>
+            <a href="/automazioni.html" onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors font-semibold" style="color:var(--gold);" onmouseover="this.style.background='rgba(245,166,35,0.06)'" onmouseout="this.style.background=''">Automazioni</a>
+            <a href="https://links.digitalsam.it" target="_blank" onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:var(--cyan);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">🧰 AI Toolbox</a>
+            <a href="https://digitalsam.it/da-zero-a-vendere/" target="_blank" onclick="closeMobileMenu()" class="py-3 px-4 rounded-xl transition-colors" style="color:var(--cyan);" onmouseover="this.style.background='rgba(77,217,240,0.06)'" onmouseout="this.style.background=''">📘 Da Zero a Vendere</a>
+            <div class="pt-3 border-t mt-2" style="border-color:rgba(77,217,240,0.1);">
+                <a href="#contatti" onclick="closeMobileMenu()" class="btn-primary" style="width:100%;justify-content:center;font-size:0.9rem;padding:12px 20px;">
+                    Inizia ora <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -1368,6 +1394,22 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* Hamburger mobile menu */
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobile-menu');
+    function closeMobileMenu() {
+        if (mobileMenu) mobileMenu.style.display = 'none';
+        if (hamburger)  hamburger.querySelector('i').className = 'bi bi-list';
+    }
+    if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', () => {
+            const open = mobileMenu.style.display === 'block';
+            mobileMenu.style.display = open ? 'none' : 'block';
+            hamburger.querySelector('i').className = open ? 'bi bi-list' : 'bi bi-x';
+            hamburger.querySelector('i').style.fontSize = '1.5rem';
+        });
+    }
 
     /* Risorse dropdown */
     const risorseBtn = document.querySelector('.risorse-btn');
