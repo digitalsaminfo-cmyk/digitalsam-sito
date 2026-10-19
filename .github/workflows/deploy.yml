@@ -20,9 +20,10 @@ jobs:
           server: 46.17.175.243
           username: u690917924
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
+          server-dir: public_html/
           exclude: |
             **/.git*
             **/.git*/**
             .github/**
             README.md
+            .htaccess
