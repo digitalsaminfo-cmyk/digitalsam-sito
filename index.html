@@ -431,14 +431,14 @@ img.fl{height:auto;translate:calc(var(--px,0)*var(--d,14)*1px) calc(var(--py,0)*
 @media(max-width:860px) and (prefers-reduced-motion:reduce){.s0 .hint::after,.swh b,#nxt span{animation:none}}
 
 /* vecchio sito (studi professionali, dentisti): riquadro visibile nella tappa siti */
-.stu{position:absolute;left:50vw;top:15vh;max-width:min(30vw,420px);display:flex;flex-direction:column;gap:8px;align-items:flex-start;text-decoration:none;color:var(--ink);background:var(--cream);border:3px solid var(--ink);border-radius:16px;padding:12px 16px;box-shadow:6px 6px 0 var(--ink);transition:transform .25s}
-.stu b{font:800 .86rem/1.25 Syne,sans-serif;letter-spacing:.03em}
-.stu span{background:var(--yel);border:2.5px solid var(--ink);border-radius:999px;font:800 .62rem Syne,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px}
+.stu{position:absolute;z-index:12;left:50vw;top:max(10vh,62px);width:max-content;max-width:none;display:flex;flex-direction:row;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:var(--cream);border:3px solid var(--ink);border-radius:16px;padding:12px 16px;box-shadow:6px 6px 0 var(--ink);transition:transform .25s}
+.stu b{font:800 .86rem/1.25 Syne,sans-serif;letter-spacing:.03em;white-space:nowrap}
+.stu span{white-space:nowrap;background:var(--yel);border:2.5px solid var(--ink);border-radius:999px;font:800 .62rem Syne,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px}
 .stu:hover,.stu:focus-visible{transform:translateY(-3px) rotate(-1deg)}
 @media(max-width:860px){
-  .stu{position:relative;left:auto;top:auto;max-width:none;width:100%;order:10;margin:14px 0 0;background:var(--ink);color:var(--cream);box-shadow:5px 5px 0 rgba(8,35,59,.35)}
-  .stu b{font-size:.84rem}
-  .stu span{color:var(--ink)}
+  .stu{position:relative;z-index:auto;left:auto;top:auto;max-width:none;width:100%;order:10;margin:14px 0 0;background:var(--ink);color:var(--cream);box-shadow:5px 5px 0 rgba(8,35,59,.35)}
+  .stu b{font-size:.84rem;white-space:normal}
+  .stu span{color:var(--ink);white-space:normal}
 }
 
 /* telefono: la tappa siti deve stare in una schermata (niente scroll verticale) */
