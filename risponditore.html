@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Come ho costruito il mio Risponditore Automatico per Instagram</title>
+<meta name="description" content="Roadmap passo passo per costruire un risponditore automatico ai commenti di Instagram, senza abbonamenti.">
+<style>
+  :root {
+    --navy: #08233B; --red: #FF4B2B; --yellow: #FFD23F; --blue: #1FB6FF; --cream: #FFF3D6;
+    --text: #08233B; --bg: #FFF3D6; --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --text: #FFF3D6; --bg: #08233B; --card: #0d2f4d; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header { background: var(--navy); color: var(--cream); padding: 48px 16px 36px; border-bottom: 6px solid var(--yellow); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { padding: 0; }
+  .tag { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 700; font-size: 13px;
+          letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 16px; }
+  h1 { font-size: clamp(28px, 6vw, 42px); line-height: 1.15; margin: 0 0 12px; }
+  header p { margin: 0; font-size: 19px; opacity: .9; }
+  main { padding: 32px 0 56px; }
+  h2 { font-size: 24px; margin: 40px 0 12px; padding-left: 12px; border-left: 6px solid var(--red); }
+  p, li { margin: 0 0 12px; }
+  ul, ol { padding-left: 24px; margin: 0 0 16px; }
+  li::marker { color: var(--red); font-weight: 700; }
+  code { background: var(--card); border: 1px solid rgba(8,35,59,.15); border-radius: 6px; padding: 1px 6px; font-size: .92em; }
+  pre { background: var(--navy); color: var(--cream); border-left: 6px solid var(--yellow); border-radius: 10px;
+         padding: 16px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 15px; line-height: 1.55; margin: 0 0 20px; }
+  pre code { background: none; border: 0; padding: 0; }
+  a { color: var(--red); font-weight: 600; }
+  footer { background: var(--navy); color: var(--cream); padding: 28px 16px; text-align: center; font-size: 15px; }
+  footer a { color: var(--yellow); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="tag">Digital Sam · Report</span>
+  <h1>Come ho costruito il mio Risponditore Automatico per Instagram</h1>
+  <p>La roadmap, e il prompt per farlo con Claude Code. Digital Sam, ottobre 2026.</p>
+</div></header>
+<main><div class="wrap">
+<h2>Cosa fa</h2>
+<p>Qualcuno commenta una parola sotto un mio Reel (per esempio RISPONDITORE). Dopo pochi secondi gli arriva un messaggio privato con il contenuto promesso. Se voglio, il messaggio chiede prima di seguire il profilo: la persona tocca &quot;Ho seguito&quot;, il sistema controlla, e solo allora arriva il link.</p>
+<p>Niente ManyChat, niente abbonamenti mensili per far funzionare il servizio. Pochi file e un po&#x27; di pazienza.</p>
+<h2>Non è un &quot;agente AI&quot;</h2>
+<p>Lo dico subito, perché la parola &quot;agente&quot; oggi si usa per tutto. Questo è un <strong>risponditore automatico a regole</strong>: se il commento contiene la parola X, invia il messaggio Y. Non ragiona e non improvvisa, e proprio per questo è prevedibile e costa zero.</p>
+<p>Un agente vero, che capisce le domande libere e decide cosa rispondere, si può aggiungere dopo con un modello come Claude. Ma si paga a consumo e per la maggior parte dei casi non serve.</p>
+<h2>Due modi per costruirlo</h2>
+<ol><li><strong>Da solo, a mano:</strong> segui la roadmap qui sotto. Si può fare, ma ci sono molti passaggi tecnici.</li><li><strong>Con Claude Code (quello che ho fatto io):</strong> Claude scrive il codice, lo prova, lo pubblica e ti dice cosa fare nelle schermate di Meta. Tu fai solo le cose che solo tu puoi fare. È la strada che consiglio.</li></ol>
+<h2>Costruirlo con Claude Code</h2>
+<p>Claude Code è l&#x27;assistente di Claude che lavora sul tuo computer: legge e scrive file, esegue comandi, controlla gli errori. Per questo progetto serve averlo installato (verifica tu piano e limiti attuali: io l&#x27;ho usato con il mio abbonamento a Claude).</p>
+<p><strong>Cosa fa Claude per te</strong></p>
+<ul><li>Legge la documentazione ufficiale di Meta e ti dice requisiti e limiti prima di cominciare.</li><li>Scrive il codice del risponditore e i test, e li prova in locale.</li><li>Pubblica il programma su Cloudflare con un comando.</li><li>Ti guida schermata per schermata in Meta e Cloudflare, e capisce gli screenshot degli errori.</li><li>Legge i log per trovare dove si blocca qualcosa.</li><li>Aggiunge una nuova parola chiave quando glielo chiedi, e la ripubblica in un minuto.</li></ul>
+<p><strong>Cosa devi fare tu (non può farlo nessun altro)</strong></p>
+<ul><li>Creare gli account (Meta sviluppatori, Cloudflare) e accedere.</li><li>Inserire le chiavi segrete <strong>nel terminale</strong>, mai in chat.</li><li>Accettare l&#x27;invito tester su Instagram, e cliccare &quot;Pubblica&quot; sull&#x27;app Meta.</li><li>Approvare i testi dei messaggi prima che vadano online.</li></ul>
+<p><strong>Il prompt per partire</strong> (copia, incolla in Claude Code e sostituisci le parti tra parentesi quadre)</p>
+<pre><code>Voglio costruire un risponditore automatico ai commenti di Instagram, senza abbonamenti. Quando qualcuno commenta una parola chiave sotto un mio Reel, deve ricevere un messaggio privato con un link. Usa Cloudflare Workers (piano gratuito) e l&#x27;API ufficiale di Meta (Instagram API con Instagram Login).
+
+Prima di scrivere codice: 1) leggi la documentazione ufficiale e dimmi requisiti e limiti; 2) proponi l&#x27;architettura e aspetta il mio ok.
+
+Poi guidami un passo alla volta: dimmi cosa devo fare io (account, accessi, chiavi) e cosa fai tu.
+
+Regole: non chiedermi mai chiavi o token in chat, dammi il comando da eseguire nel terminale dove li incollo io. Scrivi i test e provali prima di pubblicare. Fammi approvare i testi dei messaggi prima di metterli online. Dichiara nei messaggi che sono automatici.
+
+Il mio account Instagram è [@tuo_profilo], la prima parola chiave sarà [PAROLA] e il link da inviare è [LINK].</code></pre>
+<p>Se lo vuoi più potente, aggiungi alla fine: &quot;Aggiungi un cancello: chi commenta deve prima seguirmi e toccare un pulsante &#x27;Ho seguito&#x27; per ricevere il contenuto&quot;.</p>
+<h2>La roadmap (cosa succede sotto il cofano)</h2>
+<ol><li><strong>Profilo professionale.</strong> Instagram deve essere un account Business o Creator.</li><li><strong>App Meta.</strong> Su developers.facebook.com crei un&#x27;app e scegli come caso d&#x27;uso &quot;Gestisci i messaggi e i contenuti su Instagram&quot;. Togli i permessi che non ti servono.</li><li><strong>Tester.</strong> Aggiungi il tuo account Instagram come &quot;Tester di Instagram&quot; e accetta l&#x27;invito dal sito di Instagram (dall&#x27;app mobile spesso non si trova).</li><li><strong>Cloudflare.</strong> Crei l&#x27;account gratuito e un piccolo Worker: è il programma che riceve gli avvisi di Meta.</li><li><strong>Segreti al sicuro.</strong> Tre chiavi (parola d&#x27;ordine, chiave dell&#x27;app, token di Instagram) si inseriscono solo nel terminale con <code>wrangler secret put</code>. Mai in chat, mai nel codice.</li><li><strong>Webhook.</strong> In Meta incolli l&#x27;indirizzo del Worker e la parola d&#x27;ordine, poi attivi l&#x27;iscrizione ai commenti del tuo profilo.</li><li><strong>Prova.</strong> Prima il pulsante &quot;Test&quot; di Meta, poi un commento vero da un secondo account.</li><li><strong>Pubblica l&#x27;app.</strong> Servono l&#x27;indirizzo dell&#x27;informativa privacy, un&#x27;icona e una categoria. Per il solo tuo account non serve la revisione di Meta.</li><li><strong>Il cancello &quot;seguimi&quot;.</strong> Il primo messaggio chiede di seguire e ha un pulsante &quot;Ho seguito&quot;; al tocco il sistema controlla il follow e invia il contenuto.</li></ol>
+<h2>Le regole di Meta da conoscere</h2>
+<ul><li>Si può mandare <strong>un solo messaggio</strong> a chi commenta; per continuare deve rispondere lui, e poi hai 24 ore.</li><li>Il messaggio va inviato <strong>entro 7 giorni</strong> dal commento.</li><li>Arriva nella <strong>posta in arrivo</strong> se la persona ti segue già, altrimenti nelle <strong>Richieste di messaggio</strong>. Per questo il cancello &quot;seguimi&quot; aiuta.</li><li>È buona pratica (e in alcuni paesi obbligo) dichiarare che il messaggio è <strong>automatico</strong>.</li><li>Il token di Instagram <strong>dura circa 60 giorni</strong>: va rinnovato prima della scadenza.</li></ul>
+<h2>Tre intoppi veri, così non ci caschi</h2>
+<ul><li><strong>Due chiavi segrete, non una.</strong> Meta ha la &quot;chiave dell&#x27;app&quot; e la &quot;chiave segreta di Instagram&quot;. Il programma deve accettare entrambe, altrimenti scarta gli avvisi.</li><li><strong>L&#x27;invito tester non arriva in notifica.</strong> Si accetta da instagram.com/accounts/manage_access, sul sito.</li><li><strong>La parola d&#x27;ordine non si rilegge.</strong> Se la dimentichi, ne imposti una nuova su Cloudflare e la riscrivi uguale su Meta.</li></ul>
+<h2>Costi</h2>
+<p>Il servizio che fa funzionare il risponditore, nella mia configurazione, costa <strong>0 euro</strong>: Cloudflare ha un piano gratuito con limiti ampi e Meta non fa pagare questo tipo di uso. Per costruirlo ti serve Claude (io avevo già il mio piano). I termini cambiano: controlla sempre quelli aggiornati prima di partire.</p>
+<h2>Vuoi un risponditore così?</h2>
+<p>Posso configurartelo su misura per la tua attività, con le tue parole chiave e i tuoi contenuti. Scrivimi su WhatsApp (+39 379 329 0934) o a <a href="mailto:info@digitalsam.it">info@digitalsam.it</a>. La prima mezz&#x27;ora è gratis.</p>
+<p>Digital Sam. Siti, reel e social con carattere.</p>
+</div></main>
+<footer>© 2026 Digital Sam · <a href="https://digitalsam.it">digitalsam.it</a></footer>
+</body>
+</html>
