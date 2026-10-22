@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Come mi sono costruita la dashboard del mattino con Claude Code</title>
+<meta name="description" content="I passaggi e i prompt, da copiare e adattare alla tua attività">
+<style>
+  :root {
+    --navy: #08233B; --red: #FF4B2B; --yellow: #FFD23F; --blue: #1FB6FF; --cream: #FFF3D6;
+    --text: #08233B; --bg: #FFF3D6; --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --text: #FFF3D6; --bg: #08233B; --card: #0d2f4d; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header { background: var(--navy); color: var(--cream); padding: 48px 16px 36px; border-bottom: 6px solid var(--yellow); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { padding: 0; }
+  .tag { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 700; font-size: 13px;
+          letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 16px; }
+  h1 { font-size: clamp(28px, 6vw, 42px); line-height: 1.15; margin: 0 0 12px; }
+  header p { margin: 0; font-size: 19px; opacity: .9; }
+  main { padding: 32px 0 56px; }
+  h2 { font-size: 24px; margin: 40px 0 12px; padding-left: 12px; border-left: 6px solid var(--red); }
+  p, li { margin: 0 0 12px; }
+  ul, ol { padding-left: 24px; margin: 0 0 16px; }
+  li::marker { color: var(--red); font-weight: 700; }
+  code { background: var(--card); border: 1px solid rgba(8,35,59,.15); border-radius: 6px; padding: 1px 6px; font-size: .92em; }
+  pre { background: var(--navy); color: var(--cream); border-left: 6px solid var(--yellow); border-radius: 10px;
+         padding: 16px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 15px; line-height: 1.55; margin: 0 0 20px; }
+  pre code { background: none; border: 0; padding: 0; }
+  a { color: var(--red); font-weight: 600; }
+  footer { background: var(--navy); color: var(--cream); padding: 28px 16px; text-align: center; font-size: 15px; }
+  footer a { color: var(--yellow); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="tag">Digital Sam · Report</span>
+  <h1>Come mi sono costruita la dashboard del mattino con Claude Code</h1>
+  <p>I passaggi e i prompt, da copiare e adattare alla tua attività. Digital Sam, ottobre 2026.</p>
+</div></header>
+<main><div class="wrap">
+<h2>Di cosa parliamo</h2>
+<p>Ogni mattina perdevo tempo a decidere da dove cominciare. Avevo progetti, scadenze, contenuti da pubblicare e orari che non si possono spostare.<br>Con Claude Code mi sono costruita una pagina che si apre con doppio clic e mi dice tre cose da fare, dove trovare il materiale e cosa è già pronto da programmare.</p>
+<p>Questo report ti porta dentro gli stessi passaggi, con i prompt da incollare. Non serve saper programmare. Serve sapere cosa vuoi ottenere, e questo lo tiriamo fuori al passo 1.</p>
+<p><strong>Cosa ti serve:</strong> Claude Code (o un assistente che lavora sui tuoi file), una cartella vuota sul computer, un browser.<br><strong>Cosa NON fa:</strong> non pubblica al posto tuo e non spende soldi da solo. Decidi tu, sempre.</p>
+<h2>Passo 1. Prima le domande, poi la dashboard</h2>
+<p>L'errore più comune è chiedere subito "fammi una dashboard". Esce una cosa bella che non ti serve.<br>Fai invece intervistare te.</p>
+<pre><code>Voglio costruire un sistema che ogni mattina mi dica cosa fare per raggiungere i miei obiettivi. Prima di costruire qualsiasi cosa, intervistami. Fammi domande a blocchi di cinque su: obiettivi (con numero e data), progetti, risultato atteso di ogni progetto, ore che posso dedicare, orari che non posso toccare, quando sono più lucida. Alla fine riassumi e dimmi cosa ti sembra irrealistico.</code></pre>
+<p><strong>Cosa ottieni:</strong> una lista onesta di obiettivi e progetti, con le ore reali. Spesso scopri che le ore che pensavi di avere sono meno.</p>
+<h2>Passo 2. Tre livelli: obiettivi, progetti, task</h2>
+<p>Fai mettere tutto in un solo file di dati. È la cosa più utile di tutto il sistema: se i dati stanno in un posto solo, puoi cambiarli senza toccare la pagina.</p>
+<pre><code>Organizza quello che ci siamo detti in tre livelli: obiettivi, progetti e task. Ogni task ha un progetto, una priorità da 1 a 3, una scadenza facoltativa e una stima in minuti. Mettili tutti in un unico file dati.js. Crea anche una scheda breve per ogni progetto con risultato atteso, ore a settimana e prossimo passo.</code></pre>
+<h2>Passo 3. La settimana tipo (con regole anti-burnout)</h2>
+<p>Qui decidi cosa non si negozia. Gli orari bloccati vanno detti subito, anche se non compaiono nella pagina.</p>
+<pre><code>Costruisci la mia settimana tipo. Orari bloccati (non metterli in dashboard, ma rispettali): [i tuoi]. Regole: massimo [N] ore di lavoro vero al giorno, stop alle [ora], una giornata libera, e se salto qualcosa non lo recuperiamo, lo spostiamo o lo togliamo. Metti nelle mattine le cose che richiedono più testa.</code></pre>
+<p><strong>Perché funziona:</strong> la dashboard non ti carica, ti protegge. Se la giornata è piena, non ti propone altro.</p>
+<h2>Passo 4. La pagina</h2>
+<p>Una pagina sola, senza installare niente.</p>
+<pre><code>Crea un'unica pagina HTML che apro con doppio clic, senza server e senza librerie da installare. Legge i dati da dati.js. Mostra: le tre cose di oggi (prima le scadenze, poi il blocco orario in corso), i progressi verso gli obiettivi, la giornata a blocchi orari e l'elenco dei progetti. Le spunte si salvano nel browser. Usa i colori e i font del mio brand: [i tuoi].</code></pre>
+<p><strong>Il trucco delle tre cose:</strong> le scadenze vicine passano per prime, poi la prima task di ogni blocco orario. Puoi sempre cambiarle a mano con "Togli da oggi" e "Metti in oggi".</p>
+<h2>Passo 5. Collega le tue cartelle</h2>
+<p>Se hai già un calendario dei contenuti, non ricrearlo: fallo leggere.</p>
+<pre><code>Scrivi uno script Node.js in sola lettura che legge queste cartelle: [calendario contenuti, cartelle dei video]. Deve generare un file contenuti.js con: cosa va pubblicato oggi, lo stato di ogni contenuto, e il percorso della cartella con i file. Non deve mai aprire queste cartelle private: [le tue]. Poi mostra il risultato nella dashboard, in un riquadro "Da pubblicare oggi" con il tasto "Copia percorso".</code></pre>
+<p><strong>Perché sola lettura:</strong> lo script guarda e basta. Se sbaglia, non rompe niente.</p>
+<h2>Passo 6. Fallo partire da solo</h2>
+<p>Un'attività pianificata del computer esegue lo script ogni mattina.</p>
+<pre><code>Fai partire lo script ogni mattina alle 7:30 con l'Utilità di pianificazione di Windows. Se il computer è spento a quell'ora, deve partire appena lo accendo. Sola lettura, niente pubblicazioni.</code></pre>
+<p>(Su Mac si usa launchd o cron: chiedi a Claude l'equivalente.)</p>
+<p><strong>Facoltativo, la proposta settimanale:</strong> una volta a settimana Claude può scrivere una proposta di contenuti per la settimana dopo. Regola d'oro: scrive solo una proposta in un file e aspetta il tuo ok. Niente cartelle nuove, niente script, niente pubblicazione.</p>
+<h2>Passo 7. Il cronometro</h2>
+<p>Per organizzare meglio le giornate servono i tempi veri, non quelli che immagini.</p>
+<pre><code>Aggiungi su ogni task un tasto Inizio e uno Fine. Registra i minuti reali e confrontali con la stima. Aggiungi un cronometro libero per le attività che non sono in lista.</code></pre>
+<p>Ogni venerdì guardi stima e tempo reale e correggi le stime. Dopo due o tre settimane le giornate smettono di scoppiare.</p>
+<h2>Passo 8. Privacy e prove (non saltarlo)</h2>
+<ul><li><strong>Tieni la cartella fuori da git</strong> se il tuo repository è pubblico. Obiettivi e guadagni non devono finire online.</li><li><strong>Per le demo usa dati finti.</strong> Registra lo schermo solo sulla versione demo.</li><li><strong>Chiedi sempre il test:</strong> "Prima di dirmi che è pronto, provalo e dimmi cosa non hai potuto verificare".</li></ul>
+<h2>I miei errori (te li racconto, così non li rifai)</h2>
+<ul><li>Un tasto che scriveva la parola "null" invece del testo.</li><li>Dei pulsanti che comparivano come "[object HTMLElement]".</li><li>Il tasto "Copia percorso" che non copiava nulla (si è risolto cambiando il metodo di copia).</li><li>Un video rinominato, e la dashboard non lo vedeva più.</li></ul>
+<p>Ogni errore l'ha trovato un test o l'ho trovato io guardando lo schermo. Quando una cosa non va, di' a Claude cosa vedi: di solito si sistema in due minuti.</p>
+<h2>Checklist finale</h2>
+<ul><li>☐ Obiettivi con numero e data</li><li>☐ Progetti con risultato atteso e ore</li><li>☐ Orari bloccati e regole anti-burnout scritte</li><li>☐ Un solo file dati</li><li>☐ Pagina che si apre con doppio clic</li><li>☐ Script in sola lettura per i calendari</li><li>☐ Attività pianificata del mattino</li><li>☐ Cronometro con stima contro tempo reale</li><li>☐ Cartella privata fuori da git e demo con dati finti</li></ul>
+<p>Se ti blocchi su un passo, scrivimi in DM: @digitalsam_it.</p>
+<p><em>Report creato con l'aiuto dell'intelligenza artificiale. Le funzioni descritte sono quelle che uso io, adattale al tuo caso.</em></p>
+</div></main>
+<footer>© 2026 Digital Sam · <a href="https://digitalsam.it">digitalsam.it</a></footer>
+</body>
+</html>
