@@ -54,6 +54,11 @@
 <p>Un agente vero, che capisce le domande libere e decide cosa rispondere, si può aggiungere dopo con un modello come Claude. Ma si paga a consumo e per la maggior parte dei casi non serve.</p>
 <h2>Due modi per costruirlo</h2>
 <ol><li><strong>Da solo, a mano:</strong> segui la roadmap qui sotto. Si può fare, ma ci sono molti passaggi tecnici.</li><li><strong>Con Claude Code (quello che ho fatto io):</strong> Claude scrive il codice, lo prova, lo pubblica e ti dice cosa fare nelle schermate di Meta. Tu fai solo le cose che solo tu puoi fare. È la strada che consiglio.</li></ol>
+<h2>Cosa installare prima di cominciare</h2>
+<p>Se Claude ti chiede di installare altre cose, è normale: il progetto ha bisogno di qualche programma di base. Questa è la lista, con le pagine ufficiali da cui scaricarli (le versioni cambiano, controlla sempre quelle aggiornate).</p>
+<ul><li><strong>Claude Code.</strong> Segui la guida di installazione per il tuo computer su code.claude.com. Serve un account Claude con un piano che includa Claude Code (verifica tu piano e limiti).</li><li><strong>Node.js</strong> (versione LTS, da nodejs.org). Serve a Wrangler, lo strumento di Cloudflare che pubblica il programma. Claude lo usa per te con un solo comando: non devi installare Wrangler a parte.</li><li><strong>Git per Windows:</strong> opzionale. Se usi Windows, conviene installarlo, ma Claude Code funziona anche senza.</li><li><strong>I tre account</strong> (gratis): Meta per sviluppatori (developers.facebook.com), Cloudflare, e il tuo profilo Instagram professionale.</li><li><strong>Sistema operativo:</strong> Cloudflare indica Windows 11 e macOS 13.5 o successivi per Wrangler. Su un computer più vecchio possono esserci problemi.</li></ul>
+<p><strong>Non sai cosa manca sul tuo computer?</strong> Apri Claude Code e chiedi: &quot;Controlla cosa è già installato sul mio computer (Node.js, ecc.) e dimmi cosa manca, un passo alla volta&quot;. Ti dice cosa installare e verifica che sia andato a buon fine.</p>
+<p><strong>Se resti bloccato</strong>, scrivimi su WhatsApp con uno screenshot del messaggio di errore: di solito si risolve in pochi minuti.</p>
 <h2>Costruirlo con Claude Code</h2>
 <p>Claude Code è l&#x27;assistente di Claude che lavora sul tuo computer: legge e scrive file, esegue comandi, controlla gli errori. Per questo progetto serve averlo installato (verifica tu piano e limiti attuali: io l&#x27;ho usato con il mio abbonamento a Claude).</p>
 <p><strong>Cosa fa Claude per te</strong></p>
@@ -63,7 +68,7 @@
 <p><strong>Il prompt per partire</strong> (copia, incolla in Claude Code e sostituisci le parti tra parentesi quadre)</p>
 <pre><code>Voglio costruire un risponditore automatico ai commenti di Instagram, senza abbonamenti. Quando qualcuno commenta una parola chiave sotto un mio Reel, deve ricevere un messaggio privato con un link. Usa Cloudflare Workers (piano gratuito) e l&#x27;API ufficiale di Meta (Instagram API con Instagram Login).
 
-Prima di scrivere codice: 1) leggi la documentazione ufficiale e dimmi requisiti e limiti; 2) proponi l&#x27;architettura e aspetta il mio ok.
+Prima di scrivere codice: 0) controlla cosa è già installato sul mio computer (Node.js, ecc.) e dimmi cosa manca; 1) leggi la documentazione ufficiale e dimmi requisiti e limiti; 2) proponi l&#x27;architettura e aspetta il mio ok.
 
 Poi guidami un passo alla volta: dimmi cosa devo fare io (account, accessi, chiavi) e cosa fai tu.
 
