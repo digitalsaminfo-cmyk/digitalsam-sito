@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le animazioni che entrano mentre le nomini: come farle con Claude</title>
+<meta name="description" content="Guida gratuita: i prompt per montare un video dove ogni parola chiave fa partire una grafica, usando Claude Code.">
+<style>
+  :root {
+    --navy: #08233B; --red: #FF4B2B; --yellow: #FFD23F; --blue: #1FB6FF; --cream: #FFF3D6;
+    --text: #08233B; --bg: #FFF3D6; --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --text: #FFF3D6; --bg: #08233B; --card: #0d2f4d; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header { background: var(--navy); color: var(--cream); padding: 48px 16px 36px; border-bottom: 6px solid var(--yellow); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { padding: 0; }
+  .tag { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 700; font-size: 13px;
+          letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 16px; }
+  h1 { font-size: clamp(28px, 6vw, 42px); line-height: 1.15; margin: 0 0 12px; }
+  header p { margin: 0; font-size: 19px; opacity: .9; }
+  main { padding: 32px 0 56px; }
+  .pg { margin: 0 0 8px; padding-top: 8px; }
+  .pg + .pg { border-top: 2px dashed rgba(8,35,59,.25); margin-top: 40px; padding-top: 32px; }
+  @media (prefers-color-scheme: dark) { .pg + .pg { border-top-color: rgba(255,243,214,.25); } }
+  .num { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+  h2 { font-size: 24px; margin: 4px 0 12px; padding-left: 12px; border-left: 6px solid var(--red); }
+  h3 { font-size: 18px; margin: 24px 0 6px; }
+  p, li { margin: 0 0 12px; }
+  ul, ol { padding-left: 24px; margin: 0 0 16px; }
+  li::marker { color: var(--red); font-weight: 700; }
+  code { background: var(--card); border: 1px solid rgba(8,35,59,.15); border-radius: 6px; padding: 1px 6px; font-size: .92em; }
+  .box { position: relative; margin: 0 0 20px; }
+  pre { background: var(--navy); color: var(--cream); border-left: 6px solid var(--yellow); border-radius: 10px;
+         padding: 16px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 15px; line-height: 1.55; margin: 0; }
+  pre code { background: none; border: 0; padding: 0; }
+  .copy { position: absolute; top: 8px; right: 8px; background: var(--yellow); color: var(--navy); border: 0; border-radius: 999px;
+          font: 700 12px/1 system-ui, sans-serif; padding: 7px 12px; cursor: pointer; }
+  .copy:focus-visible { outline: 3px solid var(--blue); }
+  pre { padding-top: 40px; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 20px; font-size: 16px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(8,35,59,.2); vertical-align: top; }
+  th { background: var(--navy); color: var(--cream); }
+  @media (prefers-color-scheme: dark) { td { border-bottom-color: rgba(255,243,214,.2); } }
+  .tbl { overflow-x: auto; }
+  .verify { background: var(--yellow); color: var(--navy); border-radius: 6px; padding: 1px 7px; font-size: .85em; font-weight: 700; white-space: nowrap; }
+  .placeholder { border: 2px dashed var(--red); border-radius: 10px; padding: 14px; text-align: center; margin: 0 0 20px; font-weight: 600; }
+  .check { list-style: none; padding-left: 0; }
+  .check li { padding-left: 30px; position: relative; }
+  .check li::before { content: "\2610"; position: absolute; left: 0; color: var(--red); font-weight: 700; font-size: 1.1em; }
+  a { color: var(--red); font-weight: 600; }
+  footer { background: var(--navy); color: var(--cream); padding: 28px 16px; text-align: center; font-size: 15px; }
+  footer a { color: var(--yellow); }
+  @media print {
+    .copy { display: none; }
+    .pg { break-inside: avoid-page; }
+    .pg + .pg { break-before: page; border-top: 0; margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="tag">Digital Sam · Guida gratuita</span>
+  <h1>Le animazioni che entrano mentre le nomini: come farle con Claude</h1>
+  <p>I prompt da incollare per montare un video dove ogni parola chiave fa partire una grafica. Digital Sam, ottobre 2026.</p>
+</div></header>
+<main><div class="wrap">
+
+<!-- PAGINA 1 -->
+<section class="pg">
+<span class="num">Pagina 1 di 7</span>
+<h2>Cosa otterrai e cosa ti serve</h2>
+<p>Un video di te che parli in camera, dove ogni parola chiave fa partire una grafica nel momento esatto in cui la dici. Dici &quot;il mio profilo Instagram&quot; e arriva il profilo. Dici &quot;follower&quot; e il numero sale. Funziona come nel Reel &quot;Claude mi ubbidisce&quot;.</p>
+<p><strong>Una cosa onesta subito:</strong> non esiste un bottone che fa tutto. È un montaggio che costruisci con Claude e correggi guardando i fotogrammi. Claude fa il lavoro pesante, tu decidi cosa vuoi vedere e dici quando non va bene. Lui obbedisce. È il collega che non risponde mai &quot;ci penso su&quot;.</p>
+<p>Non ti prometto un risultato preciso né un tempo preciso: dipende dal video, dal computer e da quante volte cambi idea.</p>
+
+<h3>Cosa ti serve</h3>
+<ul>
+<li><strong>Un computer</strong>, Mac o Windows.</li>
+<li><strong>L'app Claude con la scheda Code.</strong> È lì che incolli i prompt di questa guida.</li>
+<li><strong>Un piano Claude.</strong> Per iniziare basta il piano Pro. Se pubblichi sempre più video e il volume aumenta, puoi passare al piano Max. Controlla piani e limiti aggiornati su claude.com/pricing prima di scegliere.</li>
+<li><strong>Un video di te che parli in camera</strong>, girato con il telefono, in verticale, con la voce pulita.</li>
+<li><strong>In alternativa, un avatar:</strong> HeyGen per il volto e ElevenLabs per la voce. In questo caso va sempre dichiarato, con un badge &quot;CLONE IN SERVIZIO&quot; ben visibile nel video.</li>
+<li><strong>Una cartella nuova, solo per questo video.</strong> Dentro ci metti il filmato e tutto quello che Claude produce. Così non si mischia con altro.</li>
+</ul>
+<div class="placeholder">[inserisci screenshot del Reel &quot;Claude mi ubbidisce&quot;]</div>
+</section>
+
+<!-- PAGINA 2 -->
+<section class="pg">
+<span class="num">Pagina 2 di 7</span>
+<h2>Prompt 1: prepara il computer</h2>
+<p>Io uso cinque strumenti, tutti gratuiti:</p>
+<ul>
+<li><strong>ffmpeg:</strong> montaggio, audio e render finale.</li>
+<li><strong>faster-whisper:</strong> trascrizione del parlato con il tempo di ogni parola.</li>
+<li><strong>mediapipe</strong> (modello &quot;selfie multiclass&quot;): ritaglio della persona dallo sfondo.</li>
+<li><strong>Python con Pillow e numpy:</strong> disegnano le grafiche.</li>
+<li><strong>Chrome senza finestra:</strong> serve solo per trasformare il logo da SVG a immagine.</li>
+</ul>
+<p>Questo prompt fa controllare a Claude cosa hai già e installa solo quello che manca, chiedendoti il permesso prima di ogni installazione.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Sto preparando questo computer per montare un video verticale con grafiche animate. Lavora solo dentro questa cartella.
+
+Controlla se ho già installato, uno alla volta:
+1. ffmpeg (montaggio, audio e render finale)
+2. faster-whisper (trascrizione del parlato con il tempo di ogni parola)
+3. mediapipe, con il modello &quot;selfie multiclass&quot; (ritaglio della persona dallo sfondo)
+4. Python con Pillow e numpy (per disegnare le grafiche)
+5. Chrome senza finestra (serve solo per trasformare il logo da SVG a immagine)
+
+Per ogni cosa che manca, prima di installare: dimmi come si chiama, a cosa serve, quanto spazio occupa e da dove la scarichi. Poi aspetta il mio sì. Una installazione alla volta, conferma prima di ognuna. Non installare niente che non ti ho confermato.
+
+Alla fine fammi un elenco: cosa c'era già, cosa hai installato, cosa non è riuscito. Se un passaggio fallisce, dimmi cosa vedi e proponi un'alternativa invece di riprovare in loop.</code></pre></div>
+<p>Se Claude ti propone strumenti con nomi diversi dai miei, va bene: l'importante è che facciano le stesse cose. Se hai dubbi su uno strumento, chiedi a Claude di spiegarti perché lo sceglie.</p>
+</section>
+
+<!-- PAGINA 3 -->
+<section class="pg">
+<span class="num">Pagina 3 di 7</span>
+<h2>Prompt 2: il copione a comandi</h2>
+<p>Il trucco è nel formato del copione. Parli come se dettassi ordini a Claude: &quot;Fai comparire il mio profilo Instagram&quot;, &quot;Fai salire i follower&quot;, &quot;Rendi il video più luminoso&quot;. Ogni frase è un comando breve e visivo, e ogni comando diventa una grafica. Il pubblico vede un ordine e vede l'ordine eseguito. Fine del segreto.</p>
+
+<h3>La tabella parola e animazione</h3>
+<div class="tbl"><table>
+<thead><tr><th>Quando dici</th><th>Compare</th></tr></thead>
+<tbody>
+<tr><td>&quot;il mio profilo Instagram&quot;</td><td>La card del tuo profilo, con uno screenshot vero</td></tr>
+<tr><td>&quot;fai salire i follower&quot;</td><td>Il numero dei follower che sale</td></tr>
+<tr><td>&quot;metti un vetro&quot;</td><td>Un pannello di vetro sfocato sopra il video</td></tr>
+<tr><td>&quot;dividi lo schermo&quot;</td><td>Tu da una parte, una grafica dall'altra</td></tr>
+<tr><td>&quot;rendi il video più luminoso&quot;</td><td>La luce del video si alza</td></tr>
+<tr><td>&quot;portami su un altro pianeta&quot;</td><td>Lo sfondo dietro di te cambia</td></tr>
+<tr><td>&quot;portami a [città]&quot;</td><td>Una mappa vera di quella città dietro di te</td></tr>
+<tr><td>la parola chiave finale</td><td>Una barra di chat che la scrive</td></tr>
+</tbody></table></div>
+
+<h3>Il prompt per farti scrivere il copione</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Scrivimi il copione di un video verticale di circa [durata, per esempio 40 secondi] sul mio argomento: [di cosa parli, per chi, cosa vuoi che facciano alla fine].
+
+Formato: parlo come se dettassi ordini a Claude. Ogni frase è un comando breve e visivo, per esempio &quot;Fai comparire il mio profilo Instagram&quot; o &quot;Fai salire i follower&quot;. Ogni comando deve poter diventare una grafica.
+
+Regole:
+- Frasi corte, parlate, da dire a voce senza fiatare.
+- Ogni 3 o 4 comandi una battuta sull'obbedienza di Claude, che fa quello che dico.
+- Niente numeri inventati: dove serve un numero, mettimi [numero vero].
+- Niente promesse di risultati.
+- Alla fine una sola parola chiave da scrivere in DM, scelta da te tra [PAROLA 1] e [PAROLA 2].
+
+Dopo il copione, fammi una tabella con tre colonne: la frase, la parola che fa partire la grafica, la grafica.</code></pre></div>
+<p>Leggi il copione ad alta voce prima di registrare. Una frase che inciampa in bocca inciamperà anche nel montaggio.</p>
+</section>
+
+<!-- PAGINA 4 -->
+<section class="pg">
+<span class="num">Pagina 4 di 7</span>
+<h2>Prompt 3: trascrizione e tempi</h2>
+<p>Per far partire una grafica sulla parola giusta, Claude deve sapere a che secondo esatto la dici. Questo prompt trascrive il video parola per parola con i tempi, segna le parole che potrebbe aver capito male (nomi, marchi) e si ferma ad aspettare il tuo ok.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Nella cartella c'è il mio video: [nome del file].
+
+1. Trascrivi il parlato parola per parola, con il tempo di inizio e di fine di ogni parola.
+2. Segna con un asterisco le parole di cui non sei sicuro: nomi propri, marchi, termini inglesi, numeri.
+3. Salva il risultato in un file nella cartella.
+4. Mostrami il testo completo, con i tempi delle sole parole che fanno partire un'animazione (te le indico io qui sotto).
+5. Fermati e aspetta il mio ok. Non andare avanti con il montaggio finché non ho corretto il testo.
+
+Parole che fanno partire un'animazione: [elenco, per esempio: profilo Instagram, follower, vetro, pianeta].</code></pre></div>
+<p>Rileggi con calma. Un nome scritto male nella trascrizione finisce scritto male nelle grafiche, e poi sembra colpa tua.</p>
+</section>
+
+<!-- PAGINA 5 -->
+<section class="pg">
+<span class="num">Pagina 5 di 7</span>
+<h2>Prompt 4: gli effetti nello stesso fotogramma</h2>
+<p>Qui nasce l'effetto del Reel: la persona, le grafiche e lo sfondo convivono nello stesso fotogramma. Ti do gli effetti principali, ognuno con la frase da copiare. Li chiedi uno alla volta, li guardi, poi passi al successivo.</p>
+
+<h3>Le regole da dare sempre a Claude</h3>
+<p>Incollale all'inizio di ogni richiesta di effetti. Sono quelle che evitano i guai più comuni.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Regole per tutti gli effetti:
+- Niente grafiche sulla mia faccia. Le grafiche stanno ai lati, sopra, sotto o dietro di me.
+- Una novità visiva circa ogni due secondi, così il video non resta fermo.
+- Ogni animazione parte sulla parola giusta, usando i tempi della trascrizione.
+- Testi e sottotitoli dentro la zona sicura, verifica sui fotogrammi di controllo.
+- Prima del render completo mostrami tre fotogrammi di controllo e aspetta il mio ok.</code></pre></div>
+<p>La zona sicura è l'area dove i testi non finiscono sotto l'interfaccia di Instagram. Per un video 1080x1920 le misure indicative sono:</p>
+<ul>
+<li><strong>Alto:</strong> circa 250 px liberi.</li>
+<li><strong>Basso:</strong> circa 340-400 px liberi.</li>
+<li><strong>Lati:</strong> circa 65 px liberi.</li>
+</ul>
+<p>Sono misure indicative. Instagram cambia l'interfaccia ogni tanto, quindi controlla sempre l'anteprima nell'app prima di pubblicare.</p>
+
+<h3>1. Scritta grande dietro la testa</h3>
+<p>Serve il ritaglio della persona: la scritta sta tra te e lo sfondo.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;[parola]&quot;, fai comparire la scritta &quot;[PAROLA]&quot; molto grande dietro di me, tra la mia figura ritagliata e lo sfondo. La scritta entra sulla parola e resta finché non parlo d'altro. Non deve mai coprirmi il viso.</code></pre></div>
+
+<h3>2. Card del tuo profilo Instagram con i follower che salgono</h3>
+<p>Usa uno screenshot vero del tuo profilo.</p>
+<div class="placeholder">[inserisci screenshot del tuo profilo Instagram]</div>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;il mio profilo Instagram&quot;, fai entrare una card con lo screenshot che trovi nella cartella: [nome file]. Poi, quando dico &quot;follower&quot;, fai salire il numero dei follower da [numero di partenza] a [numero vero] in circa un secondo e mezzo. Il numero finale deve essere quello vero dello screenshot, non uno inventato.</code></pre></div>
+
+<h3>3. Effetto vetro (liquid glass)</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;[parola]&quot;, metti nella parte bassa del video un pannello di vetro smerigliato: sfondo sfocato, bordo chiaro sottile, angoli arrotondati. Dentro scrivi &quot;[testo breve]&quot;. Il pannello entra con un movimento morbido ed esce quando cambio argomento. Non deve toccare il mio viso.</code></pre></div>
+
+<h3>4. Schermo diviso con una grafica a lato</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;dividi lo schermo&quot;, porta me a sinistra e a destra metti [grafica o screenshot]. Quando dico &quot;torna normale&quot;, rimetti me a schermo intero.</code></pre></div>
+
+<h3>5. Luce che si alza e si abbassa</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;rendi il video più luminoso&quot;, alza gradualmente la luminosità del video in circa un secondo. Quando dico &quot;torna normale&quot;, riportala com'era. Controlla che il mio viso non diventi bruciato.</code></pre></div>
+
+<h3>6. Barra della musica e degli effetti sonori</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Aggiungi in basso una piccola barra che mostra la musica e gli effetti sonori mentre partono. A ogni novità visiva un effetto sonoro molto breve, sempre più basso della mia voce. La musica usa solo il file che ti indico: [nome file].</code></pre></div>
+
+<h3>7. Sfondo cambiato dietro di te: un pianeta o la mappa di una città</h3>
+<p>Per il pianeta serve un'immagine che puoi usare davvero. Io ho usato NASA Blue Marble, dall'archivio NASA Earth Observatory. È materiale NASA, di uso libero, e la NASA chiede di citare la fonte. Dicitura da mettere nel video: &quot;Immagine: NASA Earth Observatory&quot;. Controlla le condizioni di riuso sulla pagina NASA dell'immagine che scegli, perché possono cambiare. Per la mappa usa dati reali.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Quando dico &quot;portami a [città]&quot;, sostituisci lo sfondo dietro di me con una mappa vera di [città], con i dati di OpenStreetMap. Io resto in primo piano, ritagliato. In basso, piccola ma leggibile, scrivi: © OpenStreetMap contributors. Se non riesci a ottenere la mappa vera, dimmelo: non disegnarne una finta.</code></pre></div>
+
+<h3>8. Barra di una chat che scrive la parola chiave</h3>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Nell'ultima frase, quando dico &quot;scrivimi [PAROLA]&quot;, fai comparire in basso una barra di chat che scrive la parola [PAROLA] lettera per lettera, e alla fine una notifica che dice &quot;Messaggio inviato&quot;. Resta nell'angolo, lontano dal mio viso.</code></pre></div>
+</section>
+
+<!-- PAGINA 6 -->
+<section class="pg">
+<span class="num">Pagina 6 di 7</span>
+<h2>Prompt 5: render, musica e versioni</h2>
+<p>Quando gli effetti ti piacciono uno per uno, si monta tutto. Questo prompt esporta il video, mette la musica sotto la voce e controlla i fotogrammi prima di dirti &quot;pronto&quot;.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Ora monta il video finale con tutti gli effetti approvati.
+
+- Formato verticale 1080x1920.
+- Musica sotto la mia voce, mai sopra: la voce si deve capire sempre. Usa solo la musica che ti ho indicato.
+- Effetti sonori brevi, uno per novità visiva.
+- Regole di sempre: niente grafiche sulla mia faccia, una novità visiva ogni circa due secondi, ogni animazione parte sulla parola giusta.
+- Prima del render completo mostrami tre fotogrammi di controllo.
+- Dopo il render, guarda il video fotogramma per fotogramma nei punti in cui parte ogni animazione e dimmi cosa non torna: ritardi, grafiche sul viso, bordi sporchi del ritaglio, testi tagliati. Correggi e rifai solo i punti sbagliati.
+
+Alla fine dimmi dove hai salvato il file e quanto pesa.</code></pre></div>
+
+<h3>Una nota sulle versioni per Instagram, Facebook e TikTok</h3>
+<p>La parola chiave in DM funziona solo su Instagram. Se pubblichi lo stesso video anche su Facebook e TikTok, l'ultima frase va cambiata: per esempio &quot;seguimi&quot; al posto di &quot;scrivimi [PAROLA]&quot;. Non rifai tutto il video: registri solo l'ultima frase e la sostituisci.</p>
+<div class="box"><button class="copy" type="button">Copia</button><pre><code>Fammi una seconda versione del video per Facebook e TikTok. Sostituisci solo la frase finale con questo nuovo audio: [nome file]. La grafica finale con la barra di chat deve dire &quot;seguimi&quot; invece della parola chiave. Tutto il resto resta uguale.</code></pre></div>
+
+<h2>Errori comuni e come correggerli</h2>
+<ol>
+<li><strong>La grafica copre il viso.</strong> Dillo a Claude con le parole &quot;spostala di lato, mai sulla faccia&quot; e chiedi un nuovo fotogramma di controllo.</li>
+<li><strong>L'animazione parte in ritardo.</strong> Di solito la trascrizione ha il tempo sbagliato di quella parola. Chiedi di controllare il tempo e anticipare di qualche frazione di secondo.</li>
+<li><strong>Il ritaglio ha i bordi sporchi.</strong> Capelli e mani sono i punti difficili. Chiedi di ripetere il ritaglio più curato e di mostrarti un fotogramma ingrandito sul bordo.</li>
+<li><strong>Numeri finti spacciati per veri.</strong> Se un numero è dimostrativo, nel video va detto. Quelli reali li prendi dallo screenshot, non dalla fantasia di Claude.</li>
+<li><strong>Mappe senza fonte.</strong> Se usi OpenStreetMap, serve la dicitura © OpenStreetMap contributors nel video.</li>
+<li><strong>Troppe cose insieme.</strong> Se ogni secondo succede qualcosa il video stanca. Togli l'effetto meno utile.</li>
+<li><strong>Il testo a schermo è tagliato dal bordo.</strong> I telefoni coprono una parte dello schermo con interfaccia e pulsanti. Chiedi di tenere i testi dentro la zona sicura (misure indicative nella pagina 5) e controlla l'anteprima nell'app prima di pubblicare.</li>
+<li><strong>Claude dice &quot;fatto&quot; ma il video non è pronto.</strong> Rispondi sempre: &quot;Mostrami i fotogrammi&quot;. Quando vedi, decidi tu.</li>
+</ol>
+</section>
+
+<!-- PAGINA 7 -->
+<section class="pg">
+<span class="num">Pagina 7 di 7</span>
+<h2>Note oneste e checklist</h2>
+<ul>
+<li><strong>Mappe.</strong> Le mappe di OpenStreetMap richiedono la dicitura &quot;© OpenStreetMap contributors&quot; nel video.</li>
+<li><strong>Immagine del pianeta.</strong> Se usi NASA Blue Marble, scrivi nel video &quot;Immagine: NASA Earth Observatory&quot; e controlla le condizioni di riuso sulla pagina NASA dell'immagine.</li>
+<li><strong>Musica.</strong> Usa solo musica con una licenza che ne permetta l'uso nei tuoi video. Controlla la licenza di ogni brano prima di pubblicare.</li>
+<li><strong>Numeri.</strong> I numeri dimostrativi vanno detti tali. Quelli veri devono essere veri.</li>
+<li><strong>Avatar.</strong> Se usi un avatar, dillo, con il badge &quot;CLONE IN SERVIZIO&quot; visibile e, dove la piattaforma lo prevede, con l'opzione &quot;contenuto creato con AI&quot; attiva.</li>
+<li><strong>Risultati.</strong> Questa guida mostra il metodo che uso io. Non garantisce un risultato uguale al mio né un tempo preciso.</li>
+</ul>
+
+<h3>Checklist finale</h3>
+<ul class="check">
+<li>Ho una cartella nuova solo per questo video.</li>
+<li>Claude ha controllato e installato gli strumenti che mancavano, con il mio sì.</li>
+<li>Il copione è fatto di comandi brevi e l'ho letto ad alta voce.</li>
+<li>Ho controllato la trascrizione e corretto nomi e marchi.</li>
+<li>Ho guardato tre fotogrammi di controllo per ogni effetto nuovo.</li>
+<li>Nessuna grafica copre il viso e le parole fanno partire le animazioni al momento giusto.</li>
+<li>Numeri veri o dichiarati dimostrativi, mappe con fonte, musica con licenza, avatar dichiarato.</li>
+<li>Ho una versione con la frase finale giusta per ogni piattaforma.</li>
+</ul>
+
+<h2>E adesso?</h2>
+<p>Prova, e poi scrivimi cosa hai realizzato: mi interessa vedere dove l'hai portato. Mi trovi in DM su Instagram: @digitalsam_it.</p>
+<p>Digital Sam. Siti, reel e social con carattere.</p>
+<p><em>Guida creata con l'aiuto dell'intelligenza artificiale. Gli strumenti e i piani cambiano: controlla sempre le informazioni aggiornate.</em></p>
+</section>
+
+</div></main>
+<footer>© 2026 Digital Sam · <a href="https://digitalsam.it">digitalsam.it</a></footer>
+<script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var t = b.parentNode.querySelector('pre').innerText;
+    var ok = function () { b.textContent = 'Copiato'; setTimeout(function () { b.textContent = 'Copia'; }, 1500); };
+    try {
+      navigator.clipboard.writeText(t).then(ok, function () {});
+    } catch (e) {}
+  });
+});
+</script>
+</body>
+</html>
