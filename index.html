@@ -469,6 +469,14 @@ img.fl{height:auto;translate:calc(var(--px,0)*var(--d,14)*1px) calc(var(--py,0)*
   .s5 .col .p{font-size:.72rem;line-height:1.3}
   .s5 .direct{font-size:.72rem;padding:4px 10px}
 }
+/* PC larghi e non alti (portatili, 641-780 px): la tappa arrivo si compatta prima, il cartello resta sotto il titolo */
+@media(min-width:861px) and (min-height:641px) and (max-height:780px){
+  .s5 .big{top:15vh;font-size:min(11vh,5vw)}
+  .s5 .sub{top:calc(15vh + min(11vh,5vw) * .95);font-size:min(5.6vh,3vw)}
+  .s5 .col{gap:6px}
+  .s5 .col .p{font-size:.78rem;line-height:1.35;padding:6px 10px;box-shadow:4px 4px 0 var(--ink)}
+  .s5 .direct{padding:6px 12px;gap:2px 14px;font-size:.78rem;box-shadow:4px 4px 0 var(--ink)}
+}
 </style>
 </head>
 <body>
