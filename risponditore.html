@@ -36,6 +36,11 @@
          padding: 16px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 15px; line-height: 1.55; margin: 0 0 20px; }
   pre code { background: none; border: 0; padding: 0; }
   a { color: var(--red); font-weight: 600; }
+  .alert { background: var(--yellow); color: var(--navy); border-left: 8px solid var(--red); border-radius: 10px; padding: 16px 18px; margin: 32px 0 8px; }
+  .alert strong { display: block; font-size: 18px; margin-bottom: 6px; }
+  .alert p { margin: 0 0 8px; }
+  .alert p:last-child { margin-bottom: 0; }
+  .alert code { background: rgba(255,255,255,.55); color: var(--navy); }
   footer { background: var(--navy); color: var(--cream); padding: 28px 16px; text-align: center; font-size: 15px; }
   footer a { color: var(--yellow); }
 </style>
@@ -85,6 +90,7 @@ Il mio account Instagram è [@tuo_profilo], la prima parola chiave sarà [PAROLA
 <ul><li><strong>Due chiavi segrete, non una.</strong> Meta ha la &quot;chiave dell&#x27;app&quot; e la &quot;chiave segreta di Instagram&quot;. Il programma deve accettare entrambe, altrimenti scarta gli avvisi.</li><li><strong>L&#x27;invito tester non arriva in notifica.</strong> Si accetta da instagram.com/accounts/manage_access, sul sito.</li><li><strong>La parola d&#x27;ordine non si rilegge.</strong> Se la dimentichi, ne imposti una nuova su Cloudflare e la riscrivi uguale su Meta.</li></ul>
 <h2>Costi</h2>
 <p>Il servizio che fa funzionare il risponditore, nella mia configurazione, costa <strong>0 euro</strong>: Cloudflare ha un piano gratuito con limiti ampi e Meta non fa pagare questo tipo di uso. Per costruirlo ti serve Claude (io avevo già il mio piano). I termini cambiano: controlla sempre quelli aggiornati prima di partire.</p>
+<div class="alert" role="note"><strong>Attenzione: se cambi la password di Instagram</strong><p>Devi rigenerare il token, altrimenti il risponditore smette di funzionare.</p><p>Dopo il cambio genera un token nuovo dal sito di Meta e riscrivilo nel terminale con lo stesso comando usato la prima volta (<code>wrangler secret put</code>). Poi rifai una prova con un commento da un secondo account.</p></div>
 <h2>Vuoi un risponditore così?</h2>
 <p>Posso configurartelo su misura per la tua attività, con le tue parole chiave e i tuoi contenuti. Scrivimi su WhatsApp (+39 379 329 0934) o a <a href="mailto:info@digitalsam.it">info@digitalsam.it</a>. La prima mezz&#x27;ora è gratis.</p>
 <p>Digital Sam. Siti, reel e social con carattere.</p>
